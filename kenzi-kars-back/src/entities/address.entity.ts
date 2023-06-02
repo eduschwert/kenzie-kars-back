@@ -37,8 +37,5 @@ class Address {
 
   @DeleteDateColumn({ type: "date" })
   deletedAt: Date | string;
-
-  @ManyToOne(() => User)
-  user: User;
 }
 export { Address };

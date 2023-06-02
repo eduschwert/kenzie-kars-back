@@ -8,10 +8,12 @@ import {
   OneToMany,
   BeforeInsert,
   BeforeUpdate,
+  OneToOne,
 } from "typeorm";
 
 import { getRounds, hashSync } from "bcryptjs";
 import { Address, Vehicle } from ".";
+import { Comment } from "./comments.entity";
 
 @Entity("users")
 class User {
@@ -36,10 +38,10 @@ class User {
   @Column({ type: "date" })
   bithdate: Date | string;
 
-  @Column({ type: "varchar", length: 256 })
+  @Column({ type: "text" })
   description: string;
 
-  @Column({ type: "boolean", length: 256 })
+  @Column({ type: "boolean" })
   is_seller: boolean;
 
   @CreateDateColumn({ type: "date" })
@@ -61,9 +63,12 @@ class User {
   }
 
   @OneToMany(() => Vehicle, (vehicle) => vehicle.seller)
-  vehicle: Vehicle[];
+  vehicles: Vehicle[];
 
-  @OneToMany(() => Address, (address) => address.user)
-  address: Vehicle[];
+  @OneToOne(() => Address)
+  address: Address;
+
+  @OneToMany(() => Comment, (comment) => comment.owner)
+  comments: Comment[];
 }
 export { User };

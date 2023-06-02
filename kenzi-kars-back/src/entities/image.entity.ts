@@ -17,8 +17,8 @@ class Image {
   @Column({ type: "varchar", length: 256 })
   image_url: string;
 
-  @Column({ type: "number" })
-  image_number: string;
+  @Column({ type: "integer" })
+  image_number: number;
 
   @CreateDateColumn({ type: "date" })
   createdAt: Date | string;
@@ -30,6 +30,6 @@ class Image {
   deletedAt: Date | string;
 
   @ManyToOne(() => Vehicle)
-  vehicle_id: Vehicle;
+  vehicle: Vehicle;
 }
 export { Image };

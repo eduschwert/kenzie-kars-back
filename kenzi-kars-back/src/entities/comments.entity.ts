@@ -7,14 +7,15 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from "typeorm";
-import { User, Vehicle } from ".";
+import { Vehicle } from "./vehicle.entity";
+import { User } from "./user.entity";
 
-@Entity("addresses")
-class Address {
+@Entity("comments")
+class Comment {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 256 })
+  @Column({ type: "text" })
   content: string;
 
   @CreateDateColumn({ type: "date" })
@@ -26,13 +27,10 @@ class Address {
   @DeleteDateColumn({ type: "date" })
   deletedAt: Date | string;
 
-  @ManyToOne(() => User, (user) => user.id)
-  user: User;
-
-  //   @ManyToOne(() => RealEstate, (realEstates) => realEstates.schedules)
-  //   realEstate: RealEstate;
+  @ManyToOne(() => User, (user) => user.comments)
+  owner: User;
 
   @ManyToOne(() => Vehicle, (vehicle) => vehicle.comments)
   vehicle: Vehicle;
 }
-export { Address };
+export { Comment };
