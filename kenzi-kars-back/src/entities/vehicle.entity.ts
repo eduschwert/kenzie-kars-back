@@ -8,8 +8,7 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Image, User } from ".";
-import { Comment } from "./comments.entity";
+import { Image, User, Comment } from ".";
 
 @Entity("vehicles")
 class Vehicle {
@@ -18,6 +17,9 @@ class Vehicle {
 
   @Column({ type: "varchar", length: 50 })
   brand: string;
+
+  @Column({ type: "varchar", length: 50 })
+  model: string;
 
   @Column({ type: "varchar", length: 4 })
   year: string;
@@ -28,14 +30,14 @@ class Vehicle {
   @Column({ type: "integer" })
   mileage: number;
 
+  @Column({ type: "varchar", length: 30 })
+  color: string;
+
   @Column({ type: "text" })
   description: string;
 
   @Column({ type: "decimal" })
   price: number;
-
-  @Column({ type: "varchar", length: 30 })
-  color: string;
 
   @Column({ type: "decimal" })
   fipe_price: number;

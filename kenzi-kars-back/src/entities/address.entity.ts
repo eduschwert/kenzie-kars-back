@@ -5,9 +5,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
-  ManyToOne,
 } from "typeorm";
-import { User } from ".";
 
 @Entity("addresses")
 class Address {

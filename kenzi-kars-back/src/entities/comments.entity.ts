@@ -7,8 +7,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from "typeorm";
-import { Vehicle } from "./vehicle.entity";
-import { User } from "./user.entity";
+import { Vehicle, User } from ".";
 
 @Entity("comments")
 class Comment {

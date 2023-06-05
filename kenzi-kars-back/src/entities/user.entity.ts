@@ -10,10 +10,8 @@ import {
   BeforeUpdate,
   OneToOne,
 } from "typeorm";
-
 import { getRounds, hashSync } from "bcryptjs";
-import { Address, Vehicle } from ".";
-import { Comment } from "./comments.entity";
+import { Address, Vehicle, Comment } from ".";
 
 @Entity("users")
 class User {
