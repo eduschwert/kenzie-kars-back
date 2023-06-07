@@ -7,6 +7,7 @@ import {
 } from "../interfaces/vehicles.interfaces";
 import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import { Vehicle } from "../entities";
+import deleteVehicleService from "../services/vehicles/deleteVehicle.service";
 
 const createVehicleController = async (
   req: Request,
@@ -34,4 +35,19 @@ const updateVehicleController = async (
   return res.json(updatedVehicle);
 };
 
-export { createVehicleController, updateVehicleController };
+const deleteVehicleController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const vehicle: Vehicle = res.locals.vehicle;
+
+  await deleteVehicleService(vehicle);
+
+  return res.status(204).send();
+};
+
+export {
+  createVehicleController,
+  updateVehicleController,
+  deleteVehicleController,
+};

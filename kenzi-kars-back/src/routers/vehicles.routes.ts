@@ -3,6 +3,7 @@ import { Router } from "express";
 import { vehicleSchemaRequest } from "../schemas/vehicles.schema";
 import {
   createVehicleController,
+  deleteVehicleController,
   updateVehicleController,
 } from "../controllers/vehicles.controller";
 import ensureDataIsValidMiddleware from "../middlewares/ensureDataIsValid.middleware";
@@ -29,10 +30,10 @@ vehiclesRoutes.put(
   updateVehicleController
 );
 
-// vehiclesRoutes.delete(
-//   "/:vehicleId",
-//   ensureDataIsValidMiddleware(vehicleSchemaRequest),
-//   createVehicleController
-// );
+vehiclesRoutes.delete(
+  "/:vehicleId",
+  ensureVehicleExistsMiddleware,
+  deleteVehicleController
+);
 
 export default vehiclesRoutes;
