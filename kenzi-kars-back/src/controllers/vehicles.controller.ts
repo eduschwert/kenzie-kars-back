@@ -31,11 +31,29 @@ const retrieveVehicleController = async (
   return res.json(vehicleSchemaResponse.parse(vehicle));
 };
 
-const listVehiclesController = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  const vehicles = await listVehiclesService();
+const listVehiclesController = async (req: Request, res: Response) => {
+  let perPage: number = 10;
+  let page: number = 1;
+
+  if (typeof req.query.perPage === "string") {
+    const perPageQueryParam: string = req.query.perPage;
+    const perPageValue: number = parseInt(perPageQueryParam, 10);
+    if (!isNaN(perPageValue) && perPageValue >= 1 && perPageValue <= 10) {
+      perPage = perPageValue;
+    }
+  }
+
+  if (typeof req.query.page === "string") {
+    const pageQueryParam: string = req.query.page;
+    const pageValue: number = parseInt(pageQueryParam, 10);
+    if (!isNaN(pageValue) && pageValue >= 1) {
+      page = pageValue;
+    }
+  }
+
+  const baseUrl: string = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
+
+  const vehicles = await listVehiclesService(perPage, page, baseUrl);
 
   return res.json(vehicles);
 };
