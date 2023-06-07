@@ -42,14 +42,14 @@ class User {
   @Column({ type: "boolean" })
   is_seller: boolean;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: Date | string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: Date | string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: Date | string;
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

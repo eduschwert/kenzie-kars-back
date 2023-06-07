@@ -27,13 +27,13 @@ class Address {
   @Column({ type: "varchar", length: 50 })
   complement: string;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: Date | string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: Date | string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: Date | string;
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
 export { Address };
