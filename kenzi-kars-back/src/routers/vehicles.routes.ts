@@ -1,6 +1,9 @@
 import { Router } from "express";
 
-import { vehicleSchemaRequest } from "../schemas/vehicles.schema";
+import {
+  vehicleSchemaRequest,
+  vehicleSchemaUpdate,
+} from "../schemas/vehicles.schema";
 import {
   createVehicleController,
   deleteVehicleController,
@@ -33,7 +36,7 @@ vehiclesRoutes.get("", listVehiclesController);
 
 vehiclesRoutes.put(
   "/:vehicleId",
-  ensureDataIsValidMiddleware(vehicleSchemaRequest),
+  ensureDataIsValidMiddleware(vehicleSchemaUpdate),
   ensureVehicleExistsMiddleware,
   ensureVehicleAvailableMiddleware,
   verifyGoodBuyMiddleware,

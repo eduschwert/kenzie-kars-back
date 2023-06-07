@@ -34,7 +34,7 @@ const vehicleSchemaRequest = vehicleSchema.omit({
 });
 
 const vehicleSchemaUpdate = vehicleSchemaRequest.extend({
-  is_good_buy: z.boolean(),
+  is_active: z.boolean(),
 });
 
 const imageSchema = z.object({
