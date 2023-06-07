@@ -6,10 +6,7 @@ import {
   TVehicleWithFipe,
 } from "../../interfaces/vehicles.interfaces";
 import { Image, Vehicle } from "../../entities";
-import {
-  vehicleSchemaResponse,
-  vehicleSchemaUpdate,
-} from "../../schemas/vehicles.schema";
+import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
 
 const updateVehicleService = async (
   vehicleData: TVehicleWithFipe,

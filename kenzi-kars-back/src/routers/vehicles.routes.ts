@@ -4,6 +4,8 @@ import { vehicleSchemaRequest } from "../schemas/vehicles.schema";
 import {
   createVehicleController,
   deleteVehicleController,
+  listVehiclesController,
+  retrieveVehicleController,
   updateVehicleController,
 } from "../controllers/vehicles.controller";
 import ensureDataIsValidMiddleware from "../middlewares/ensureDataIsValid.middleware";
@@ -20,6 +22,14 @@ vehiclesRoutes.post(
   verifyGoodBuyMiddleware,
   createVehicleController
 );
+
+vehiclesRoutes.get(
+  "/:vehicleId",
+  ensureVehicleExistsMiddleware,
+  retrieveVehicleController
+);
+
+vehiclesRoutes.get("", listVehiclesController);
 
 vehiclesRoutes.put(
   "/:vehicleId",

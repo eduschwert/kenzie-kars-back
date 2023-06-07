@@ -8,6 +8,8 @@ import {
 import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import { Vehicle } from "../entities";
 import deleteVehicleService from "../services/vehicles/deleteVehicle.service";
+import { vehicleSchemaResponse } from "../schemas/vehicles.schema";
+import listVehiclesService from "../services/vehicles/listVehicles.service";
 
 const createVehicleController = async (
   req: Request,
@@ -17,7 +19,25 @@ const createVehicleController = async (
 
   const newVehicle: TVehicleResponse = await createVehicleService(vehicleData);
 
-  return res.json(newVehicle);
+  return res.status(201).json(newVehicle);
+};
+
+const retrieveVehicleController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const vehicle: Vehicle = res.locals.vehicle;
+
+  return res.json(vehicleSchemaResponse.parse(vehicle));
+};
+
+const listVehiclesController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const vehicles = await listVehiclesService();
+
+  return res.json(vehicles);
 };
 
 const updateVehicleController = async (
@@ -47,6 +67,8 @@ const deleteVehicleController = async (
 };
 
 export {
+  retrieveVehicleController,
+  listVehiclesController,
   createVehicleController,
   updateVehicleController,
   deleteVehicleController,

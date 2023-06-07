@@ -48,10 +48,15 @@ const vehicleSchemaResponse = vehicleSchema.extend({
   images: z.array(imageSchema).optional(),
 });
 
+const vehiclesSchemaResponse = vehicleSchema.extend({
+  images: z.array(vehicleSchemaResponse),
+});
+
 export {
   vehicleSchema,
   vehicleSchemaUpdate,
   vehicleSchemaRequest,
   vehicleSchemaResponse,
+  vehiclesSchemaResponse,
   imageSchema,
 };

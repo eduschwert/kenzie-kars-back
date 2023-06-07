@@ -18,10 +18,18 @@ const ensureVehicleExistsMiddleware = async (
     where: {
       id: vehicleId,
     },
+    relations: {
+      images: true,
+    },
   });
 
   if (!findVehicle) {
     throw new AppError("Vehicle not found", 404);
+  }
+
+  if (findVehicle) {
+    findVehicle.price = Number(findVehicle.price);
+    findVehicle.fipe_price = Number(findVehicle.fipe_price);
   }
 
   res.locals.vehicle = findVehicle;
