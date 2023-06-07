@@ -1,7 +1,10 @@
 import { Router } from "express";
 
 import { vehicleSchemaRequest } from "../schemas/vehicles.schema";
-import { createVehicleController } from "../controllers/vehicles.controller";
+import {
+  createVehicleController,
+  updateVehicleController,
+} from "../controllers/vehicles.controller";
 import ensureDataIsValidMiddleware from "../middlewares/ensureDataIsValid.middleware";
 import ensureVehicleExistsMiddleware from "../middlewares/ensureVehicleExists.middleware";
 import ensureVehicleAvailableMiddleware from "../middlewares/ensureVehicleAvailable.middleware";
@@ -17,13 +20,14 @@ vehiclesRoutes.post(
   createVehicleController
 );
 
-// vehiclesRoutes.put(
-//   "/:vehicleId",
-//   ensureDataIsValidMiddleware(vehicleSchemaRequest),
-//   ensureVehicleExistsMiddleware,
-//   ensureVehicleAvailableMiddleware,
-//   createVehicleController
-// );
+vehiclesRoutes.put(
+  "/:vehicleId",
+  ensureDataIsValidMiddleware(vehicleSchemaRequest),
+  ensureVehicleExistsMiddleware,
+  ensureVehicleAvailableMiddleware,
+  verifyGoodBuyMiddleware,
+  updateVehicleController
+);
 
 // vehiclesRoutes.delete(
 //   "/:vehicleId",

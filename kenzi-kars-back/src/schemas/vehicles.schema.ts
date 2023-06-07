@@ -11,6 +11,7 @@ const vehicleSchema = z.object({
   fipe_price: z.number(),
   price: z.number(),
   is_good_buy: z.boolean(),
+  is_active: z.boolean(),
   description: z.string(),
   cover_image: z.string().max(256),
   images: z
@@ -27,8 +28,13 @@ const vehicleSchemaRequest = vehicleSchema.omit({
   id: true,
   fipe_price: true,
   is_good_buy: true,
+  is_active: true,
   createdAt: true,
   updatedAt: true,
+});
+
+const vehicleSchemaUpdate = vehicleSchemaRequest.extend({
+  is_good_buy: z.boolean(),
 });
 
 const imageSchema = z.object({
@@ -44,6 +50,7 @@ const vehicleSchemaResponse = vehicleSchema.extend({
 
 export {
   vehicleSchema,
+  vehicleSchemaUpdate,
   vehicleSchemaRequest,
   vehicleSchemaResponse,
   imageSchema,
