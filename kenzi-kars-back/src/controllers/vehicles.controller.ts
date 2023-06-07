@@ -1,21 +1,23 @@
 import { Request, Response } from "express";
 
-import createVehicleService from "../services/vehicles/createVehicle.service";
 import {
+  TPaginationResult,
   TVehicleResponse,
-  TVehicleWithFipe,
+  TVehicleWithFipeRequest,
+  TVehicleWithFipeRequestUpdate,
 } from "../interfaces/vehicles.interfaces";
-import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import { Vehicle } from "../entities";
-import deleteVehicleService from "../services/vehicles/deleteVehicle.service";
 import { vehicleSchemaResponse } from "../schemas/vehicles.schema";
+import createVehicleService from "../services/vehicles/createVehicle.service";
+import deleteVehicleService from "../services/vehicles/deleteVehicle.service";
+import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import listVehiclesService from "../services/vehicles/listVehicles.service";
 
 const createVehicleController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const vehicleData: TVehicleWithFipe = req.body;
+  const vehicleData: TVehicleWithFipeRequest = req.body;
 
   const newVehicle: TVehicleResponse = await createVehicleService(vehicleData);
 
@@ -53,7 +55,11 @@ const listVehiclesController = async (req: Request, res: Response) => {
 
   const baseUrl: string = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
 
-  const vehicles = await listVehiclesService(perPage, page, baseUrl);
+  const vehicles: TPaginationResult = await listVehiclesService(
+    perPage,
+    page,
+    baseUrl
+  );
 
   return res.json(vehicles);
 };
@@ -62,7 +68,7 @@ const updateVehicleController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const vehicleData: TVehicleWithFipe = req.body;
+  const vehicleData: TVehicleWithFipeRequestUpdate = req.body;
   const vehicle: Vehicle = res.locals.vehicle;
 
   const updatedVehicle: TVehicleResponse = await updateVehicleService(

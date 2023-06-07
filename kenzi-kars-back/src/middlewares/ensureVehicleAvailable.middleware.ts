@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
 import {
   TVehicleRequest,
   TVehicleFipeApi,
+  TVehicleRequestUpdate,
 } from "../interfaces/vehicles.interfaces";
 import { api } from "../utils/axios";
 
@@ -12,7 +13,7 @@ const ensureVehicleAvailableMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const vehicleData: TVehicleRequest = req.body;
+  const vehicleData: TVehicleRequest | TVehicleRequestUpdate = req.body;
 
   const { data }: AxiosResponse<TVehicleFipeApi> = await api.get(
     `/cars/unique?brand=${vehicleData.brand}&name=${vehicleData.model}&year=${vehicleData.year}&fuel=${vehicleData.fuel}`

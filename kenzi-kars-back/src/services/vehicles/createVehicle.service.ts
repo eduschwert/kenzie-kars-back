@@ -4,13 +4,13 @@ import { Repository } from "typeorm";
 import {
   TImageResponse,
   TVehicleResponse,
-  TVehicleWithFipe,
+  TVehicleWithFipeRequest,
 } from "../../interfaces/vehicles.interfaces";
 import { Image, Vehicle } from "../../entities";
 import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
 
 const createVehicleService = async (
-  vehicleData: TVehicleWithFipe
+  vehicleData: TVehicleWithFipeRequest
 ): Promise<TVehicleResponse> => {
   const { images, ...vehicleDataWithoutImages } = vehicleData;
 

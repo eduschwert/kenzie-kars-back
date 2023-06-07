@@ -3,13 +3,13 @@ import { Equal, Repository } from "typeorm";
 
 import {
   TVehicleResponse,
-  TVehicleWithFipe,
+  TVehicleWithFipeRequestUpdate,
 } from "../../interfaces/vehicles.interfaces";
 import { Image, Vehicle } from "../../entities";
 import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
 
 const updateVehicleService = async (
-  vehicleData: TVehicleWithFipe,
+  vehicleData: TVehicleWithFipeRequestUpdate,
   existingVehicle: Vehicle
 ): Promise<TVehicleResponse> => {
   const { images, ...vehicleDataToUpdate } = vehicleData;
@@ -30,7 +30,6 @@ const updateVehicleService = async (
     const imageRepository: Repository<Image> =
       AppDataSource.getRepository(Image);
 
-    // Delete existing images associated with the vehicle
     await imageRepository.delete({ vehicle: Equal(updatedVehicle.id) });
 
     updatedImages = await Promise.all(

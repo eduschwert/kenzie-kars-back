@@ -1,8 +1,8 @@
 import "express-async-errors";
 import express, { Application } from "express";
-import handleErrorMiddleware from "./middlewares/handleErrors.middleware";
 import cors from "cors";
 
+import handleErrorMiddleware from "./middlewares/handleErrors.middleware";
 import vehiclesRoutes from "./routers/vehicles.routes";
 
 const app: Application = express();

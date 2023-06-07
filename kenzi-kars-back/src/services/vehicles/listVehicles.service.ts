@@ -1,12 +1,15 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../data-source";
+
 import { Vehicle } from "../../entities";
+import { TPaginationResult } from "../../interfaces/vehicles.interfaces";
+import { vehiclesSchemaResponse } from "../../schemas/vehicles.schema";
 
 const listVehiclesService = async (
   perPage: number,
   page: number,
   baseUrl: string
-): Promise<any> => {
+): Promise<TPaginationResult> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
@@ -26,6 +29,12 @@ const listVehiclesService = async (
     take: perPage,
   });
 
+  const parsedVehicles = vehicles.map((vehicle) => ({
+    ...vehicle,
+    fipe_price: Number(vehicle.fipe_price),
+    price: Number(vehicle.price),
+  }));
+
   const result = {
     count: totalCount,
     previousPage:
@@ -34,7 +43,7 @@ const listVehiclesService = async (
       page < totalPages
         ? `${baseUrl}?perPage=${perPage}&page=${page + 1}`
         : null,
-    data: vehicles,
+    data: vehiclesSchemaResponse.parse(parsedVehicles),
   };
 
   return result;

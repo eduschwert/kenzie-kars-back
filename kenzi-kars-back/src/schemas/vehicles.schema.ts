@@ -47,10 +47,7 @@ const imageSchema = z.object({
 const vehicleSchemaResponse = vehicleSchema.extend({
   images: z.array(imageSchema).optional(),
 });
-
-const vehiclesSchemaResponse = vehicleSchema.extend({
-  images: z.array(vehicleSchemaResponse),
-});
+const vehiclesSchemaResponse = z.array(vehicleSchemaResponse);
 
 export {
   vehicleSchema,
