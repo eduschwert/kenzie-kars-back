@@ -3,13 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Image, User } from ".";
-import { Comment } from "./comments.entity";
+import { Image, User, Comment } from ".";
 
 @Entity("vehicles")
 class Vehicle {
@@ -19,20 +17,17 @@ class Vehicle {
   @Column({ type: "varchar", length: 50 })
   brand: string;
 
+  @Column({ type: "varchar", length: 50 })
+  model: string;
+
   @Column({ type: "varchar", length: 4 })
   year: string;
 
-  @Column({ type: "varchar", length: 20 })
-  fuel: string;
+  @Column({ type: "integer" })
+  fuel: Number;
 
   @Column({ type: "integer" })
   mileage: number;
-
-  @Column({ type: "text" })
-  description: string;
-
-  @Column({ type: "decimal" })
-  price: number;
 
   @Column({ type: "varchar", length: 30 })
   color: string;
@@ -40,20 +35,26 @@ class Vehicle {
   @Column({ type: "decimal" })
   fipe_price: number;
 
+  @Column({ type: "decimal" })
+  price: number;
+
+  @Column({ type: "text" })
+  description: string;
+
   @Column({ type: "varchar", length: 256 })
   cover_image: string;
 
   @Column({ default: true, type: "boolean" })
   is_active: boolean;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: Date | string;
+  @Column({ type: "boolean" })
+  is_good_buy: boolean;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: Date | string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: Date | string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.vehicles)
   seller: User;

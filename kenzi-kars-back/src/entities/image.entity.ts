@@ -3,8 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
-  UpdateDateColumn,
   ManyToOne,
 } from "typeorm";
 import { Vehicle } from ".";
@@ -20,16 +18,10 @@ class Image {
   @Column({ type: "integer" })
   image_number: number;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: Date | string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: Date | string;
-
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: Date | string;
-
-  @ManyToOne(() => Vehicle)
+  @ManyToOne(() => Vehicle, { onDelete: "CASCADE" })
   vehicle: Vehicle;
 }
 export { Image };

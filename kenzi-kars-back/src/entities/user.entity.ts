@@ -10,10 +10,8 @@ import {
   BeforeUpdate,
   OneToOne,
 } from "typeorm";
-
 import { getRounds, hashSync } from "bcryptjs";
-import { Address, Vehicle } from ".";
-import { Comment } from "./comments.entity";
+import { Address, Vehicle, Comment } from ".";
 
 @Entity("users")
 class User {
@@ -44,14 +42,14 @@ class User {
   @Column({ type: "boolean" })
   is_seller: boolean;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: Date | string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: Date | string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: Date | string;
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

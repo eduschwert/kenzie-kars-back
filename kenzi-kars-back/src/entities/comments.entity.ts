@@ -7,8 +7,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from "typeorm";
-import { Vehicle } from "./vehicle.entity";
-import { User } from "./user.entity";
+import { Vehicle, User } from ".";
 
 @Entity("comments")
 class Comment {
@@ -18,14 +17,14 @@ class Comment {
   @Column({ type: "text" })
   content: string;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: Date | string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: Date | string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: Date | string;
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne(() => User, (user) => user.comments)
   owner: User;
