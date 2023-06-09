@@ -34,7 +34,7 @@ class User {
   phone: string;
 
   @Column({ type: "date" })
-  bithdate: Date | string;
+  birthdate: Date | string;
 
   @Column({ type: "text" })
   description: string;
@@ -42,14 +42,14 @@ class User {
   @Column({ type: "boolean" })
   is_seller: boolean;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @CreateDateColumn({ type: "date" })
+  createdAt: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @UpdateDateColumn({ type: "date" })
+  updatedAt: string;
 
-  @DeleteDateColumn()
-  deletedAt: Date;
+  @DeleteDateColumn({ type: "date" })
+  deletedAt: string;
 
   @BeforeInsert()
   @BeforeUpdate()
