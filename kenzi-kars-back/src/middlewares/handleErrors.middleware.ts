@@ -18,16 +18,14 @@ const handleErrorMiddleware = (
   }
 
   if (error instanceof AxiosError) {
-    return res
-      .status(400)
-      .json({
-        message:
-          "The specified car model is not available in the internal car database.",
-      });
+    return res.status(400).json({
+      message:
+        "The specified car model is not available in the internal car database.",
+    });
   }
 
   console.error(error);
-  return res.status(500).json({ message: "Internal server error" });
+  return res.status(500).json({ message: error.message });
 };
 
 export default handleErrorMiddleware;

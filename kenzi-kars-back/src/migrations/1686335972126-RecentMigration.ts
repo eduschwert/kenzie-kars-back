@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitialMigration1686099768719 implements MigrationInterface {
-    name = 'InitialMigration1686099768719'
+export class RecentMigration1686335972126 implements MigrationInterface {
+    name = 'RecentMigration1686335972126'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(100) NOT NULL, "email" character varying(50) NOT NULL, "password" character varying(120) NOT NULL, "cpf" character varying(14) NOT NULL, "phone" character varying(16) NOT NULL, "birthdate" date NOT NULL, "description" text NOT NULL, "is_seller" boolean NOT NULL, "createdAt" date NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "addresses" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "cep" character varying(9) NOT NULL, "state" character varying(2) NOT NULL, "city" character varying(50) NOT NULL, "street_number" character varying(50) NOT NULL, "complement" character varying(50) NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "PK_745d8f43d3af10ab8247465e450" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(100) NOT NULL, "email" character varying(50) NOT NULL, "password" character varying(120) NOT NULL, "cpf" character varying(14) NOT NULL, "phone" character varying(16) NOT NULL, "bithdate" date NOT NULL, "description" text NOT NULL, "is_seller" boolean NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "vehicles" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "brand" character varying(50) NOT NULL, "model" character varying(50) NOT NULL, "year" character varying(4) NOT NULL, "fuel" integer NOT NULL, "mileage" integer NOT NULL, "color" character varying(30) NOT NULL, "fipe_price" numeric NOT NULL, "price" numeric NOT NULL, "description" text NOT NULL, "cover_image" character varying(256) NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "is_good_buy" boolean NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "sellerId" uuid, CONSTRAINT "PK_18d8646b59304dce4af3a9e35b6" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "comments" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "content" text NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "ownerId" uuid, "vehicleId" uuid, CONSTRAINT "PK_8bf68bc960f2b69e818bdb90dcb" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "images" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "image_url" character varying(256) NOT NULL, "image_number" integer NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "vehicleId" uuid, CONSTRAINT "PK_1fe148074c6a1a91b63cb9ee3c9" PRIMARY KEY ("id"))`);
@@ -23,8 +23,8 @@ export class InitialMigration1686099768719 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "images"`);
         await queryRunner.query(`DROP TABLE "comments"`);
         await queryRunner.query(`DROP TABLE "vehicles"`);
-        await queryRunner.query(`DROP TABLE "users"`);
         await queryRunner.query(`DROP TABLE "addresses"`);
+        await queryRunner.query(`DROP TABLE "users"`);
     }
 
 }
