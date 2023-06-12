@@ -20,6 +20,7 @@ const ensureVehicleExistsMiddleware = async (
     },
     relations: {
       images: true,
+      seller: true,
     },
   });
 

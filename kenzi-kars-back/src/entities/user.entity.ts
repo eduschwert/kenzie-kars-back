@@ -39,7 +39,7 @@ class User {
   @Column({ type: "text" })
   description: string;
 
-  @Column({ type: "boolean" })
+  @Column({ type: "boolean", default: false })
   is_seller: boolean;
 
   @CreateDateColumn({ type: "date" })

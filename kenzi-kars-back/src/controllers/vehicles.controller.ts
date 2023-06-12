@@ -12,14 +12,19 @@ import createVehicleService from "../services/vehicles/createVehicle.service";
 import deleteVehicleService from "../services/vehicles/deleteVehicle.service";
 import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import listVehiclesService from "../services/vehicles/listVehicles.service";
+import listUserVehiclesService from "../services/users/listUserVehicles.service";
 
 const createVehicleController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   const vehicleData: TVehicleWithFipeRequest = req.body;
+  const userId = res.locals.userId;
 
-  const newVehicle: TVehicleResponse = await createVehicleService(vehicleData);
+  const newVehicle: TVehicleResponse = await createVehicleService(
+    vehicleData,
+    userId
+  );
 
   return res.status(201).json(newVehicle);
 };
