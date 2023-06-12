@@ -5,7 +5,8 @@ const addressSchema = z.object({
   state: z.string().max(2),
   city: z.string().max(50),
   street_number: z.string().max(50),
-  complement: z.string().max(50),
+  complement: z.string().max(50).optional().nullable(),
+  street_name: z.string().max(50),
 });
 
 export const returnAddressSchema = addressSchema.extend({
@@ -21,7 +22,7 @@ export const userSchema = z.object({
   phone: z.string().max(16),
   birthdate: z.string().or(z.date()),
   description: z.string(),
-  is_seller: z.boolean(),
+  is_seller: z.boolean().optional().default(false),
   address: addressSchema,
 });
 

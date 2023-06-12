@@ -25,7 +25,10 @@ class Address {
   street_number: string;
 
   @Column({ type: "varchar", length: 50 })
-  complement: string;
+  street_name: string;
+
+  @Column({ type: "varchar", length: 50, nullable: true })
+  complement?: string | null;
 
   @CreateDateColumn({ type: "date" })
   createdAt: string;
