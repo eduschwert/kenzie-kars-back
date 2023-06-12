@@ -15,8 +15,20 @@ import ensureDataIsValidMiddleware from "../middlewares/ensureDataIsValid.middle
 import ensureVehicleExistsMiddleware from "../middlewares/ensureVehicleExists.middleware";
 import ensureVehicleAvailableMiddleware from "../middlewares/ensureVehicleAvailable.middleware";
 import verifyGoodBuyMiddleware from "../middlewares/verifyGoodBuy.middleware";
+import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
+import { ensureVehicleOwnerMiddleware } from "../middlewares/ensureVehicleOwner.middleware copy";
 
 const vehiclesRoutes = Router();
+
+vehiclesRoutes.get("", listVehiclesController);
+
+vehiclesRoutes.get(
+  "/:vehicleId",
+  ensureVehicleExistsMiddleware,
+  retrieveVehicleController
+);
+
+vehiclesRoutes.use(checkTokenMiddleware);
 
 vehiclesRoutes.post(
   "",
@@ -26,19 +38,12 @@ vehiclesRoutes.post(
   createVehicleController
 );
 
-vehiclesRoutes.get(
-  "/:vehicleId",
-  ensureVehicleExistsMiddleware,
-  retrieveVehicleController
-);
-
-vehiclesRoutes.get("", listVehiclesController);
-
 vehiclesRoutes.put(
   "/:vehicleId",
   ensureDataIsValidMiddleware(vehicleSchemaUpdate),
   ensureVehicleExistsMiddleware,
   ensureVehicleAvailableMiddleware,
+  ensureVehicleOwnerMiddleware,
   verifyGoodBuyMiddleware,
   updateVehicleController
 );
@@ -46,6 +51,7 @@ vehiclesRoutes.put(
 vehiclesRoutes.delete(
   "/:vehicleId",
   ensureVehicleExistsMiddleware,
+  ensureVehicleOwnerMiddleware,
   deleteVehicleController
 );
 

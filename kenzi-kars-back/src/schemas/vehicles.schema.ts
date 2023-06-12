@@ -1,4 +1,8 @@
 import { z } from "zod";
+import {
+  returnUserSchemaNoPassword,
+  returnUserSchemaVehicle,
+} from "./user.schema";
 
 const vehicleSchema = z.object({
   id: z.string().uuid(),
@@ -46,6 +50,7 @@ const imageSchema = z.object({
 
 const vehicleSchemaResponse = vehicleSchema.extend({
   images: z.array(imageSchema).optional(),
+  seller: returnUserSchemaVehicle,
 });
 const vehiclesSchemaResponse = z.array(vehicleSchemaResponse);
 
