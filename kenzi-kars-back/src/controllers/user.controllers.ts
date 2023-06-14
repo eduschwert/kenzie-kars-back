@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { IUser, INewUser } from "../interfaces/user.interfaces";
+import { IUser, INewUser, IGetUser } from "../interfaces/user.interfaces";
 import { createUserService } from "../services/users/createUser.service";
 import listUserVehiclesService from "../services/users/listUserVehicles.service";
+import { getUserService } from "../services/users/getUser.service";
 
 export const createNewUserController = async (req: Request, res: Response) => {
   const userData: IUser = req.body;
@@ -9,6 +10,12 @@ export const createNewUserController = async (req: Request, res: Response) => {
   const newUser: INewUser = await createUserService(userData);
 
   return res.status(201).json(newUser);
+};
+
+export const getUserController = async (req: Request, res: Response) => {
+  const userId = res.locals.userId;
+  const user: IGetUser = await getUserService(userId);
+  return res.status(200).json(user);
 };
 
 export const getAllUserVehiclesController = async (
