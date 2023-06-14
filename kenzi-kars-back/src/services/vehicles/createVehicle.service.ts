@@ -9,10 +9,7 @@ import {
 import { Image, User, Vehicle } from "../../entities";
 import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
 import AppError from "../../errors/app.errors";
-import {
-  returnUserSchemaNoPassword,
-  returnUserSchemaVehicle,
-} from "../../schemas/user.schema";
+
 
 const createVehicleService = async (
   vehicleData: TVehicleWithFipeRequest,

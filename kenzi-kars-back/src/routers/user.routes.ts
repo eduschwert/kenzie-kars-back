@@ -5,6 +5,7 @@ import { checkValidUserMiddleware } from "../middlewares/checlValidUserMiddlewar
 import {
   createNewUserController,
   getAllUserVehiclesController,
+  getUserController,
 } from "../controllers/user.controllers";
 import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
 
@@ -17,4 +18,6 @@ userRoutes.post(
   createNewUserController
 );
 userRoutes.use(checkTokenMiddleware);
+userRoutes.get("", getUserController);
+
 userRoutes.get("/user_vehicles", getAllUserVehiclesController);
