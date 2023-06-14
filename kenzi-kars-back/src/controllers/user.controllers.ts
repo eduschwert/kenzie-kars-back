@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser, INewUser } from "../interfaces/user.interfaces";
+import { IUser, INewUser, IGetUser } from "../interfaces/user.interfaces";
 import { createUserService } from "../services/users/createUser.service";
 import listUserVehiclesService from "../services/users/listUserVehicles.service";
 import { getUserService } from "../services/users/getUser.service";
@@ -14,8 +14,7 @@ export const createNewUserController = async (req: Request, res: Response) => {
 
 export const getUserController = async (req: Request, res: Response) => {
   const userId = res.locals.userId;
-  const user: INewUser = await getUserService(userId);
-
+  const user: IGetUser = await getUserService(userId);
   return res.status(200).json(user);
 };
 
