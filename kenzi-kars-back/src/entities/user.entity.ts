@@ -9,6 +9,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   OneToOne,
+  JoinColumn,
 } from "typeorm";
 import { getRounds, hashSync } from "bcryptjs";
 import { Address, Vehicle, Comment } from ".";
@@ -63,7 +64,8 @@ class User {
   @OneToMany(() => Vehicle, (vehicle) => vehicle.seller)
   vehicles: Vehicle[];
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, (address) => address.seller, { cascade: true })
+  @JoinColumn()
   address: Address;
 
   @OneToMany(() => Comment, (comment) => comment.owner)

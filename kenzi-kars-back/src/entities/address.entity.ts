@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from "typeorm";
+import { User } from ".";
 
 @Entity("addresses")
 class Address {
@@ -29,6 +31,9 @@ class Address {
 
   @Column({ type: "varchar", length: 50, default: "no complement" })
   complement: string;
+
+  @OneToOne(() => User, (user) => user.address)
+  seller: User;
 
   @CreateDateColumn({ type: "date" })
   createdAt: string;
