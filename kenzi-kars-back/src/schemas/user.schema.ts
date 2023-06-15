@@ -35,3 +35,7 @@ export const returnUserSchemaNoPassword = userSchema
   .omit({
     password: true,
   });
+
+export const returnUserSchemaVehicle = returnUserSchemaNoPassword.omit({
+  address: true,
+});
