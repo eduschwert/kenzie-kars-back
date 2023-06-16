@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const addressSchema = z.object({
+export const addressSchema = z.object({
   cep: z.string().max(9),
   state: z.string().max(2),
   city: z.string().max(50),
@@ -35,6 +35,8 @@ export const returnUserSchemaNoPassword = userSchema
   .omit({
     password: true,
   });
+
+export const userUpdateSchema = userSchema.partial();
 
 export const returnUserSchemaVehicle = returnUserSchemaNoPassword.omit({
   address: true,
