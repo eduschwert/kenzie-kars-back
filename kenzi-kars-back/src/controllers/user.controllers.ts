@@ -1,8 +1,15 @@
 import { Request, Response } from "express";
-import { IUser, INewUser, IGetUser } from "../interfaces/user.interfaces";
+import {
+  IUser,
+  INewUser,
+  IGetUser,
+  IUpdateUser,
+} from "../interfaces/user.interfaces";
 import { createUserService } from "../services/users/createUser.service";
 import listUserVehiclesService from "../services/users/listUserVehicles.service";
 import { getUserService } from "../services/users/getUser.service";
+import { updateUserService } from "../services/users/updateUser.service";
+import deleteUserService from "../services/users/deleteUser.service";
 
 export const createNewUserController = async (req: Request, res: Response) => {
   const userData: IUser = req.body;
@@ -52,4 +59,18 @@ export const getAllUserVehiclesController = async (
   );
 
   return res.status(200).json(allVehicles);
+};
+
+export const updateUserController = async (req: Request, res: Response) => {
+  const userUpdateData: IUpdateUser = req.body;
+  const userId: string = res.locals.id;
+  const updatedUser: INewUser = await updateUserService(userUpdateData, userId);
+
+  return res.status(200).json(updatedUser);
+};
+
+export const deleteUserController = async (req: Request, res: Response) => {
+  const userId: string = res.locals.id;
+  await deleteUserService(userId);
+  return res.status(204).json();
 };

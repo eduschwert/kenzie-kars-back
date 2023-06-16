@@ -26,10 +26,12 @@ class Comment {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: "CASCADE" })
   owner: User;
 
-  @ManyToOne(() => Vehicle, (vehicle) => vehicle.comments)
+  @ManyToOne(() => Vehicle, (vehicle) => vehicle.comments, {
+    onDelete: "CASCADE",
+  })
   vehicle: Vehicle;
 }
 export { Comment };
