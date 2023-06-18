@@ -1,4 +1,10 @@
-import { Repository } from "typeorm";
+import {
+  Repository,
+  Between,
+  ILike,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+} from "typeorm";
 import { AppDataSource } from "../../data-source";
 
 import { Vehicle } from "../../entities";
@@ -8,25 +14,71 @@ import { vehiclesSchemaResponse } from "../../schemas/vehicles.schema";
 const listVehiclesService = async (
   perPage: number,
   page: number,
+  brand: string | undefined,
+  model: string | undefined,
+  color: string | undefined,
+  year: string | undefined,
+  fuel: number | undefined,
+  minMileage: number | undefined,
+  maxMileage: number | undefined,
+  minPrice: number | undefined,
+  maxPrice: number | undefined,
+  orderBy: "price" | "year" | "mileage" | undefined,
   baseUrl: string
 ): Promise<TPaginationResult> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
-  const totalCount: number = await vehicleRepository.count();
+  let whereCondition: any = {
+    is_active: true,
+  };
 
-  const totalPages: number = Math.ceil(totalCount / perPage);
-  const startIndex: number = (page - 1) * perPage;
+  if (brand) {
+    whereCondition.brand = ILike(`%${brand}%`);
+  }
 
-  const vehicles = await vehicleRepository.find({
+  if (model) {
+    whereCondition.model = ILike(`%${model}%`);
+  }
+
+  if (color) {
+    whereCondition.color = ILike(`%${color}%`);
+  }
+
+  if (year) {
+    whereCondition.year = year;
+  }
+
+  if (fuel) {
+    whereCondition.fuel = fuel;
+  }
+
+  if (minMileage && maxMileage) {
+    whereCondition.mileage = Between(minMileage, maxMileage);
+  } else if (minMileage) {
+    whereCondition.mileage = MoreThanOrEqual(minMileage);
+  } else if (maxMileage) {
+    whereCondition.mileage = LessThanOrEqual(maxMileage);
+  }
+
+  if (minPrice && maxPrice) {
+    whereCondition.price = Between(minPrice, maxPrice);
+  } else if (minPrice) {
+    whereCondition.price = MoreThanOrEqual(minPrice);
+  } else if (maxPrice) {
+    whereCondition.price = LessThanOrEqual(maxPrice);
+  }
+
+  whereCondition.is_active = true;
+
+  const [vehicles, totalCount] = await vehicleRepository.findAndCount({
     relations: {
       images: true,
     },
-    where: {
-      is_active: true,
-    },
-    skip: startIndex,
+    where: whereCondition,
+    skip: (page - 1) * perPage,
     take: perPage,
+    order: orderBy ? { [orderBy]: "ASC" } : {},
   });
 
   const parsedVehicles = vehicles.map((vehicle) => ({
@@ -34,6 +86,8 @@ const listVehiclesService = async (
     fipe_price: Number(vehicle.fipe_price),
     price: Number(vehicle.price),
   }));
+
+  const totalPages: number = Math.ceil(totalCount / perPage);
 
   const result = {
     count: totalCount,
