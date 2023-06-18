@@ -50,9 +50,14 @@ const imageSchema = z.object({
 
 const vehicleSchemaResponse = vehicleSchema.extend({
   images: z.array(imageSchema).optional(),
+});
+const vehicleWithUserSchemaResponse = vehicleSchema.extend({
+  images: z.array(imageSchema).optional(),
   seller: returnUserSchemaVehicle,
 });
+
 const vehiclesSchemaResponse = z.array(vehicleSchemaResponse);
+const vehiclesWithUserSchemaResponse = z.array(vehicleWithUserSchemaResponse);
 
 export {
   vehicleSchema,
@@ -60,5 +65,6 @@ export {
   vehicleSchemaRequest,
   vehicleSchemaResponse,
   vehiclesSchemaResponse,
+  vehiclesWithUserSchemaResponse,
   imageSchema,
 };
