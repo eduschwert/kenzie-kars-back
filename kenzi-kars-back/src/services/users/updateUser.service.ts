@@ -15,7 +15,7 @@ export const updateUserService = async (
 
   console.log("USEERID UPDATE", userId);
   const oldAddress = await adressRepository.findOneBy({
-    seller: { id: userId },
+    user: { id: userId },
   });
 
   const findUSer: User | null = await userRepository.findOne({

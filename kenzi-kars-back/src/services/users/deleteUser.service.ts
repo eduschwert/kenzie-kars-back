@@ -15,16 +15,7 @@ const deleteUserService = async (userId: string): Promise<void> => {
     },
   });
 
-  if (findUser) {
-    const findUserAddress: Address | null = await adressRepository.findOneBy({
-      seller: { id: userId },
-    });
-
-    if (findUserAddress) {
-      await adressRepository.remove(findUserAddress);
-      await userRepository.remove(findUser);
-    }
-  }
+  await userRepository.remove(findUser!);
 };
 
 export default deleteUserService;

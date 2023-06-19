@@ -38,67 +38,38 @@ const retrieveVehicleController = async (
 };
 
 const listVehiclesController = async (req: Request, res: Response) => {
-  let perPage: number = 10;
-  let page: number = 1;
+  let page: number = parseInt(req.query.page as string, 10);
+  page = !Number.isNaN(page) && page > 0 && page <= 10 ? page : 1;
 
-  if (typeof req.query.perPage === "string") {
-    const perPageQueryParam: string = req.query.perPage;
-    const perPageValue: number = parseInt(perPageQueryParam, 10);
-    if (!isNaN(perPageValue) && perPageValue >= 1 && perPageValue <= 10) {
-      perPage = perPageValue;
-    }
-  }
+  let perPage: number = parseInt(req.query.perPage as string, 10);
+  perPage =
+    !Number.isNaN(perPage) && perPage > 0 && perPage <= 10 ? perPage : 10;
 
-  if (typeof req.query.page === "string") {
-    const pageQueryParam: string = req.query.page;
-    const pageValue: number = parseInt(pageQueryParam, 10);
-    if (!isNaN(pageValue) && pageValue >= 1) {
-      page = pageValue;
-    }
-  }
+  const brand: string | undefined = req.query.brand as string | undefined;
+  const model: string | undefined = req.query.model as string | undefined;
+  const color: string | undefined = req.query.color as string | undefined;
+  const year: string | undefined = req.query.year as string | undefined;
 
-  let brand: string | undefined = req.query.brand as string | undefined;
-  let model: string | undefined = req.query.model as string | undefined;
-  let color: string | undefined = req.query.color as string | undefined;
-  let year: string | undefined = req.query.year as string | undefined;
+  let fuel: number | undefined = parseInt(req.query.fuel as string, 10);
+  fuel = !Number.isNaN(fuel) && fuel > 0 && fuel <= 3 ? fuel : undefined;
 
-  let fuel: number | undefined = req.query.fuel
-    ? parseInt(req.query.fuel as string, 10)
-    : undefined;
-  if (Number.isNaN(fuel)) {
-    fuel = undefined;
-  }
-  if (fuel !== undefined) {
-    fuel = fuel > 0 && fuel < 4 ? fuel : undefined;
-  }
+  let minMileage: number | undefined = parseInt(
+    req.query.minMileage as string,
+    10
+  );
+  minMileage = !Number.isNaN(minMileage) ? minMileage : undefined;
 
-  let minMileage: number | undefined = req.query.minMileage
-    ? parseInt(req.query.minMileage as string, 10)
-    : undefined;
-  if (Number.isNaN(minMileage)) {
-    minMileage = undefined;
-  }
+  let maxMileage: number | undefined = parseInt(
+    req.query.maxMileage as string,
+    10
+  );
+  maxMileage = !Number.isNaN(maxMileage) ? maxMileage : undefined;
 
-  let maxMileage: number | undefined = req.query.maxMileage
-    ? parseInt(req.query.maxMileage as string, 10)
-    : undefined;
-  if (Number.isNaN(maxMileage)) {
-    maxMileage = undefined;
-  }
+  let minPrice: number | undefined = parseInt(req.query.minPrice as string, 10);
+  minPrice = !Number.isNaN(minPrice) ? minPrice : undefined;
 
-  let minPrice: number | undefined = req.query.minPrice
-    ? parseInt(req.query.minPrice as string, 10)
-    : undefined;
-  if (Number.isNaN(minPrice)) {
-    minPrice = undefined;
-  }
-
-  let maxPrice: number | undefined = req.query.maxPrice
-    ? parseInt(req.query.maxPrice as string, 10)
-    : undefined;
-  if (Number.isNaN(maxPrice)) {
-    maxPrice = undefined;
-  }
+  let maxPrice: number | undefined = parseInt(req.query.maxPrice as string, 10);
+  maxPrice = !Number.isNaN(maxPrice) ? maxPrice : undefined;
 
   let orderBy: "price" | "year" | "mileage" | undefined;
 

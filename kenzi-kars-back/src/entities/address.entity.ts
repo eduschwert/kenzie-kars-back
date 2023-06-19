@@ -6,6 +6,7 @@ import {
   DeleteDateColumn,
   UpdateDateColumn,
   OneToOne,
+  JoinColumn,
 } from "typeorm";
 import { User } from ".";
 
@@ -32,9 +33,6 @@ class Address {
   @Column({ type: "varchar", length: 50, default: "no complement" })
   complement: string;
 
-  @OneToOne(() => User, (user) => user.address)
-  seller: User;
-
   @CreateDateColumn({ type: "date" })
   createdAt: string;
 
@@ -43,5 +41,9 @@ class Address {
 
   @DeleteDateColumn({ type: "date" })
   deletedAt: string;
+
+  @OneToOne(() => User, (user) => user.address, { onDelete: "CASCADE" })
+  @JoinColumn()
+  user: User;
 }
 export { Address };

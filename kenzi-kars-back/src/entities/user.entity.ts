@@ -64,8 +64,7 @@ class User {
   @OneToMany(() => Vehicle, (vehicle) => vehicle.seller)
   vehicles: Vehicle[];
 
-  @OneToOne(() => Address, (address) => address.seller, { onDelete: "CASCADE" })
-  @JoinColumn()
+  @OneToOne(() => Address, (address) => address.user)
   address: Address;
 
   @OneToMany(() => Comment, (comment) => comment.owner)
