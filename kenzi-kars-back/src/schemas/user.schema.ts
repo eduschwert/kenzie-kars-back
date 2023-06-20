@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const addressSchema = z.object({
   cep: z.string().max(9),
@@ -24,6 +24,7 @@ export const userSchema = z.object({
   description: z.string(),
   is_seller: z.boolean().optional().default(false),
   address: addressSchema,
+  tokenResetPassword: z.string(),
 });
 
 export const returnUserSchemaNoPassword = userSchema
@@ -34,10 +35,17 @@ export const returnUserSchemaNoPassword = userSchema
   })
   .omit({
     password: true,
+    tokenResetPassword: true,
   });
 
 export const userUpdateSchema = userSchema.partial();
 
 export const returnUserSchemaVehicle = returnUserSchemaNoPassword.omit({
   address: true,
+});
+
+export const emailRequest = z.object({
+  to: z.string(),
+  subject: z.string(),
+  text: z.string(),
 });

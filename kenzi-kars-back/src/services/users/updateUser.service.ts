@@ -4,6 +4,8 @@ import { User } from "../../entities/user.entity";
 import { Repository } from "typeorm";
 import { returnUserSchemaNoPassword } from "../../schemas/user.schema";
 import { Address } from "../../entities";
+import AppError from "../../errors/app.errors";
+import { hashSync } from "bcryptjs";
 
 export const updateUserService = async (
   userData: IUpdateUser,
@@ -13,7 +15,6 @@ export const updateUserService = async (
   const adressRepository: Repository<Address> =
     AppDataSource.getRepository(Address);
 
-  console.log("USEERID UPDATE", userId);
   const oldAddress = await adressRepository.findOneBy({
     user: { id: userId },
   });
@@ -29,16 +30,38 @@ export const updateUserService = async (
   await adressRepository.save(mergeAddress);
 
   const mergedUser = { ...findUSer, ...userData };
-  console.log(mergedUser);
 
   const updatedUser = userRepository.create({
     ...mergedUser,
     address: mergeAddress,
   });
 
-  console.log("****************** MERGED ADDRESS", mergeAddress);
-
   await userRepository.save(updatedUser);
 
   return returnUserSchemaNoPassword.parse(updatedUser);
+};
+
+export const resetPassword = async (
+  password: string,
+  tokenResetPassword: string
+) => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+
+  const user = await userRepository.find({
+    where: {
+      tokenResetPassword: tokenResetPassword,
+    },
+  });
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  await userRepository.update(
+    { id: user[0].id },
+    {
+      password: hashSync(password, 10),
+      tokenResetPassword: null,
+    }
+  );
 };

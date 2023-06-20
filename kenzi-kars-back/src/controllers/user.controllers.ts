@@ -8,8 +8,12 @@ import {
 import { createUserService } from "../services/users/createUser.service";
 import listUserVehiclesService from "../services/users/listUserVehicles.service";
 import { getUserService } from "../services/users/getUser.service";
-import { updateUserService } from "../services/users/updateUser.service";
+import {
+  resetPassword,
+  updateUserService,
+} from "../services/users/updateUser.service";
 import deleteUserService from "../services/users/deleteUser.service";
+import { sendEmailResetPassword } from "../services/users/sendEmail.service";
 
 export const createNewUserController = async (req: Request, res: Response) => {
   const userData: IUser = req.body;
@@ -73,4 +77,24 @@ export const deleteUserController = async (req: Request, res: Response) => {
   const userId: string = res.locals.id;
   await deleteUserService(userId);
   return res.status(204).json();
+};
+
+export const sendEmailPasswordResetController = async (
+  req: Request,
+  res: Response
+) => {
+  const { email } = req.body;
+  console.log(email);
+
+  await sendEmailResetPassword(email);
+
+  return res.json({ message: "Token sent to email" });
+};
+
+export const resetPasswordController = async (req: Request, res: Response) => {
+  const { password, tokenResetPassword } = req.body;
+
+  await resetPassword(password, tokenResetPassword);
+
+  return res.json({ message: "password change with success" });
 };

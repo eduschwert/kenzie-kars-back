@@ -7,6 +7,8 @@ import {
   deleteUserController,
   getAllUserVehiclesController,
   getUserController,
+  resetPasswordController,
+  sendEmailPasswordResetController,
   updateUserController,
 } from "../controllers/user.controllers";
 import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
@@ -20,9 +22,14 @@ userRoutes.post(
   checkValidUserMiddleware,
   createNewUserController
 );
+userRoutes.post("/sendToken", sendEmailPasswordResetController);
+userRoutes.post("/resetPassword", resetPasswordController);
 
 userRoutes.use(checkTokenMiddleware);
+
+userRoutes.get("/user_vehicles", getAllUserVehiclesController);
 userRoutes.get("", getUserController);
+
 userRoutes.patch(
   "",
   ensureDataIsValidMiddleware(userUpdateSchema),
@@ -30,5 +37,3 @@ userRoutes.patch(
   updateUserController
 );
 userRoutes.delete("", deleteUserController);
-
-userRoutes.get("/user_vehicles", getAllUserVehiclesController);
