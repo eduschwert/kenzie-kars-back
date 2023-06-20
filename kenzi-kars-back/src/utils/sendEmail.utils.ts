@@ -4,7 +4,7 @@ import AppError from "../errors/app.errors";
 import Mailgen from "mailgen";
 
 class EmailService {
-  sendEmailService = async ({ to, subject, text }: IEmailRequest) => {
+  sendEmail = async ({ to, subject, text }: IEmailRequest) => {
     const transporter = createTransport({
       host: "smt.gmail.com",
       auth: {
@@ -15,7 +15,7 @@ class EmailService {
 
     await transporter
       .sendMail({
-        from: "dougscene@gmail.com",
+        from: "envioemail678@gmail.com",
         to,
         subject,
         html: text,
@@ -24,7 +24,6 @@ class EmailService {
         console.log("Email send with sucess");
       })
       .catch((err) => {
-        console.log(err);
         throw new AppError("Error sending email, try again later", 500);
       });
   };

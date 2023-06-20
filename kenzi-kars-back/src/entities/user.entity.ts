@@ -44,7 +44,7 @@ class User {
   is_seller: boolean;
 
   @Column({ type: "text", default: null })
-  tokenResetPassword: string;
+  tokenResetPassword: string | null;
 
   @CreateDateColumn({ type: "date" })
   createdAt: string;
@@ -67,7 +67,7 @@ class User {
   @OneToMany(() => Vehicle, (vehicle) => vehicle.seller)
   vehicles: Vehicle[];
 
-  @OneToOne(() => Address, (address) => address.seller, { cascade: true })
+  @OneToOne(() => Address, (address) => address.seller, { onDelete: "CASCADE" })
   @JoinColumn()
   address: Address;
 

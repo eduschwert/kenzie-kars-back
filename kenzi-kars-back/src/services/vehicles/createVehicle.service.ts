@@ -10,7 +10,6 @@ import { Image, User, Vehicle } from "../../entities";
 import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
 import AppError from "../../errors/app.errors";
 
-
 const createVehicleService = async (
   vehicleData: TVehicleWithFipeRequest,
   userId: string
@@ -24,7 +23,6 @@ const createVehicleService = async (
   if (!findUser) {
     throw new AppError("User not found", 404);
   }
-  console.log(findUser);
 
   const { images, ...vehicleDataWithoutImages } = vehicleData;
 

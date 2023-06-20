@@ -3,7 +3,7 @@ import { AppDataSource } from "../../data-source";
 
 import { Vehicle } from "../../entities";
 import { TPaginationResult } from "../../interfaces/vehicles.interfaces";
-import { vehiclesSchemaResponse } from "../../schemas/vehicles.schema";
+import { vehiclesWithUserSchemaResponse } from "../../schemas/vehicles.schema";
 
 const listUserVehiclesService = async (
   userId: string,
@@ -50,7 +50,7 @@ const listUserVehiclesService = async (
       page < totalPages
         ? `${baseUrl}?perPage=${perPage}&page=${page + 1}`
         : null,
-    data: vehiclesSchemaResponse.parse(parsedVehicles),
+    data: vehiclesWithUserSchemaResponse.parse(parsedVehicles),
   };
 
   return result;
