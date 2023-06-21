@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../data-source";
-import { Vehicle } from "../entities";
-import AppError from "../errors/app.errors";
+import { AppDataSource } from "../../data-source";
+import { Vehicle } from "../../entities";
+import AppError from "../../errors/app.errors";
 
 const ensureVehicleExistsMiddleware = async (
   req: Request,

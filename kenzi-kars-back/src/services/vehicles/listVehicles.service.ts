@@ -9,7 +9,7 @@ import { AppDataSource } from "../../data-source";
 
 import { Vehicle } from "../../entities";
 import { TPaginationResult } from "../../interfaces/vehicles.interfaces";
-import { vehiclesSchemaResponse } from "../../schemas/vehicles.schema";
+import { vehiclesSchemaResponseWithImages } from "../../schemas/vehicles.schema";
 
 const listVehiclesService = async (
   perPage: number,
@@ -25,7 +25,7 @@ const listVehiclesService = async (
   maxPrice: number | undefined,
   orderBy: "price" | "year" | "mileage" | undefined,
   baseUrl: string
-): Promise<TPaginationResult> => {
+): Promise<any> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
@@ -74,6 +74,7 @@ const listVehiclesService = async (
   const [vehicles, totalCount] = await vehicleRepository.findAndCount({
     relations: {
       images: true,
+      seller: true,
     },
     where: whereCondition,
     skip: (page - 1) * perPage,
@@ -97,7 +98,7 @@ const listVehiclesService = async (
       page < totalPages
         ? `${baseUrl}?perPage=${perPage}&page=${page + 1}`
         : null,
-    data: vehiclesSchemaResponse.parse(parsedVehicles),
+    data: vehiclesSchemaResponseWithImages.parse(parsedVehicles),
   };
 
   return result;

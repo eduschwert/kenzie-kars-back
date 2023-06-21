@@ -27,7 +27,7 @@ export const loginTokenService = async (
 
   const newToken: string = jwt.sign(
     {
-      userId: user.id,
+      is_seller: user.is_seller,
     },
     process.env.SECRET_KEY!,
     {

@@ -3,14 +3,14 @@ import { AppDataSource } from "../../data-source";
 
 import { Vehicle } from "../../entities";
 import { TPaginationResult } from "../../interfaces/vehicles.interfaces";
-import { vehiclesWithUserSchemaResponse } from "../../schemas/vehicles.schema";
+import { vehiclesSchemaResponseWithImages } from "../../schemas/vehicles.schema";
 
 const listUserVehiclesService = async (
   userId: string,
   perPage: number,
   page: number,
   baseUrl: string
-): Promise<TPaginationResult> => {
+): Promise<any> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
@@ -36,7 +36,7 @@ const listUserVehiclesService = async (
     take: perPage,
   });
 
-  const parsedVehicles = vehicles.map((vehicle) => ({
+  const vehiclesToNumber = vehicles.map((vehicle) => ({
     ...vehicle,
     fipe_price: Number(vehicle.fipe_price),
     price: Number(vehicle.price),
@@ -50,7 +50,7 @@ const listUserVehiclesService = async (
       page < totalPages
         ? `${baseUrl}?perPage=${perPage}&page=${page + 1}`
         : null,
-    data: vehiclesWithUserSchemaResponse.parse(parsedVehicles),
+    data: vehiclesSchemaResponseWithImages.parse(vehiclesToNumber),
   };
 
   return result;
