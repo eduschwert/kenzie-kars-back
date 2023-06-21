@@ -3,13 +3,13 @@ import { Equal, Repository } from "typeorm";
 
 import {
   TVehicleResponse,
-  TVehicleWithFipeRequestUpdate,
+  TVehicleUpdateWithFipe,
 } from "../../interfaces/vehicles.interfaces";
 import { Image, Vehicle } from "../../entities";
-import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
+import { vehicleSchemaResponseWithImages } from "../../schemas/vehicles.schema";
 
 const updateVehicleService = async (
-  vehicleData: TVehicleWithFipeRequestUpdate,
+  vehicleData: TVehicleUpdateWithFipe,
   existingVehicle: Vehicle
 ): Promise<TVehicleResponse> => {
   const { images, ...vehicleDataToUpdate } = vehicleData;
@@ -46,7 +46,7 @@ const updateVehicleService = async (
     );
   }
 
-  return vehicleSchemaResponse.parse({
+  return vehicleSchemaResponseWithImages.parse({
     ...updatedVehicle,
     images: updatedImages,
   });

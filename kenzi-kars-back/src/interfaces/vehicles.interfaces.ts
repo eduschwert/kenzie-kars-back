@@ -1,30 +1,28 @@
 import { z } from "zod";
 import {
-  imageSchema,
-  vehicleSchema,
+  imageSchemaResponse,
   vehicleSchemaRequest,
-  vehicleSchemaResponse,
+  vehicleSchemaResponseWithImages,
   vehicleSchemaUpdate,
-  vehiclesSchemaResponse,
+  vehiclesSchemaResponseWithImages,
 } from "../schemas/vehicles.schema";
 
 type TVehicleRequest = z.infer<typeof vehicleSchemaRequest>;
-type TVehicleRequestUpdate = z.infer<typeof vehicleSchemaUpdate>;
-type TVehicle = z.infer<typeof vehicleSchema>;
+type TVehicleUpdate = z.infer<typeof vehicleSchemaUpdate>;
+type TVehicleResponse = z.infer<typeof vehicleSchemaResponseWithImages>;
 
-type TVehicleWithoutImages = Omit<TVehicleRequest, "images">;
+type TVehiclesResponse = z.infer<typeof vehiclesSchemaResponseWithImages>;
 
-type TVehicleWithFipeRequest = TVehicleRequest & {
+type TVehicleRequestWithoutImages = Omit<TVehicleRequest, "images">;
+
+type TVehicleRequestWithFipe = TVehicleRequest & {
   fipe_price: number;
 };
-type TVehicleWithFipeRequestUpdate = TVehicleRequestUpdate & {
+type TVehicleUpdateWithFipe = TVehicleUpdate & {
   fipe_price: number;
 };
 
-type TImageResponse = z.infer<typeof imageSchema>;
-
-type TVehicleResponse = z.infer<typeof vehicleSchemaResponse>;
-type TVehiclesResponse = z.infer<typeof vehiclesSchemaResponse>;
+type TImageResponse = z.infer<typeof imageSchemaResponse>;
 
 type TVehicleFipeApi = {
   id: string;
@@ -43,14 +41,13 @@ type TPaginationResult = {
 };
 
 export {
-  TVehicle,
   TVehicleRequest,
-  TVehicleWithoutImages,
+  TVehicleRequestWithoutImages,
+  TVehicleUpdate,
   TVehicleResponse,
-  TVehicleWithFipeRequest,
-  TVehicleWithFipeRequestUpdate,
+  TVehicleRequestWithFipe,
   TVehicleFipeApi,
-  TVehicleRequestUpdate,
+  TVehicleUpdateWithFipe,
   TImageResponse,
   TPaginationResult,
 };

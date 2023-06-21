@@ -3,27 +3,21 @@ import { Repository } from "typeorm";
 
 import {
   TImageResponse,
+  TVehicleRequestWithFipe,
   TVehicleResponse,
-  TVehicleWithFipeRequest,
 } from "../../interfaces/vehicles.interfaces";
 import { Image, User, Vehicle } from "../../entities";
-import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
+import {
+  vehicleSchemaResponse,
+  vehicleSchemaResponseWithImages,
+} from "../../schemas/vehicles.schema";
 import AppError from "../../errors/app.errors";
+import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
 
 const createVehicleService = async (
-  vehicleData: TVehicleWithFipeRequest,
-  userId: string
+  vehicleData: TVehicleRequestWithFipe,
+  user: User
 ): Promise<TVehicleResponse> => {
-  const userRepository: Repository<User> = AppDataSource.getRepository(User);
-
-  const findUser = await userRepository.findOneBy({
-    id: userId,
-  });
-
-  if (!findUser) {
-    throw new AppError("User not found", 404);
-  }
-
   const { images, ...vehicleDataWithoutImages } = vehicleData;
 
   const vehicleRepository: Repository<Vehicle> =
@@ -31,7 +25,7 @@ const createVehicleService = async (
 
   const vehicle: Vehicle = vehicleRepository.create(vehicleDataWithoutImages);
 
-  vehicle.seller = findUser;
+  vehicle.seller = user;
 
   await vehicleRepository.save(vehicle);
 
@@ -55,10 +49,10 @@ const createVehicleService = async (
     );
   }
 
-  return vehicleSchemaResponse.parse({
+  return vehicleSchemaResponseWithImages.parse({
     ...vehicle,
     images: createdImages,
-    seller: findUser,
+    user: user,
   });
 };
 
