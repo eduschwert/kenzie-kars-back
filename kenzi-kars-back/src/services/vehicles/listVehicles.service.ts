@@ -8,12 +8,8 @@ import {
 import { AppDataSource } from "../../data-source";
 
 import { Vehicle } from "../../entities";
-import { TPaginationResult } from "../../interfaces/vehicles.interfaces";
-
-import { vehiclesWithUserSchemaResponse } from "../../schemas/vehicles.schema";
 
 import { vehiclesSchemaResponseWithImages } from "../../schemas/vehicles.schema";
-
 
 const listVehiclesService = async (
   perPage: number,
@@ -102,11 +98,7 @@ const listVehiclesService = async (
       page < totalPages
         ? `${baseUrl}?perPage=${perPage}&page=${page + 1}`
         : null,
-
-    //data: vehiclesWithUserSchemaResponse.parse(parsedVehicles),
-
     data: vehiclesSchemaResponseWithImages.parse(parsedVehicles),
-
   };
 
   return result;
