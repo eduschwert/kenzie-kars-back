@@ -7,6 +7,7 @@ import {
 import {
   createVehicleController,
   deleteVehicleController,
+  listVehiclesByUserIdController,
   listVehiclesController,
   retrieveVehicleController,
   updateVehicleController,
@@ -30,6 +31,8 @@ vehiclesRoutes.get(
 );
 
 vehiclesRoutes.use(ensureAuthMiddleware, ensureUserSellerMiddleware);
+
+vehiclesRoutes.get("/user/:userId", listVehiclesByUserIdController);
 
 vehiclesRoutes.post(
   "",

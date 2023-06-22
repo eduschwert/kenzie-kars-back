@@ -11,7 +11,11 @@ import createVehicleService from "../services/vehicles/createVehicle.service";
 import deleteVehicleService from "../services/vehicles/deleteVehicle.service";
 import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import listVehiclesService from "../services/vehicles/listVehicles.service";
+
+import listVehiclesByUserIdService from "../services/vehicles/listVehiclesByUserId.service";
+
 import { vehicleSchemaResponseWithImages } from "../schemas/vehicles.schema";
+
 
 const createVehicleController = async (
   req: Request,
@@ -105,6 +109,39 @@ const listVehiclesController = async (req: Request, res: Response) => {
   return res.json(vehicles);
 };
 
+const listVehiclesByUserIdController = async (req: Request, res: Response) => {
+  let perPage: number = 10;
+  let page: number = 1;
+  const userId: string = req.params.userId;
+
+  if (typeof req.query.perPage === "string") {
+    const perPageQueryParam: string = req.query.perPage;
+    const perPageValue: number = parseInt(perPageQueryParam, 10);
+    if (!isNaN(perPageValue) && perPageValue >= 1 && perPageValue <= 10) {
+      perPage = perPageValue;
+    }
+  }
+
+  if (typeof req.query.page === "string") {
+    const pageQueryParam: string = req.query.page;
+    const pageValue: number = parseInt(pageQueryParam, 10);
+    if (!isNaN(pageValue) && pageValue >= 1) {
+      page = pageValue;
+    }
+  }
+
+  const baseUrl: string = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
+
+  const vehicles: TPaginationResult = await listVehiclesByUserIdService(
+    perPage,
+    page,
+    baseUrl,
+    userId
+  );
+
+  return res.json(vehicles);
+};
+
 const updateVehicleController = async (
   req: Request,
   res: Response
@@ -134,6 +171,7 @@ const deleteVehicleController = async (
 export {
   retrieveVehicleController,
   listVehiclesController,
+  listVehiclesByUserIdController,
   createVehicleController,
   updateVehicleController,
   deleteVehicleController,
