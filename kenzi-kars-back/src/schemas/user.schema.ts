@@ -24,7 +24,7 @@ export const userSchema = z.object({
   description: z.string(),
   is_seller: z.boolean().optional().default(false),
   address: addressSchema,
-  tokenResetPassword: z.string(),
+  tokenResetPassword: z.string().optional().nullable(),
 });
 
 export const returnUserSchemaNoPassword = userSchema

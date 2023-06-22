@@ -44,7 +44,7 @@ class User {
   is_seller: boolean;
 
   @Column({ type: "text", default: null })
-  tokenResetPassword: string | null;
+  tokenResetPassword: string | null | undefined;
 
   @CreateDateColumn({ type: "date" })
   createdAt: string;

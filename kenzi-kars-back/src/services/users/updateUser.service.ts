@@ -57,11 +57,9 @@ export const resetPassword = async (
     throw new AppError("User not found", 404);
   }
 
-  await userRepository.update(
-    { id: user[0].id },
-    {
-      password: hashSync(password, 10),
-      tokenResetPassword: null,
-    }
-  );
+  user[0].password = password;
+
+  user[0].tokenResetPassword = null;
+
+  await userRepository.save(user);
 };

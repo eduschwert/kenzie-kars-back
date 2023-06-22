@@ -84,7 +84,6 @@ export const sendEmailPasswordResetController = async (
   res: Response
 ) => {
   const { email } = req.body;
-  console.log(email);
 
   await sendEmailResetPassword(email);
 
@@ -92,9 +91,9 @@ export const sendEmailPasswordResetController = async (
 };
 
 export const resetPasswordController = async (req: Request, res: Response) => {
-  const { password, tokenResetPassword } = req.body;
+  const { password, token } = req.body;
 
-  await resetPassword(password, tokenResetPassword);
+  await resetPassword(password, token);
 
   return res.json({ message: "password change with success" });
 };

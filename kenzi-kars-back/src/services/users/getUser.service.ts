@@ -21,6 +21,5 @@ export const getUserService = async (userId: string): Promise<IGetUser> => {
     throw new AppError("User not found", 404);
   }
 
-  console.log(findUser[0]);
   return returnUserSchemaNoPassword.parse(findUser[0]);
 };

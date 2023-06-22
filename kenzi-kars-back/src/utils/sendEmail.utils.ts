@@ -6,7 +6,7 @@ import Mailgen from "mailgen";
 class EmailService {
   sendEmail = async ({ to, subject, text }: IEmailRequest) => {
     const transporter = createTransport({
-      host: "smt.gmail.com",
+      host: "smtp.gmail.com",
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -15,7 +15,7 @@ class EmailService {
 
     await transporter
       .sendMail({
-        from: "envioemail678@gmail.com",
+        from: process.env.SMTP_USER,
         to,
         subject,
         html: text,
@@ -36,8 +36,8 @@ class EmailService {
     const mailGenerator = new Mailgen({
       theme: "cerberus",
       product: {
-        name: "Kenzie",
-        link: "http://localhost:3000",
+        name: "Kenzie Kars",
+        link: "http://localhost:5173/",
       },
     });
 
