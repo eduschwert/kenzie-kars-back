@@ -7,6 +7,7 @@ import {
 import {
   createVehicleController,
   deleteVehicleController,
+  listVehiclesByUserIdController,
   listVehiclesController,
   retrieveVehicleController,
   updateVehicleController,
@@ -29,6 +30,8 @@ vehiclesRoutes.get(
 );
 
 vehiclesRoutes.use(checkTokenMiddleware);
+
+vehiclesRoutes.get("/user/:userId", listVehiclesByUserIdController);
 
 vehiclesRoutes.post(
   "",
