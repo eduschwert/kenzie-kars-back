@@ -1,32 +1,38 @@
 import { Request, Response } from "express";
-import {
-  IUser,
-  INewUser,
-  IGetUser,
-  IUpdateUser,
-} from "../interfaces/user.interfaces";
-import { createUserService } from "../services/users/createUser.service";
+
+import createUserService from "../services/users/createUser.service";
 import listUserVehiclesService from "../services/users/listUserVehicles.service";
-import { getUserService } from "../services/users/getUser.service";
 import {
-  resetPassword,
   updateUserService,
+  resetPassword,
 } from "../services/users/updateUser.service";
 import deleteUserService from "../services/users/deleteUser.service";
+import {
+  TUserRequest,
+  TUserResponse,
+  TUserUpdate,
+} from "../interfaces/user.interfaces";
+import { userSchemaResponseWithoutPassword } from "../schemas/user.schema";
+import { User } from "../entities";
+import { TAddressUpdate } from "../interfaces/address.interface";
+import updateUserAddressService from "../services/users/updateUserAddress.service";
 import { sendEmailResetPassword } from "../services/users/sendEmail.service";
 
 export const createNewUserController = async (req: Request, res: Response) => {
-  const userData: IUser = req.body;
+  const userData: TUserRequest = req.body;
 
-  const newUser: INewUser = await createUserService(userData);
+  const newUser: TUserResponse = await createUserService(userData);
 
   return res.status(201).json(newUser);
 };
 
 export const getUserController = async (req: Request, res: Response) => {
-  const userId = res.locals.userId;
-  const user: IGetUser = await getUserService(userId);
-  return res.status(200).json(user);
+  const user: User = res.locals.user;
+
+  const userParsed: TUserResponse =
+    userSchemaResponseWithoutPassword.parse(user);
+
+  return res.json(userParsed);
 };
 
 export const getAllUserVehiclesController = async (
@@ -66,16 +72,37 @@ export const getAllUserVehiclesController = async (
 };
 
 export const updateUserController = async (req: Request, res: Response) => {
-  const userUpdateData: IUpdateUser = req.body;
-  const userId: string = res.locals.id;
-  const updatedUser: INewUser = await updateUserService(userUpdateData, userId);
+  const userUpdateData: TUserUpdate = req.body;
+  const user: User = res.locals.user;
+
+  const updatedUser: TUserResponse = await updateUserService(
+    userUpdateData,
+    user
+  );
+
+  return res.status(200).json(updatedUser);
+};
+
+export const updateUserAdressController = async (
+  req: Request,
+  res: Response
+) => {
+  const addressUpdateData: TAddressUpdate = req.body;
+  const user: User = res.locals.user;
+
+  const updatedUser: TUserResponse = await updateUserAddressService(
+    addressUpdateData,
+    user
+  );
 
   return res.status(200).json(updatedUser);
 };
 
 export const deleteUserController = async (req: Request, res: Response) => {
-  const userId: string = res.locals.id;
-  await deleteUserService(userId);
+  const user: User = res.locals.user;
+
+  await deleteUserService(user);
+
   return res.status(204).json();
 };
 

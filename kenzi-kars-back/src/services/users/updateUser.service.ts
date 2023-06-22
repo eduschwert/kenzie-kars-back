@@ -1,44 +1,25 @@
-import { INewUser, IUpdateUser } from "../../interfaces/user.interfaces";
 import { AppDataSource } from "../../data-source";
 import { User } from "../../entities/user.entity";
 import { Repository } from "typeorm";
-import { returnUserSchemaNoPassword } from "../../schemas/user.schema";
-import { Address } from "../../entities";
+
+import { TUserResponse, TUserUpdate } from "../../interfaces/user.interfaces";
 import AppError from "../../errors/app.errors";
-import { hashSync } from "bcryptjs";
+import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
 
 export const updateUserService = async (
-  userData: IUpdateUser,
-  userId: string
-): Promise<INewUser> => {
+  userData: TUserUpdate,
+  user: User
+): Promise<TUserResponse> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
-  const adressRepository: Repository<Address> =
-    AppDataSource.getRepository(Address);
-
-  const oldAddress = await adressRepository.findOneBy({
-    user: { id: userId },
-  });
-
-  const findUSer: User | null = await userRepository.findOne({
-    where: {
-      id: userId,
-    },
-  });
-
-  const mergeAddress = { ...oldAddress, ...userData.address };
-
-  await adressRepository.save(mergeAddress);
-
-  const mergedUser = { ...findUSer, ...userData };
 
   const updatedUser = userRepository.create({
-    ...mergedUser,
-    address: mergeAddress,
+    ...user,
+    ...userData,
   });
 
   await userRepository.save(updatedUser);
 
-  return returnUserSchemaNoPassword.parse(updatedUser);
+  return userSchemaResponseWithoutPassword.parse(updatedUser);
 };
 
 export const resetPassword = async (

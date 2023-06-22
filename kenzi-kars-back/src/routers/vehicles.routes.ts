@@ -11,12 +11,13 @@ import {
   retrieveVehicleController,
   updateVehicleController,
 } from "../controllers/vehicles.controller";
-import ensureDataIsValidMiddleware from "../middlewares/ensureDataIsValid.middleware";
-import ensureVehicleExistsMiddleware from "../middlewares/ensureVehicleExists.middleware";
-import ensureVehicleAvailableMiddleware from "../middlewares/ensureVehicleAvailable.middleware";
-import verifyGoodBuyMiddleware from "../middlewares/verifyGoodBuy.middleware";
-import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
-import { ensureVehicleOwnerMiddleware } from "../middlewares/ensureVehicleOwner.middleware copy";
+import ensureDataIsValidMiddleware from "../middlewares/global/ensureDataIsValid.middleware";
+import ensureVehicleExistsMiddleware from "../middlewares/vehicle/ensureVehicleExists.middleware";
+import ensureVehicleAvailableMiddleware from "../middlewares/vehicle/ensureVehicleAvailable.middleware";
+import verifyGoodBuyMiddleware from "../middlewares/vehicle/verifyGoodBuy.middleware";
+import ensureAuthMiddleware from "../middlewares/user/ensureAuth.middleware";
+import ensureVehicleOwnerMiddleware from "../middlewares/vehicle/ensureVehicleOwner.middleware";
+import ensureUserSellerMiddleware from "../middlewares/vehicle/ensureUserSeller.middleware";
 
 const vehiclesRoutes = Router();
 
@@ -28,7 +29,7 @@ vehiclesRoutes.get(
   retrieveVehicleController
 );
 
-vehiclesRoutes.use(checkTokenMiddleware);
+vehiclesRoutes.use(ensureAuthMiddleware, ensureUserSellerMiddleware);
 
 vehiclesRoutes.post(
   "",
@@ -42,8 +43,8 @@ vehiclesRoutes.put(
   "/:vehicleId",
   ensureDataIsValidMiddleware(vehicleSchemaUpdate),
   ensureVehicleExistsMiddleware,
-  ensureVehicleAvailableMiddleware,
   ensureVehicleOwnerMiddleware,
+  ensureVehicleAvailableMiddleware,
   verifyGoodBuyMiddleware,
   updateVehicleController
 );

@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 
 import {
-  TVehicleWithFipeRequest,
-  TVehicleWithFipeRequestUpdate,
-} from "../interfaces/vehicles.interfaces";
+  TVehicleRequestWithFipe,
+  TVehicleUpdateWithFipe,
+} from "../../interfaces/vehicles.interfaces";
 
 const verifyGoodBuyMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const vehicleData: TVehicleWithFipeRequest | TVehicleWithFipeRequestUpdate =
+  const vehicleData: TVehicleRequestWithFipe | TVehicleUpdateWithFipe =
     req.body;
 
   const isGoodBuy = vehicleData.price <= vehicleData.fipe_price * 0.95;

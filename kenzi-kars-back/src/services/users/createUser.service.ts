@@ -1,22 +1,25 @@
-import { INewUser, IUser } from "../../interfaces/user.interfaces";
 import { AppDataSource } from "../../data-source";
 import { User } from "../../entities/user.entity";
 import { Repository } from "typeorm";
-import { returnUserSchemaNoPassword } from "../../schemas/user.schema";
 import { Address } from "../../entities";
+import { TUserRequest, TUserResponse } from "../../interfaces/user.interfaces";
+import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
 
-export const createUserService = async (userData: IUser): Promise<INewUser> => {
+const createUserService = async (
+  userData: TUserRequest
+): Promise<TUserResponse> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
+
   const adressRepository: Repository<Address> =
     AppDataSource.getRepository(Address);
 
   const newAdress = adressRepository.create(userData.address);
-
   await adressRepository.save(newAdress);
 
   const newUser = userRepository.create({ ...userData, address: newAdress });
-
   await userRepository.save(newUser);
 
-  return returnUserSchemaNoPassword.parse(newUser);
+  return userSchemaResponseWithoutPassword.parse(newUser);
 };
+
+export default createUserService;
