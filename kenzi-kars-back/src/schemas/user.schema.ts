@@ -9,8 +9,9 @@ const userSchemaRequest = z.object({
   phone: z.string().max(16),
   birthdate: z.string().or(z.date()),
   description: z.string(),
-  is_seller: z.boolean().default(false),
+  is_seller: z.boolean().optional().default(false),
   address: addressSchemaRequest,
+  tokenResetPassword: z.string().optional().nullable(),
 });
 
 const userSchemaWithoutAdress = userSchemaRequest.omit({

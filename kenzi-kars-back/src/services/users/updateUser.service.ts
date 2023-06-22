@@ -6,7 +6,7 @@ import { TUserResponse, TUserUpdate } from "../../interfaces/user.interfaces";
 import AppError from "../../errors/app.errors";
 import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
 
-const updateUserService = async (
+export const updateUserService = async (
   userData: TUserUpdate,
   user: User
 ): Promise<TUserResponse> => {
@@ -22,4 +22,25 @@ const updateUserService = async (
   return userSchemaResponseWithoutPassword.parse(updatedUser);
 };
 
-export default updateUserService;
+export const resetPassword = async (
+  password: string,
+  tokenResetPassword: string
+) => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+
+  const user = await userRepository.find({
+    where: {
+      tokenResetPassword: tokenResetPassword,
+    },
+  });
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  user[0].password = password;
+
+  user[0].tokenResetPassword = null;
+
+  await userRepository.save(user);
+};

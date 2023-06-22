@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 
 import createUserService from "../services/users/createUser.service";
 import listUserVehiclesService from "../services/users/listUserVehicles.service";
-import updateUserService from "../services/users/updateUser.service";
+import {
+  updateUserService,
+  resetPassword,
+} from "../services/users/updateUser.service";
 import deleteUserService from "../services/users/deleteUser.service";
 import {
   TUserRequest,
@@ -13,6 +16,7 @@ import { userSchemaResponseWithoutPassword } from "../schemas/user.schema";
 import { User } from "../entities";
 import { TAddressUpdate } from "../interfaces/address.interface";
 import updateUserAddressService from "../services/users/updateUserAddress.service";
+import { sendEmailResetPassword } from "../services/users/sendEmail.service";
 
 export const createNewUserController = async (req: Request, res: Response) => {
   const userData: TUserRequest = req.body;
@@ -100,4 +104,23 @@ export const deleteUserController = async (req: Request, res: Response) => {
   await deleteUserService(user);
 
   return res.status(204).json();
+};
+
+export const sendEmailPasswordResetController = async (
+  req: Request,
+  res: Response
+) => {
+  const { email } = req.body;
+
+  await sendEmailResetPassword(email);
+
+  return res.json({ message: "Token sent to email" });
+};
+
+export const resetPasswordController = async (req: Request, res: Response) => {
+  const { password, token } = req.body;
+
+  await resetPassword(password, token);
+
+  return res.json({ message: "password change with success" });
 };
