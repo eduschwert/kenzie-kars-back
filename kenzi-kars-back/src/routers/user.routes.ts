@@ -12,7 +12,7 @@ import {
 } from "../controllers/user.controllers";
 import ensureAuthMiddleware from "../middlewares/user/ensureAuth.middleware";
 import ensureEmailUniqueMiddleware from "../middlewares/user/ensureEmailUnique.middleware";
-import { addressSchemaRequest } from "../schemas/address.schema";
+import { addressSchemaUpdate } from "../schemas/address.schema";
 
 const userRoutes: Router = Router();
 
@@ -36,7 +36,7 @@ userRoutes.patch(
 
 userRoutes.patch(
   "/address",
-  ensureDataIsValidMiddleware(addressSchemaRequest),
+  ensureDataIsValidMiddleware(addressSchemaUpdate),
   updateUserAdressController
 );
 

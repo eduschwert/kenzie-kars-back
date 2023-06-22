@@ -13,10 +13,12 @@ const userSchemaRequest = z.object({
   address: addressSchemaRequest,
 });
 
-const userSchemaUpdate = userSchemaRequest.omit({
+const userSchemaWithoutAdress = userSchemaRequest.omit({
   is_seller: true,
   address: true,
 });
+
+const userSchemaUpdate = userSchemaWithoutAdress.partial();
 
 const userSchemaResponseWithoutPassword = userSchemaRequest
   .extend({
@@ -42,6 +44,7 @@ const userSchemaResponseWithoutPasswordAndAddress = userSchemaRequest
 export {
   userSchemaRequest,
   userSchemaUpdate,
+  userSchemaWithoutAdress,
   userSchemaResponseWithoutPassword,
   userSchemaResponseWithoutPasswordAndAddress,
 };

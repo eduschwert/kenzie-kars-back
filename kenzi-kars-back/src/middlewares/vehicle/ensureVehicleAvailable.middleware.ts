@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express";
 import {
   TVehicleRequest,
   TVehicleFipeApi,
-  TVehicleUpdateWithFipe,
   TVehicleUpdate,
 } from "../../interfaces/vehicles.interfaces";
 import { api } from "../../utils/axios";

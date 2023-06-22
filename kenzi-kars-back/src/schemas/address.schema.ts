@@ -9,9 +9,11 @@ const addressSchemaRequest = z.object({
   street_name: z.string().max(50),
 });
 
+const addressSchemaUpdate = addressSchemaRequest.partial();
+
 const addressSchemaResponse = addressSchemaRequest.extend({
   id: z.string(),
   createdAt: z.string(),
 });
 
-export { addressSchemaRequest, addressSchemaResponse };
+export { addressSchemaRequest, addressSchemaUpdate, addressSchemaResponse };

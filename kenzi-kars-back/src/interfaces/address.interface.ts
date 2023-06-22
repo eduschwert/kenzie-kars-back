@@ -1,10 +1,11 @@
 import { z } from "zod";
 import {
-  addressSchemaRequest,
   addressSchemaResponse,
+  addressSchemaRequest,
 } from "../schemas/address.schema";
+import { DeepPartial } from "typeorm";
 
-type TAddressRequest = z.infer<typeof addressSchemaRequest>;
+type TAddressUpdate = DeepPartial<z.infer<typeof addressSchemaRequest>>;
 type TAddressResponse = z.infer<typeof addressSchemaResponse>;
 
-export { TAddressRequest, TAddressResponse };
+export { TAddressUpdate, TAddressResponse };

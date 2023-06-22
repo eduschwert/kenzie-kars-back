@@ -10,11 +10,8 @@ import {
   TUserUpdate,
 } from "../interfaces/user.interfaces";
 import { userSchemaResponseWithoutPassword } from "../schemas/user.schema";
-import { Address, User } from "../entities";
-import {
-  TAddressRequest,
-  TAddressResponse,
-} from "../interfaces/address.interface";
+import { User } from "../entities";
+import { TAddressUpdate } from "../interfaces/address.interface";
 import updateUserAddressService from "../services/users/updateUserAddress.service";
 
 export const createNewUserController = async (req: Request, res: Response) => {
@@ -86,7 +83,7 @@ export const updateUserAdressController = async (
   req: Request,
   res: Response
 ) => {
-  const addressUpdateData: TAddressRequest = req.body;
+  const addressUpdateData: TAddressUpdate = req.body;
   const user: User = res.locals.user;
 
   const updatedUser: TUserResponse = await updateUserAddressService(

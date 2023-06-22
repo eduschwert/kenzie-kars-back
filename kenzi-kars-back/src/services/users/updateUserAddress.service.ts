@@ -2,12 +2,12 @@ import { AppDataSource } from "../../data-source";
 import { Repository } from "typeorm";
 
 import { Address, User } from "../../entities";
-import { TAddressRequest } from "../../interfaces/address.interface";
+import { TAddressUpdate } from "../../interfaces/address.interface";
 import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
 import { TUserResponse } from "../../interfaces/user.interfaces";
 
 const updateUserAddressService = async (
-  addressData: TAddressRequest,
+  addressData: TAddressUpdate,
   user: User
 ): Promise<TUserResponse> => {
   const addressRepository: Repository<Address> =
