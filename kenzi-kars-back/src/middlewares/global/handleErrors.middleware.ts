@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
-import AppError from "../errors/app.errors";
+import AppError from "../../errors/app.errors";
 import { AxiosError } from "axios";
 
 const handleErrorMiddleware = (
@@ -24,7 +24,6 @@ const handleErrorMiddleware = (
     });
   }
 
-  console.error(error);
   return res.status(500).json({ message: error.message });
 };
 

@@ -1,20 +1,7 @@
 import { z } from "zod";
+import { addressSchemaRequest, addressSchemaResponse } from "./address.schema";
 
-export const addressSchema = z.object({
-  cep: z.string().max(9),
-  state: z.string().max(2),
-  city: z.string().max(50),
-  street_number: z.string().max(50),
-  complement: z.string().max(50).optional().default("no complement"),
-  street_name: z.string().max(50),
-});
-
-export const returnAddressSchema = addressSchema.extend({
-  id: z.string(),
-  createdAt: z.string(),
-});
-
-export const userSchema = z.object({
+const userSchemaRequest = z.object({
   name: z.string().max(100),
   email: z.string().max(50),
   password: z.string().max(120),
@@ -22,22 +9,42 @@ export const userSchema = z.object({
   phone: z.string().max(16),
   birthdate: z.string().or(z.date()),
   description: z.string(),
-  is_seller: z.boolean().optional().default(false),
-  address: addressSchema,
+  is_seller: z.boolean().default(false),
+  address: addressSchemaRequest,
 });
 
-export const returnUserSchemaNoPassword = userSchema
+const userSchemaWithoutAdress = userSchemaRequest.omit({
+  is_seller: true,
+  address: true,
+});
+
+const userSchemaUpdate = userSchemaWithoutAdress.partial();
+
+const userSchemaResponseWithoutPassword = userSchemaRequest
   .extend({
     id: z.string(),
     createdAt: z.string(),
-    address: returnAddressSchema,
+    address: addressSchemaResponse,
   })
   .omit({
     password: true,
   });
 
-export const userUpdateSchema = userSchema.partial();
+const userSchemaResponseWithoutPasswordAndAddress = userSchemaRequest
+  .extend({
+    id: z.string(),
+    createdAt: z.string(),
+    address: addressSchemaResponse,
+  })
+  .omit({
+    password: true,
+    address: true,
+  });
 
-export const returnUserSchemaVehicle = returnUserSchemaNoPassword.omit({
-  address: true,
-});
+export {
+  userSchemaRequest,
+  userSchemaUpdate,
+  userSchemaWithoutAdress,
+  userSchemaResponseWithoutPassword,
+  userSchemaResponseWithoutPasswordAndAddress,
+};

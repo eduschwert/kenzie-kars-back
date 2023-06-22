@@ -1,21 +1,12 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../data-source";
-import { Address, User } from "../../entities";
 
-const deleteUserService = async (userId: string): Promise<void> => {
+import { User } from "../../entities";
+
+const deleteUserService = async (user: User): Promise<void> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
-  const adressRepository: Repository<Address> =
-    AppDataSource.getRepository(Address);
 
-  console.log("USERID", userId);
-
-  const findUser: User | null = await userRepository.findOne({
-    where: {
-      id: userId,
-    },
-  });
-
-  await userRepository.remove(findUser!);
+  await userRepository.remove(user);
 };
 
 export default deleteUserService;

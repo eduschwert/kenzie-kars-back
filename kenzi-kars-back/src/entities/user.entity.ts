@@ -43,6 +43,9 @@ class User {
   @Column({ type: "boolean", default: false })
   is_seller: boolean;
 
+  @Column({ type: "text", default: null })
+  tokenResetPassword: string | null;
+
   @CreateDateColumn({ type: "date" })
   createdAt: string;
 

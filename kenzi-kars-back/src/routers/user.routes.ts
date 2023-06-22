@@ -1,34 +1,47 @@
 import { Router } from "express";
-import ensureDataIsValidMiddleware from "../middlewares/ensureDataIsValid.middleware";
-import { userSchema, userUpdateSchema } from "../schemas/user.schema";
-import { checkValidUserMiddleware } from "../middlewares/checkValidUserMiddleware";
+
+import ensureDataIsValidMiddleware from "../middlewares/global/ensureDataIsValid.middleware";
+import { userSchemaRequest, userSchemaUpdate } from "../schemas/user.schema";
 import {
   createNewUserController,
   deleteUserController,
   getAllUserVehiclesController,
   getUserController,
+  updateUserAdressController,
   updateUserController,
 } from "../controllers/user.controllers";
-import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
-import { checkValidUserUpdateEmailMiddleware } from "../middlewares/checkValidUserUpdateEmailMiddleware";
+import ensureAuthMiddleware from "../middlewares/user/ensureAuth.middleware";
+import ensureEmailUniqueMiddleware from "../middlewares/user/ensureEmailUnique.middleware";
+import { addressSchemaUpdate } from "../schemas/address.schema";
 
-export const userRoutes: Router = Router();
+const userRoutes: Router = Router();
 
 userRoutes.post(
   "",
-  ensureDataIsValidMiddleware(userSchema),
-  checkValidUserMiddleware,
+  ensureDataIsValidMiddleware(userSchemaRequest),
+  ensureEmailUniqueMiddleware,
   createNewUserController
 );
 
-userRoutes.use(checkTokenMiddleware);
+userRoutes.use(ensureAuthMiddleware);
+
 userRoutes.get("", getUserController);
+
 userRoutes.patch(
   "",
-  ensureDataIsValidMiddleware(userUpdateSchema),
-  checkValidUserUpdateEmailMiddleware,
+  ensureDataIsValidMiddleware(userSchemaUpdate),
+  ensureEmailUniqueMiddleware,
   updateUserController
 );
+
+userRoutes.patch(
+  "/address",
+  ensureDataIsValidMiddleware(addressSchemaUpdate),
+  updateUserAdressController
+);
+
 userRoutes.delete("", deleteUserController);
 
 userRoutes.get("/user_vehicles", getAllUserVehiclesController);
+
+export default userRoutes;

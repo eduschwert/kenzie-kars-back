@@ -2,28 +2,31 @@ import { Request, Response } from "express";
 
 import {
   TPaginationResult,
+  TVehicleRequestWithFipe,
   TVehicleResponse,
-  TVehicleWithFipeRequest,
-  TVehicleWithFipeRequestUpdate,
+  TVehicleUpdateWithFipe,
 } from "../interfaces/vehicles.interfaces";
-import { Vehicle } from "../entities";
-import { vehicleSchemaResponse } from "../schemas/vehicles.schema";
+import { User, Vehicle } from "../entities";
 import createVehicleService from "../services/vehicles/createVehicle.service";
 import deleteVehicleService from "../services/vehicles/deleteVehicle.service";
 import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import listVehiclesService from "../services/vehicles/listVehicles.service";
+
 import listVehiclesByUserIdService from "../services/vehicles/listVehiclesByUserId.service";
+
+import { vehicleSchemaResponseWithImages } from "../schemas/vehicles.schema";
+
 
 const createVehicleController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const vehicleData: TVehicleWithFipeRequest = req.body;
-  const userId = res.locals.userId;
+  const vehicleData: TVehicleRequestWithFipe = req.body;
+  const user: User = res.locals.user;
 
   const newVehicle: TVehicleResponse = await createVehicleService(
     vehicleData,
-    userId
+    user
   );
 
   return res.status(201).json(newVehicle);
@@ -35,7 +38,7 @@ const retrieveVehicleController = async (
 ): Promise<Response> => {
   const vehicle: Vehicle = res.locals.vehicle;
 
-  return res.json(vehicleSchemaResponse.parse(vehicle));
+  return res.json(vehicleSchemaResponseWithImages.parse(vehicle));
 };
 
 const listVehiclesController = async (req: Request, res: Response) => {
@@ -143,7 +146,7 @@ const updateVehicleController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const vehicleData: TVehicleWithFipeRequestUpdate = req.body;
+  const vehicleData: TVehicleUpdateWithFipe = req.body;
   const vehicle: Vehicle = res.locals.vehicle;
 
   const updatedVehicle: TVehicleResponse = await updateVehicleService(
