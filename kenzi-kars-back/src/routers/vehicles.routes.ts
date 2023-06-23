@@ -30,9 +30,9 @@ vehiclesRoutes.get(
   retrieveVehicleController
 );
 
-vehiclesRoutes.use(ensureAuthMiddleware, ensureUserSellerMiddleware);
-
 vehiclesRoutes.get("/user/:userId", listVehiclesByUserIdController);
+
+vehiclesRoutes.use(ensureAuthMiddleware, ensureUserSellerMiddleware);
 
 vehiclesRoutes.post(
   "",

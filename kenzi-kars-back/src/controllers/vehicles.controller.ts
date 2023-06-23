@@ -5,6 +5,7 @@ import {
   TVehicleRequestWithFipe,
   TVehicleResponse,
   TVehicleUpdateWithFipe,
+  TVehiclesResponse,
 } from "../interfaces/vehicles.interfaces";
 import { User, Vehicle } from "../entities";
 import createVehicleService from "../services/vehicles/createVehicle.service";
@@ -13,9 +14,7 @@ import updateVehicleService from "../services/vehicles/updateVehicle.service";
 import listVehiclesService from "../services/vehicles/listVehicles.service";
 
 import listVehiclesByUserIdService from "../services/vehicles/listVehiclesByUserId.service";
-
-import { vehicleSchemaResponseWithImages } from "../schemas/vehicles.schema";
-
+import { vehicleSchemaResponse } from "../schemas/vehicles.schema";
 
 const createVehicleController = async (
   req: Request,
@@ -38,7 +37,7 @@ const retrieveVehicleController = async (
 ): Promise<Response> => {
   const vehicle: Vehicle = res.locals.vehicle;
 
-  return res.json(vehicleSchemaResponseWithImages.parse(vehicle));
+  return res.json(vehicleSchemaResponse.parse(vehicle));
 };
 
 const listVehiclesController = async (req: Request, res: Response) => {
@@ -90,21 +89,22 @@ const listVehiclesController = async (req: Request, res: Response) => {
 
   const baseUrl: string = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
 
-  const vehicles: TPaginationResult = await listVehiclesService(
-    perPage,
-    page,
-    brand,
-    model,
-    color,
-    year,
-    fuel,
-    minMileage,
-    maxMileage,
-    minPrice,
-    maxPrice,
-    orderBy,
-    baseUrl
-  );
+  const vehicles: TPaginationResult<TVehiclesResponse> =
+    await listVehiclesService(
+      perPage,
+      page,
+      brand,
+      model,
+      color,
+      year,
+      fuel,
+      minMileage,
+      maxMileage,
+      minPrice,
+      maxPrice,
+      orderBy,
+      baseUrl
+    );
 
   return res.json(vehicles);
 };
@@ -132,12 +132,8 @@ const listVehiclesByUserIdController = async (req: Request, res: Response) => {
 
   const baseUrl: string = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
 
-  const vehicles: TPaginationResult = await listVehiclesByUserIdService(
-    perPage,
-    page,
-    baseUrl,
-    userId
-  );
+  const vehicles: TPaginationResult<TVehiclesResponse> =
+    await listVehiclesByUserIdService(perPage, page, baseUrl, userId);
 
   return res.json(vehicles);
 };

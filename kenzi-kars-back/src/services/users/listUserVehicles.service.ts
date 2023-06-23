@@ -2,15 +2,18 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../../data-source";
 
 import { Vehicle } from "../../entities";
-import { TPaginationResult } from "../../interfaces/vehicles.interfaces";
-import { vehiclesSchemaResponseWithImages } from "../../schemas/vehicles.schema";
+import {
+  TPaginationResult,
+  TVehiclesResponse,
+} from "../../interfaces/vehicles.interfaces";
+import { vehiclesSchemaResponse } from "../../schemas/vehicles.schema";
 
 const listUserVehiclesService = async (
   userId: string,
   perPage: number,
   page: number,
   baseUrl: string
-): Promise<any> => {
+): Promise<TPaginationResult<TVehiclesResponse>> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
@@ -50,7 +53,7 @@ const listUserVehiclesService = async (
       page < totalPages
         ? `${baseUrl}?perPage=${perPage}&page=${page + 1}`
         : null,
-    data: vehiclesSchemaResponseWithImages.parse(vehiclesToNumber),
+    data: vehiclesSchemaResponse.parse(vehiclesToNumber),
   };
 
   return result;

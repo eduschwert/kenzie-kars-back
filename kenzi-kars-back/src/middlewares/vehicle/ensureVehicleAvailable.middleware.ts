@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import {
-  TVehicleRequest,
-  TVehicleFipeApi,
-  TVehicleUpdate,
-} from "../../interfaces/vehicles.interfaces";
+import { TVehicleFipeApi } from "../../interfaces/vehicles.interfaces";
 import { api } from "../../utils/axios";
 
 const ensureVehicleAvailableMiddleware = async (
@@ -12,15 +8,16 @@ const ensureVehicleAvailableMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const vehicleData: TVehicleRequest | TVehicleUpdate = req.body;
+  const { brand, model, year, fuel } = req.body;
+  const name = model;
 
-  const { data } = await api.get<TVehicleFipeApi>(
-    `/cars/unique?brand=${vehicleData.brand}&name=${vehicleData.model}&year=${vehicleData.year}&fuel=${vehicleData.fuel}`
-  );
+  const response = await api.get<TVehicleFipeApi>(`/cars/unique`, {
+    params: { brand, name, year, fuel },
+  });
 
   req.body = {
     ...req.body,
-    fipe_price: data.value,
+    fipe_price: response.data.value,
   };
 
   return next();

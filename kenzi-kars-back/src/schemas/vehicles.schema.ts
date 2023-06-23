@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { userSchemaResponseWithoutPasswordAndAddress } from "./user.schema";
 
-const vehicleSchemaResponse = z.object({
+const vehicleSchema = z.object({
   id: z.string().uuid(),
   brand: z.string().max(50),
   model: z.string().max(50),
@@ -25,7 +25,7 @@ const vehicleSchemaResponse = z.object({
   updatedAt: z.date(),
 });
 
-const vehicleSchemaRequest = vehicleSchemaResponse.omit({
+const vehicleSchemaRequest = vehicleSchema.omit({
   id: true,
   fipe_price: true,
   is_good_buy: true,
@@ -45,20 +45,17 @@ const imageSchemaResponse = z.object({
   createdAt: z.date(),
 });
 
-const vehicleSchemaResponseWithImages = vehicleSchemaResponse.extend({
+const vehicleSchemaResponse = vehicleSchema.extend({
   images: z.array(imageSchemaResponse).optional(),
   seller: userSchemaResponseWithoutPasswordAndAddress,
 });
 
-const vehiclesSchemaResponseWithImages = z.array(
-  vehicleSchemaResponseWithImages
-);
+const vehiclesSchemaResponse = z.array(vehicleSchemaResponse);
 
 export {
   vehicleSchemaRequest,
   vehicleSchemaUpdate,
   imageSchemaResponse,
   vehicleSchemaResponse,
-  vehicleSchemaResponseWithImages,
-  vehiclesSchemaResponseWithImages,
+  vehiclesSchemaResponse,
 };
