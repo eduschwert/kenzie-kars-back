@@ -1,14 +1,11 @@
-import {
-  Repository,
-  Between,
-  ILike,
-  LessThanOrEqual,
-  MoreThanOrEqual,
-} from "typeorm";
+import { Repository } from "typeorm";
 import { AppDataSource } from "../../data-source";
 
 import { Vehicle } from "../../entities";
-import { TPaginationResult } from "../../interfaces/vehicles.interfaces";
+import {
+  TPaginationResult,
+  TVehiclesResponse,
+} from "../../interfaces/vehicles.interfaces";
 import { vehiclesSchemaResponse } from "../../schemas/vehicles.schema";
 
 const listVehiclesByUserIdService = async (
@@ -16,7 +13,7 @@ const listVehiclesByUserIdService = async (
   page: number,
   baseUrl: string,
   userId: string
-): Promise<TPaginationResult> => {
+): Promise<TPaginationResult<TVehiclesResponse>> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
@@ -28,6 +25,7 @@ const listVehiclesByUserIdService = async (
   const vehicles = await vehicleRepository.find({
     relations: {
       images: true,
+      seller: true,
     },
     where: {
       is_active: true,
@@ -37,7 +35,7 @@ const listVehiclesByUserIdService = async (
     take: perPage,
   });
 
-  const parsedVehicles = vehicles.map((vehicle) => ({
+  const toNumberVehicles = vehicles.map((vehicle) => ({
     ...vehicle,
     fipe_price: Number(vehicle.fipe_price),
     price: Number(vehicle.price),
@@ -51,8 +49,7 @@ const listVehiclesByUserIdService = async (
       page < totalPages
         ? `${baseUrl}?perPage=${perPage}&page=${page + 1}`
         : null,
-    seller: userId,
-    data: vehiclesSchemaResponse.parse(parsedVehicles),
+    data: vehiclesSchemaResponse.parse(toNumberVehicles),
   };
 
   return result;

@@ -7,12 +7,7 @@ import {
   TVehicleResponse,
 } from "../../interfaces/vehicles.interfaces";
 import { Image, User, Vehicle } from "../../entities";
-import {
-  vehicleSchemaResponse,
-  vehicleSchemaResponseWithImages,
-} from "../../schemas/vehicles.schema";
-import AppError from "../../errors/app.errors";
-import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
+import { vehicleSchemaResponse } from "../../schemas/vehicles.schema";
 
 const createVehicleService = async (
   vehicleData: TVehicleRequestWithFipe,
@@ -49,7 +44,7 @@ const createVehicleService = async (
     );
   }
 
-  return vehicleSchemaResponseWithImages.parse({
+  return vehicleSchemaResponse.parse({
     ...vehicle,
     images: createdImages,
     user: user,

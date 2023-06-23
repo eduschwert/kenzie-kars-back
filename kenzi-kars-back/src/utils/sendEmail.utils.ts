@@ -1,10 +1,9 @@
 import { createTransport } from "nodemailer";
-import { IEmailRequest } from "../interfaces/user.interfaces";
 import AppError from "../errors/app.errors";
 import Mailgen from "mailgen";
 
 class EmailService {
-  sendEmail = async ({ to, subject, text }: IEmailRequest) => {
+  sendEmail = async ({ to, subject, text }: any) => {
     const transporter = createTransport({
       host: "smtp.gmail.com",
       auth: {
