@@ -3,8 +3,10 @@ import { Repository } from "typeorm";
 
 import AppError from "../../errors/app.errors";
 import { User } from "../../entities/user.entity";
+import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
+import { TUserResponse } from "../../interfaces/user.interfaces";
 
-const listUserService = async (userId: string): Promise<IGetUser> => {
+const listUserService = async (userId: string): Promise<TUserResponse> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
   const findUser = await userRepository.find({
@@ -20,7 +22,7 @@ const listUserService = async (userId: string): Promise<IGetUser> => {
     throw new AppError("User not found", 404);
   }
 
-  return returnUserSchemaNoPassword.parse(findUser[0]);
+  return userSchemaResponseWithoutPassword.parse(findUser[0]);
 };
 
 export default listUserService;
