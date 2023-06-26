@@ -15,6 +15,9 @@ import listVehiclesService from "../services/vehicles/listVehicles.service";
 
 import listVehiclesByUserIdService from "../services/vehicles/listVehiclesByUserId.service";
 import { vehicleSchemaResponse } from "../schemas/vehicles.schema";
+import getMaxPriceAndMileageService from "../services/vehicles/getMaxPriceAndMileage.service";
+import { z } from "zod";
+import AppError from "../errors/app.errors";
 
 const createVehicleController = async (
   req: Request,
@@ -38,6 +41,14 @@ const retrieveVehicleController = async (
   const vehicle: Vehicle = res.locals.vehicle;
 
   return res.json(vehicleSchemaResponse.parse(vehicle));
+};
+
+const getMaxPriceAndMileageController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const values = await getMaxPriceAndMileageService();
+  return res.json(values);
 };
 
 const listVehiclesController = async (req: Request, res: Response) => {
@@ -112,7 +123,13 @@ const listVehiclesController = async (req: Request, res: Response) => {
 const listVehiclesByUserIdController = async (req: Request, res: Response) => {
   let perPage: number = 10;
   let page: number = 1;
+
   const userId: string = req.params.userId;
+  const schema = z.string().uuid();
+  const validateId = schema.safeParse(userId);
+  if (!validateId.success) {
+    throw new AppError("Invalid UUID", 400);
+  }
 
   if (typeof req.query.perPage === "string") {
     const perPageQueryParam: string = req.query.perPage;
@@ -168,6 +185,7 @@ export {
   retrieveVehicleController,
   listVehiclesController,
   listVehiclesByUserIdController,
+  getMaxPriceAndMileageController,
   createVehicleController,
   updateVehicleController,
   deleteVehicleController,

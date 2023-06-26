@@ -7,6 +7,7 @@ import {
 import {
   createVehicleController,
   deleteVehicleController,
+  getMaxPriceAndMileageController,
   listVehiclesByUserIdController,
   listVehiclesController,
   retrieveVehicleController,
@@ -23,6 +24,8 @@ import ensureUserSellerMiddleware from "../middlewares/vehicle/ensureUserSeller.
 const vehiclesRoutes = Router();
 
 vehiclesRoutes.get("", listVehiclesController);
+
+vehiclesRoutes.get("/max", getMaxPriceAndMileageController);
 
 vehiclesRoutes.get(
   "/:vehicleId",
