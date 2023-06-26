@@ -5,6 +5,7 @@ import {
   TVehicleRequestWithFipe,
   TVehicleResponse,
   TVehicleUpdateWithFipe,
+  TVehiclesMaxPriceAndMileage,
   TVehiclesResponse,
 } from "../interfaces/vehicles.interfaces";
 import { User, Vehicle } from "../entities";
@@ -47,7 +48,8 @@ const getMaxPriceAndMileageController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const values = await getMaxPriceAndMileageService();
+  const values: TVehiclesMaxPriceAndMileage =
+    await getMaxPriceAndMileageService();
   return res.json(values);
 };
 
