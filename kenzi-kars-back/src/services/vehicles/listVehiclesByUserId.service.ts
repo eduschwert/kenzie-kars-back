@@ -1,12 +1,13 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../data-source";
 
-import { Vehicle } from "../../entities";
+import { User, Vehicle } from "../../entities";
 import {
   TPaginationResult,
   TVehiclesResponse,
 } from "../../interfaces/vehicles.interfaces";
 import { vehiclesSchemaResponse } from "../../schemas/vehicles.schema";
+import AppError from "../../errors/app.errors";
 
 const listVehiclesByUserIdService = async (
   perPage: number,
@@ -14,6 +15,18 @@ const listVehiclesByUserIdService = async (
   baseUrl: string,
   userId: string
 ): Promise<TPaginationResult<TVehiclesResponse>> => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+
+  const findUser: User | null = await userRepository.findOne({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!findUser) {
+    throw new AppError("User not found", 404);
+  }
+
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
