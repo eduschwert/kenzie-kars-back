@@ -12,7 +12,7 @@ class Image {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 256 })
+  @Column({ type: "text" })
   image_url: string;
 
   @Column({ type: "integer" })

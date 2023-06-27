@@ -41,7 +41,7 @@ class Vehicle {
   @Column({ type: "text" })
   description: string;
 
-  @Column({ type: "varchar", length: 256 })
+  @Column({ type: "text" })
   cover_image: string;
 
   @Column({ default: true, type: "boolean" })
