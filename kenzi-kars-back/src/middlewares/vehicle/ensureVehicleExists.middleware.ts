@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../../data-source";
 import { Vehicle } from "../../entities";
 import AppError from "../../errors/app.errors";
+import { z } from "zod";
 
 const ensureVehicleExistsMiddleware = async (
   req: Request,
@@ -13,6 +14,11 @@ const ensureVehicleExistsMiddleware = async (
     AppDataSource.getRepository(Vehicle);
 
   const vehicleId: string = req.params.vehicleId;
+  const schema = z.string().uuid();
+  const validateId = schema.safeParse(vehicleId);
+  if (!validateId.success) {
+    throw new AppError("Invalid UUID", 400);
+  }
 
   const findVehicle: Vehicle | null = await vehicleRepository.findOne({
     where: {

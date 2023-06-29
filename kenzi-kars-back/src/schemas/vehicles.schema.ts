@@ -14,9 +14,9 @@ const vehicleSchema = z.object({
   is_good_buy: z.boolean(),
   is_active: z.boolean(),
   description: z.string(),
-  cover_image: z.string().max(256),
+  cover_image: z.string(),
   images: z
-    .array(z.string().max(256))
+    .array(z.string())
     .refine((value) => value.length <= 6, {
       message: "Images array should have at most 6 elements",
     })

@@ -32,7 +32,6 @@ const listUserVehiclesService = async (
       seller: true,
     },
     where: {
-      is_active: true,
       seller: { id: userId },
     },
     skip: startIndex,

@@ -38,6 +38,11 @@ type TVehicleFipeApi = {
   value: number;
 };
 
+type TVehiclesMaxPriceAndMileage = {
+  maxPrice: number;
+  maxMileage: number;
+};
+
 export {
   TVehicleRequest,
   TVehicleUpdate,
@@ -48,4 +53,5 @@ export {
   TVehiclesResponse,
   TVehicleUpdateWithFipe,
   TImageResponse,
+  TVehiclesMaxPriceAndMileage,
 };
