@@ -1,4 +1,4 @@
-import { User, Vehicle } from "../entities";
+import { Comment, User, Vehicle } from "../entities";
 import {
   iCommentRequest,
   iCommentResponse,
@@ -6,6 +6,8 @@ import {
 import { Request, Response } from "express";
 import { createCommentService } from "../services/comments/createComment.service";
 import { listCommentsService } from "../services/comments/listComment.service";
+import { updateCommentService } from "../services/comments/putComment.service";
+import { deleteCommentService } from "../services/comments/deleteComment.service";
 export const createCommentController = async (req: Request, res: Response) => {
   const commentData: iCommentRequest = req.body;
   const userId: User = res.locals.user;
@@ -26,4 +28,21 @@ export const listCommentsController = async (req: Request, res: Response) => {
   const allComments = await listCommentsService(vehicle.id);
 
   return res.status(200).json(allComments);
+};
+
+export const putCommentController = async (req: Request, res: Response) => {
+  const commentId: string = req.params.commentId;
+  const commentData: iCommentRequest = req.body;
+
+  const updatedComment = await updateCommentService(commentId, commentData);
+
+  return res.status(200).json(updatedComment);
+};
+
+export const deleteCommentController = async (req: Request, res: Response) => {
+  const commentId: string = req.params.commentId;
+
+  await deleteCommentService(commentId);
+
+  return res.status(204).json();
 };
