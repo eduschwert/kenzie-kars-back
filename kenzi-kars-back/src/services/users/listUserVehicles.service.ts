@@ -47,6 +47,7 @@ const listUserVehiclesService = async (
 
   const result = {
     count: totalCount,
+    totalPages: totalPages,
     previousPage:
       page > 1 ? `${baseUrl}?perPage=${perPage}&page=${page - 1}` : null,
     nextPage:
