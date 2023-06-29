@@ -7,6 +7,8 @@ import {
   deleteUserController,
   getAllUserVehiclesController,
   getUserController,
+  resetPasswordController,
+  sendEmailPasswordResetController,
   updateUserAdressController,
   updateUserController,
 } from "../controllers/user.controllers";
@@ -22,7 +24,8 @@ userRoutes.post(
   ensureEmailUniqueMiddleware,
   createNewUserController
 );
-
+userRoutes.post("/sendToken", sendEmailPasswordResetController);
+userRoutes.post("/resetPassword", resetPasswordController);
 userRoutes.use(ensureAuthMiddleware);
 
 userRoutes.get("", getUserController);
