@@ -132,15 +132,15 @@ yarn run start
 </p>
 
 <ul>
-  <li><a href="">Kenzie-Kars-Production-Documentation</a></li>
-  <li><a href="">Kenzie-Kars-Swagger-Site-Documentation</a></li>
+  <li><a href="https://kenzie-kars-nnt2.onrender.com/api-docs/">Kenzie-Kars-Production-Documentation</a></li>
+  <li><a href="https://app.swaggerhub.com/apis-docs/EDUARDOSCHWERT/kenzie-kars-api/1.0.0">Kenzie-Kars-Swagger-Site-Documentation</a></li>
 </ul>
 
 <p>
   To import the workspace into Insomnia:
 </p>
 
-<a href="" alt="Run in Insomnia"></a>
+<a href="https://insomnia.rest/run/?label=&uri=https%3A%2F%2Fraw.githubusercontent.com%2FG8-KenzieKars%2Fkenzie-kars_back%2Fdevelop%2Fkenzie-kars-workspace%3Ftoken%3DGHSAT0AAAAAAB6HKSSNO2676DZIECZVIFCWZE7EA2A" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
 
 <hr>
 
