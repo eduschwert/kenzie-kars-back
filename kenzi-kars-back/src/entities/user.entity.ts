@@ -37,8 +37,8 @@ class User {
   @Column({ type: "date" })
   birthdate: Date | string;
 
-  @Column({ type: "text" })
-  description: string;
+  @Column({ type: "text", nullable: true })
+  description?: string;
 
   @Column({ type: "boolean", default: false })
   is_seller: boolean;

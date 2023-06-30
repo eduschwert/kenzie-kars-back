@@ -23,7 +23,8 @@ const ensureAuthMiddleware = async (
   try {
     decoded = jwt.verify(token, process.env.SECRET_KEY!);
   } catch (error) {
-    throw new AppError("Invalid token", 401);
+    const errorMessage = (error as Error).message;
+    throw new AppError(errorMessage, 401);
   }
 
   (res.locals.userId = decoded.sub), (res.locals.isSeller = decoded.is_seller);

@@ -13,6 +13,7 @@ import {
 import ensureAuthMiddleware from "../middlewares/user/ensureAuth.middleware";
 import ensureEmailUniqueMiddleware from "../middlewares/user/ensureEmailUnique.middleware";
 import { addressSchemaUpdate } from "../schemas/address.schema";
+import ensureUserSellerMiddleware from "../middlewares/vehicle/ensureUserSeller.middleware";
 
 const userRoutes: Router = Router();
 
@@ -42,6 +43,10 @@ userRoutes.patch(
 
 userRoutes.delete("", deleteUserController);
 
-userRoutes.get("/user_vehicles", getAllUserVehiclesController);
+userRoutes.get(
+  "/user_vehicles",
+  ensureUserSellerMiddleware,
+  getAllUserVehiclesController
+);
 
 export default userRoutes;
