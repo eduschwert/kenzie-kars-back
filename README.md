@@ -140,7 +140,7 @@ yarn run start
   To import the workspace into Insomnia:
 </p>
 
-<a href="https://insomnia.rest/run/?label=&uri=https%3A%2F%2Fraw.githubusercontent.com%2FG8-KenzieKars%2Fkenzie-kars_back%2Fdevelop%2Fkenzie-kars-workspace%3Ftoken%3DGHSAT0AAAAAAB6HKSSNO2676DZIECZVIFCWZE7EA2A" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
+<a href="https://insomnia.rest/run/?label=&uri=https://gist.githubusercontent.com/eduschwert/cf5a1e2009bcb8ba8489b9eb2bb92ca1/raw/1a9d7c9dd318287292b727dd625bfdf11be342f7/kenzie-kars-workspace" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
 
 <hr>
 
