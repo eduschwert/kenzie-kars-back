@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import { TVehicleFipeApi } from "../../interfaces/vehicles.interfaces";
-import { api } from "../../utils/axios";
+import { api } from "../../utils/fipeApi.utils";
 
 const ensureVehicleAvailableMiddleware = async (
   req: Request,

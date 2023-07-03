@@ -31,7 +31,7 @@ export const loginTokenService = async (
     },
     process.env.SECRET_KEY!,
     {
-      expiresIn: "24h",
+      expiresIn: process.env.EXPIRES_IN || "24h",
       subject: String(user.id),
     }
   );

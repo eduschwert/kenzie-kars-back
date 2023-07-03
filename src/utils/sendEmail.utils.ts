@@ -1,74 +1,76 @@
 import { createTransport } from "nodemailer";
 import AppError from "../errors/app.errors";
-import Mailgen from "mailgen";
+import { TUserEmailSend } from "../interfaces/user.interfaces";
+import mjml2html from "mjml";
 
-class EmailService {
-  sendEmail = async ({ to, subject, text }: any) => {
-    const transporter = createTransport({
-      host: "smtp.gmail.com",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+export const resetPasswordTemplate = (
+  userName: string,
+  userEmail: string,
+  tokenResetPassword: string
+) => {
+  const mjmlTemplate = `
+    <mjml>
+      <mj-body>
+        <mj-section>
+          <mj-column>
+            <mj-text>Olá, ${userName}!</mj-text>
+            <mj-text>
+              Você recebeu este e-mail porque uma solicitação de redefinição de senha para sua conta foi recebida.
+              Por favor, siga as instruções abaixo para redefinir sua senha:
+            </mj-text>
+            <mj-button href="${process.env.BASE_URL_FRONT}resetPassword/${tokenResetPassword}">
+              Redefinir sua senha
+            </mj-button>
+            <mj-text>
+              Se você não solicitou a redefinição de senha, nenhuma ação adicional é necessária.
+              Este link expirará em 10 minutos por motivos de segurança.
+            </mj-text>
+          </mj-column>
+        </mj-section>
+        <mj-section>
+          <mj-column>
+            <mj-text>
+              Se você precisar de mais assistência, entre em contato conosco através deste e-mail ou visite nosso site.
+            </mj-text>
+            <mj-image src="https://raw.githubusercontent.com/G8-KenzieKars/Kenzie-Kars_front/develop/kenzie-kars-front/src/assets/logo.svg?token=GHSAT0AAAAAAB6HKSSNHDB2R37GDVXJZYF6ZFCGMVQ" width="153.02px" alt="Kenzie Kars" />
+          </mj-column>
+        </mj-section>
+      </mj-body>
+    </mjml>
+  `;
 
-    await transporter
-      .sendMail({
-        from: process.env.SMTP_USER,
-        to,
-        subject,
-        html: text,
-      })
-      .then(() => {
-        console.log("Email send with sucess");
-      })
-      .catch((err) => {
-        throw new AppError("Error sending email, try again later", 500);
-      });
+  const { html } = mjml2html(mjmlTemplate);
+
+  const emailTemplate = {
+    to: userEmail,
+    subject: "Redefinição de senha",
+    html,
   };
 
-  resetPasswordTemplate = (
-    userName: string,
-    userEmail: string,
-    tokenResetPassword: string
-  ) => {
-    const mailGenerator = new Mailgen({
-      theme: "cerberus",
-      product: {
-        name: "Kenzie Kars",
-        link: "http://localhost:5173/",
-      },
+  return emailTemplate;
+};
+
+export const sendEmail = async ({ to, subject, html }: TUserEmailSend) => {
+  const transporter = createTransport({
+    host: process.env.SMTP_HOST,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  try {
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to,
+      subject,
+      html,
     });
-
-    const email = {
-      body: {
-        name: userName,
-        intro:
-          "You have received this email because a password reset request for your account was received.",
-        action: {
-          instructions: "Copy the Token below to reset your password:",
-          button: {
-            color: "#DC4D2F",
-            text: tokenResetPassword,
-            link: "",
-          },
-        },
-        outro:
-          "If you did not request a password reset, no further action is required on your part.",
-      },
-    };
-
-    const emailBody = mailGenerator.generate(email);
-    const emailTemplate = {
-      to: userEmail,
-      subject: "Reset password",
-      text: emailBody,
-    };
-
-    return emailTemplate;
-  };
-}
-
-const emailService = new EmailService();
-
-export { emailService };
+  } catch (err) {
+    console.log(err);
+    throw new AppError(
+      "Error sending email, please check your email and try again",
+      400
+    );
+  }
+};

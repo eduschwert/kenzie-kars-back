@@ -9,7 +9,6 @@ import {
   BeforeInsert,
   BeforeUpdate,
   OneToOne,
-  JoinColumn,
 } from "typeorm";
 import { getRounds, hashSync } from "bcryptjs";
 import { Address, Vehicle, Comment } from ".";
@@ -44,16 +43,19 @@ class User {
   is_seller: boolean;
 
   @Column({ type: "text", default: null })
-  tokenResetPassword: string | null | undefined;
+  tokenResetPassword?: string | null;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: string;
+  @Column({ nullable: true, type: "timestamp" })
+  tokenResetPasswordExpiresAt: Date | null;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: string;
+  @CreateDateColumn({ type: "timestamp" })
+  createdAt: Date;
 
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: string;
+  @UpdateDateColumn({ type: "timestamp" })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: "timestamp" })
+  deletedAt: Date;
 
   @BeforeInsert()
   @BeforeUpdate()

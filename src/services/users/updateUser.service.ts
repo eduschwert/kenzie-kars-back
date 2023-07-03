@@ -3,7 +3,6 @@ import { User } from "../../entities/user.entity";
 import { Repository } from "typeorm";
 
 import { TUserResponse, TUserUpdate } from "../../interfaces/user.interfaces";
-import AppError from "../../errors/app.errors";
 import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
 
 export const updateUserService = async (
@@ -22,25 +21,4 @@ export const updateUserService = async (
   return userSchemaResponseWithoutPassword.parse(updatedUser);
 };
 
-export const resetPassword = async (
-  password: string,
-  tokenResetPassword: string
-) => {
-  const userRepository: Repository<User> = AppDataSource.getRepository(User);
-
-  const user = await userRepository.find({
-    where: {
-      tokenResetPassword: tokenResetPassword,
-    },
-  });
-
-  if (!user) {
-    throw new AppError("User not found", 404);
-  }
-
-  user[0].password = password;
-
-  user[0].tokenResetPassword = null;
-
-  await userRepository.save(user);
-};
+export default updateUserService;
