@@ -1,7 +1,12 @@
 import { Router } from "express";
 
 import ensureDataIsValidMiddleware from "../middlewares/global/ensureDataIsValid.middleware";
-import { userSchemaRequest, userSchemaUpdate } from "../schemas/user.schema";
+import {
+  userEmailSchema,
+  userPasswordSchema,
+  userSchemaRequest,
+  userSchemaUpdate,
+} from "../schemas/user.schema";
 import {
   createNewUserController,
   deleteUserController,
@@ -25,8 +30,19 @@ userRoutes.post(
   ensureEmailUniqueMiddleware,
   createNewUserController
 );
-userRoutes.post("/sendToken", sendEmailPasswordResetController);
-userRoutes.post("/resetPassword", resetPasswordController);
+
+userRoutes.post(
+  "/resetPassword/",
+  ensureDataIsValidMiddleware(userEmailSchema),
+  sendEmailPasswordResetController
+);
+
+userRoutes.post(
+  "/resetPassword/:token",
+  ensureDataIsValidMiddleware(userPasswordSchema),
+  resetPasswordController
+);
+
 userRoutes.use(ensureAuthMiddleware);
 
 userRoutes.get("", getUserController);
