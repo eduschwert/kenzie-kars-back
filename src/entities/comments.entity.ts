@@ -3,11 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   UpdateDateColumn,
   ManyToOne,
 } from "typeorm";
-import { Vehicle, User } from ".";
+
+import { User, Vehicle } from ".";
 
 @Entity("comments")
 class Comment {
@@ -23,15 +23,13 @@ class Comment {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @DeleteDateColumn()
-  deletedAt: Date;
-
   @ManyToOne(() => User, (user) => user.comments, { onDelete: "CASCADE" })
-  owner: User;
+  user: User;
 
   @ManyToOne(() => Vehicle, (vehicle) => vehicle.comments, {
     onDelete: "CASCADE",
   })
   vehicle: Vehicle;
 }
+
 export { Comment };

@@ -11,6 +11,7 @@ import {
   OneToOne,
 } from "typeorm";
 import { getRounds, hashSync } from "bcryptjs";
+
 import { Address, Vehicle, Comment } from ".";
 
 @Entity("users")
@@ -18,44 +19,44 @@ class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 100 })
+  @Column({ length: 100 })
   name: string;
 
-  @Column({ type: "varchar", length: 50, unique: true })
+  @Column({ length: 100, unique: true })
   email: string;
 
-  @Column({ type: "varchar", length: 120 })
+  @Column({ length: 120 })
   password: string;
 
-  @Column({ type: "varchar", length: 14 })
+  @Column({ length: 14 })
   cpf: string;
 
-  @Column({ type: "varchar", length: 16 })
+  @Column({ length: 16 })
   phone: string;
 
   @Column({ type: "date" })
-  birthdate: Date | string;
+  birthdate: Date;
 
   @Column({ type: "text", nullable: true })
-  description?: string;
+  description?: string | null | undefined;
 
-  @Column({ type: "boolean", default: false })
-  is_seller: boolean;
+  @Column({ default: false })
+  isSeller: boolean;
 
-  @Column({ type: "text", default: null })
-  tokenResetPassword?: string | null;
+  @Column({ type: "text", nullable: true })
+  tokenResetPassword?: string | null | undefined;
 
   @Column({ nullable: true, type: "timestamp" })
-  tokenResetPasswordExpiresAt: Date | null;
+  tokenResetPasswordExpiresAt?: Date | null | undefined;
 
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn()
   updatedAt: Date;
 
-  @DeleteDateColumn({ type: "timestamp" })
-  deletedAt: Date;
+  @DeleteDateColumn()
+  deletedAt: Date | null;
 
   @BeforeInsert()
   @BeforeUpdate()
@@ -66,13 +67,14 @@ class User {
     }
   }
 
-  @OneToMany(() => Vehicle, (vehicle) => vehicle.seller)
+  @OneToMany(() => Vehicle, (vehicle) => vehicle.user)
   vehicles: Vehicle[];
 
   @OneToOne(() => Address, (address) => address.user)
   address: Address;
 
-  @OneToMany(() => Comment, (comment) => comment.owner)
+  @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
 }
+
 export { User };

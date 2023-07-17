@@ -7,48 +7,49 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Image, User, Comment } from ".";
+
+import { User, Comment, Image } from ".";
 
 @Entity("vehicles")
 class Vehicle {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ length: 50 })
   brand: string;
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ length: 50 })
   model: string;
 
-  @Column({ type: "varchar", length: 4 })
-  year: string;
+  @Column()
+  year: number;
 
-  @Column({ type: "integer" })
-  fuel: Number;
+  @Column()
+  fuel: number;
 
-  @Column({ type: "integer" })
+  @Column()
   mileage: number;
 
-  @Column({ type: "varchar", length: 30 })
+  @Column({ length: 30 })
   color: string;
 
-  @Column({ type: "decimal" })
-  fipe_price: number;
+  @Column({ type: "decimal", precision: 10, scale: 2 })
+  fipePrice: number;
 
-  @Column({ type: "decimal" })
+  @Column({ type: "decimal", precision: 10, scale: 2 })
   price: number;
 
-  @Column({ type: "text" })
-  description: string;
+  @Column({ type: "text", nullable: true })
+  description?: string | null | undefined;
 
   @Column({ type: "text" })
-  cover_image: string;
+  coverImage: string;
 
-  @Column({ default: true, type: "boolean" })
-  is_active: boolean;
+  @Column({ default: true })
+  isActive: boolean;
 
-  @Column({ type: "boolean" })
-  is_good_buy: boolean;
+  @Column()
+  isGoodBuy: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -57,15 +58,15 @@ class Vehicle {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.vehicles, { onDelete: "CASCADE" })
-  seller: User;
+  user: User;
 
   @OneToMany(() => Comment, (vehiclecomment) => vehiclecomment.vehicle, {
     onDelete: "CASCADE",
   })
-  comments: Array<Comment>;
+  comments: Comment[];
 
   @OneToMany(() => Image, (vehicleimage) => vehicleimage.vehicle)
-  images: Array<Image>;
+  images: Image[];
 }
 
 export { Vehicle };
