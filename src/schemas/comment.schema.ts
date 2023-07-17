@@ -1,5 +1,4 @@
 import { string, z } from "zod";
-import { userSchemaWithoutAdress } from "./user.schema";
 import { vehicleSchemaResponse } from "./vehicles.schema";
 
 const vehicleId = z.object({
