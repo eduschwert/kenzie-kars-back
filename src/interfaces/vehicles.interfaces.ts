@@ -7,51 +7,27 @@ import {
   vehiclesSchemaResponse,
 } from "../schemas/vehicles.schema";
 
-type TVehicleRequest = z.infer<typeof vehicleSchemaRequest>;
-type TVehicleRequestWithFipe = TVehicleRequest & {
+type VehicleRequest = z.infer<typeof vehicleSchemaRequest>;
+type VehicleRequestWithFipe = VehicleRequest & {
   fipe_price: number;
 };
 
-type TVehicleUpdate = z.infer<typeof vehicleSchemaUpdate>;
-type TVehicleUpdateWithFipe = TVehicleUpdate & {
+type VehicleUpdate = z.infer<typeof vehicleSchemaUpdate>;
+type VehicleUpdateWithFipe = VehicleUpdate & {
   fipe_price: number;
 };
 
-type TVehicleResponse = z.infer<typeof vehicleSchemaResponse>;
+type VehicleResponse = z.infer<typeof vehicleSchemaResponse>;
+type VehicleResponseList = z.infer<typeof vehiclesSchemaResponse>;
 
-type TVehiclesResponse = z.infer<typeof vehiclesSchemaResponse>;
-
-type TPaginationResult<T> = {
-  count: number;
-  previousPage: string | null;
-  nextPage: string | null;
-  data: T;
-};
-type TImageResponse = z.infer<typeof imageSchemaResponse>;
-
-type TVehicleFipeApi = {
-  id: string;
-  name: string;
-  brand: string;
-  year: number;
-  fuel: number;
-  value: number;
-};
-
-type TVehiclesMaxPriceAndMileage = {
-  maxPrice: number;
-  maxMileage: number;
-};
+type ImageResponse = z.infer<typeof imageSchemaResponse>;
 
 export {
-  TVehicleRequest,
-  TVehicleUpdate,
-  TVehicleRequestWithFipe,
-  TVehicleResponse,
-  TPaginationResult,
-  TVehicleFipeApi,
-  TVehiclesResponse,
-  TVehicleUpdateWithFipe,
-  TImageResponse,
-  TVehiclesMaxPriceAndMileage,
+  VehicleRequest,
+  VehicleRequestWithFipe,
+  VehicleUpdate,
+  VehicleUpdateWithFipe,
+  VehicleResponse,
+  VehicleResponseList,
+  ImageResponse,
 };
