@@ -1,15 +1,14 @@
-import { AppDataSource } from "../../data-source";
 import { Repository } from "typeorm";
 
+import AppDataSource from "../../data-source";
 import { Address, User } from "../../entities";
-import { TAddressUpdate } from "../../interfaces/address.interface";
-import { userSchemaResponseWithoutPassword } from "../../schemas/user.schema";
-import { TUserResponse } from "../../interfaces/user.interfaces";
+import { AddressResponse, AddressUpdate } from "../../interfaces/";
+import { addressSchemaResponse } from "../../schemas/address.schema";
 
 const updateUserAddressService = async (
-  addressData: TAddressUpdate,
+  addressData: AddressUpdate,
   user: User
-): Promise<TUserResponse> => {
+): Promise<AddressResponse> => {
   const addressRepository: Repository<Address> =
     AppDataSource.getRepository(Address);
 
@@ -20,10 +19,7 @@ const updateUserAddressService = async (
 
   await addressRepository.save(updatedAddress);
 
-  return userSchemaResponseWithoutPassword.parse({
-    ...user,
-    address: updatedAddress,
-  });
+  return addressSchemaResponse.parse(updatedAddress);
 };
 
 export default updateUserAddressService;

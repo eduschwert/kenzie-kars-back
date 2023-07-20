@@ -1,6 +1,5 @@
 import { Router } from "express";
 
-import ensureDataIsValidMiddleware from "../middlewares/global/ensureDataIsValid.middleware";
 import {
   userEmailSchema,
   userPasswordSchema,
@@ -8,64 +7,58 @@ import {
   userSchemaUpdate,
 } from "../schemas/user.schema";
 import {
-  createNewUserController,
+  createUserController,
   deleteUserController,
-  getAllUserVehiclesController,
-  getUserController,
+  getProfileUserController,
   resetPasswordController,
   sendEmailPasswordResetController,
   updateUserAdressController,
   updateUserController,
-} from "../controllers/user.controllers";
+} from "../controllers/users.controllers";
+
+import { addressSchemaRequest } from "../schemas/address.schema";
+import ensureDataIsValidMiddleware from "../middlewares/global/ensureDataIsValid.middleware";
 import ensureAuthMiddleware from "../middlewares/user/ensureAuth.middleware";
 import ensureEmailUniqueMiddleware from "../middlewares/user/ensureEmailUnique.middleware";
-import { addressSchemaUpdate } from "../schemas/address.schema";
-import ensureUserSellerMiddleware from "../middlewares/vehicle/ensureUserSeller.middleware";
 
-const userRoutes: Router = Router();
+const usersRoutes: Router = Router();
 
-userRoutes.post(
+usersRoutes.post(
   "",
   ensureDataIsValidMiddleware(userSchemaRequest),
   ensureEmailUniqueMiddleware,
-  createNewUserController
+  createUserController
 );
 
-userRoutes.post(
+usersRoutes.post(
   "/resetPassword/",
   ensureDataIsValidMiddleware(userEmailSchema),
   sendEmailPasswordResetController
 );
 
-userRoutes.post(
+usersRoutes.post(
   "/resetPassword/:token",
   ensureDataIsValidMiddleware(userPasswordSchema),
   resetPasswordController
 );
 
-userRoutes.use(ensureAuthMiddleware);
+usersRoutes.use(ensureAuthMiddleware);
 
-userRoutes.get("", getUserController);
+usersRoutes.get("", getProfileUserController);
 
-userRoutes.patch(
+usersRoutes.put(
   "",
   ensureDataIsValidMiddleware(userSchemaUpdate),
   ensureEmailUniqueMiddleware,
   updateUserController
 );
 
-userRoutes.patch(
-  "/address",
-  ensureDataIsValidMiddleware(addressSchemaUpdate),
+usersRoutes.put(
+  "/addresses",
+  ensureDataIsValidMiddleware(addressSchemaRequest),
   updateUserAdressController
 );
 
-userRoutes.delete("", deleteUserController);
+usersRoutes.delete("", deleteUserController);
 
-userRoutes.get(
-  "/user_vehicles",
-  ensureUserSellerMiddleware,
-  getAllUserVehiclesController
-);
-
-export default userRoutes;
+export default usersRoutes;
