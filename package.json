@@ -25,7 +25,8 @@
     "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "^4.6.3",
     "typeorm": "^0.3.16",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "date-fns": "^2.0.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
