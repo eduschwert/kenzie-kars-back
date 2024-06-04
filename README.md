@@ -131,7 +131,7 @@ yarn run start
 </p>
 
 <ul>
-  <li><a href="https://kenzie-kars-nnt2.onrender.com/api-docs/">Kenzie-Kars-Production-Documentation</a></li>
+  <li><a href="https://kenzie-kars-api-ytj9.onrender.com/api-docs">Kenzie-Kars-Production-Documentation</a></li>
   <li><a href="https://app.swaggerhub.com/apis-docs/EDUARDOSCHWERT/kenzie-kars-api/1.0.0">Kenzie-Kars-Swagger-Site-Documentation</a></li>
 </ul>
 
