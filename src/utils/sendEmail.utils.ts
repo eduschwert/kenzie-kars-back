@@ -1,9 +1,10 @@
 import { createTransport } from "nodemailer";
-import AppError from "../errors/app.errors";
-import { TUserEmailSend } from "../interfaces/user.interfaces";
 import mjml2html from "mjml";
 
-export const resetPasswordTemplate = (
+import AppError from "../errors/app.errors";
+import { UserEmailSend } from "../interfaces";
+
+const resetPasswordTemplate = (
   userName: string,
   userEmail: string,
   tokenResetPassword: string
@@ -51,7 +52,7 @@ export const resetPasswordTemplate = (
   return emailTemplate;
 };
 
-export const sendEmail = async ({ to, subject, html }: TUserEmailSend) => {
+const sendEmail = async ({ to, subject, html }: UserEmailSend) => {
   const transporter = createTransport({
     host: process.env.SMTP_HOST,
     auth: {
@@ -67,11 +68,13 @@ export const sendEmail = async ({ to, subject, html }: TUserEmailSend) => {
       subject,
       html,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     throw new AppError(
       "Error sending email, please check your email and try again",
       400
     );
   }
 };
+
+export default { resetPasswordTemplate, sendEmail };

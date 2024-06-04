@@ -1,65 +1,18 @@
 import { Router } from "express";
 
-import {
-  vehicleSchemaRequest,
-  vehicleSchemaUpdate,
-} from "../schemas/vehicles.schema";
-import {
-  createVehicleController,
-  deleteVehicleController,
-  getMaxPriceAndMileageController,
-  listVehiclesByUserIdController,
-  listVehiclesController,
-  retrieveVehicleController,
-  updateVehicleController,
-} from "../controllers/vehicles.controller";
-import ensureDataIsValidMiddleware from "../middlewares/global/ensureDataIsValid.middleware";
-import ensureVehicleExistsMiddleware from "../middlewares/vehicle/ensureVehicleExists.middleware";
-import ensureVehicleAvailableMiddleware from "../middlewares/vehicle/ensureVehicleAvailable.middleware";
-import verifyGoodBuyMiddleware from "../middlewares/vehicle/verifyGoodBuy.middleware";
-import ensureAuthMiddleware from "../middlewares/user/ensureAuth.middleware";
-import ensureVehicleOwnerMiddleware from "../middlewares/vehicle/ensureVehicleOwner.middleware";
-import ensureUserSellerMiddleware from "../middlewares/vehicle/ensureUserSeller.middleware";
+import { vehiclesControllers } from "../controllers";
+import middlewares from "../middlewares";
 
 const vehiclesRoutes = Router();
 
-vehiclesRoutes.get("", listVehiclesController);
-
-vehiclesRoutes.get("/max", getMaxPriceAndMileageController);
+vehiclesRoutes.get("", vehiclesControllers.findAll);
 
 vehiclesRoutes.get(
   "/:vehicleId",
-  ensureVehicleExistsMiddleware,
-  retrieveVehicleController
+  middlewares.ensureVehicleActiveExistsMiddleware,
+  vehiclesControllers.findOneByVehicleId
 );
 
-vehiclesRoutes.get("/user/:userId", listVehiclesByUserIdController);
-
-vehiclesRoutes.use(ensureAuthMiddleware, ensureUserSellerMiddleware);
-
-vehiclesRoutes.post(
-  "",
-  ensureDataIsValidMiddleware(vehicleSchemaRequest),
-  ensureVehicleAvailableMiddleware,
-  verifyGoodBuyMiddleware,
-  createVehicleController
-);
-
-vehiclesRoutes.put(
-  "/:vehicleId",
-  ensureDataIsValidMiddleware(vehicleSchemaUpdate),
-  ensureVehicleExistsMiddleware,
-  ensureVehicleOwnerMiddleware,
-  ensureVehicleAvailableMiddleware,
-  verifyGoodBuyMiddleware,
-  updateVehicleController
-);
-
-vehiclesRoutes.delete(
-  "/:vehicleId",
-  ensureVehicleExistsMiddleware,
-  ensureVehicleOwnerMiddleware,
-  deleteVehicleController
-);
+vehiclesRoutes.get("/seller/:userId", vehiclesControllers.findAllByUserId);
 
 export default vehiclesRoutes;

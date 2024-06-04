@@ -1,9 +1,9 @@
 {
-  "experimentalDecorators": true,
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
     "typeRoots": ["node_modules/@types"],
+    "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -13,7 +13,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
-    "outDir": "./dist"
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

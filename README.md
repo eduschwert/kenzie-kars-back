@@ -23,7 +23,6 @@
   </li>
   <li><a href="#4-api-documentation">API Documentation</a></li>
   <li><a href="#5-database-schema">Database Schema</a></li>
-  <li><a href="#6-api-endpoints">API Endpoints</a></li>
 </ol>
 
 <hr>
@@ -56,7 +55,7 @@
 </p>
 
 <p align="center">
-  <img src="./DER_Kenzie_Kars_Conceitual.png" alt="Project diagram with its relationships!" title="kenzie-kars-diagram">
+  <img src="./DER-kenzie-kars-conceitual.png" alt="Project diagram with its relationships" title="kenzie-kars-diagram">
 </p>
 
 <hr>
@@ -140,7 +139,7 @@ yarn run start
   To import the workspace into Insomnia:
 </p>
 
-<a href="https://insomnia.rest/run/?label=&uri=https://gist.githubusercontent.com/eduschwert/cf5a1e2009bcb8ba8489b9eb2bb92ca1/raw/1a9d7c9dd318287292b727dd625bfdf11be342f7/kenzie-kars-workspace" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
+<a href="https://insomnia.rest/run/?label=&uri=https://gist.githubusercontent.com/eduschwert/cf5a1e2009bcb8ba8489b9eb2bb92ca1/raw/23c212e765e794583ddad2c653a140c79eca01fd/kenzie-kars-workspace" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
 
 <hr>
 
@@ -152,9 +151,10 @@ yarn run start
 
 <ul>
   <li><a href="#1-users">Users</a></li>
-  <li><a href="#2-address">Address</a></li>
+  <li><a href="#2-addresses">Addresses</a></li>
   <li><a href="#3-vehicles">Vehicles</a></li>
   <li><a href="#4-images">Images</a></li>
+  <li><a href="#5-comments">Comments</a></li>
 </ul>
 
 <h3 id="1-users">1. Users</h3>
@@ -202,7 +202,7 @@ yarn run start
     </tr>
     <tr>
       <td>birthdate</td>
-      <td>Date</td>
+      <td>date</td>
       <td>The birthdate of the user</td>
     </tr>
     <tr>
@@ -211,18 +211,28 @@ yarn run start
       <td>The description of the user (optional)</td>
     </tr>
     <tr>
-      <td>is_seller</td>
+      <td>isSeller</td>
       <td>boolean</td>
       <td>Specifies if the user is a seller</td>
     </tr>
     <tr>
-      <td>createdAt</td>
+      <td>tokenResetPassword</td>
       <td>string</td>
+      <td>A token used for resetting the user's password (optional)</td>
+    </tr>
+    <tr>
+      <td>tokenResetPasswordExpiresAt</td>
+      <td>date</td>
+      <td>The expiration date and time for the password reset token (optional)</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>date</td>
       <td>The registration date of the user</td>
     </tr>
     <tr>
       <td>updatedAt</td>
-      <td>string</td>
+      <td>date</td>
       <td>The date of the user's last update</td>
     </tr>
     <tr>
@@ -233,7 +243,7 @@ yarn run start
   </tbody>
 </table>
 
-<h3 id="2-address">2. Address</h3>
+<h3 id="2-addresses">2. Addresses</h3>
 
 <p>The "Address" object is defined as follows:</p>
 
@@ -246,6 +256,11 @@ yarn run start
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td>id</td>
+      <td>UUID</td>
+      <td>Unique identifier for the address</td>
+    </tr>
     <tr>
       <td>cep</td>
       <td>string</td>
@@ -262,7 +277,12 @@ yarn run start
       <td>The city of the address</td>
     </tr>
     <tr>
-      <td>street_number</td>
+      <td>street</td>
+      <td>string</td>
+      <td>The street of the address</td>
+    </tr>
+     <tr>
+      <td>number</td>
       <td>string</td>
       <td>The street number of the address</td>
     </tr>
@@ -270,6 +290,16 @@ yarn run start
       <td>complement</td>
       <td>string</td>
       <td>The complement of the address (optional)</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>date</td>
+      <td>The registration date of the address</td>
+    </tr>
+    <tr>
+      <td>updatedAt</td>
+      <td>date</td>
+      <td>The date of the address's last update</td>
     </tr>
   </tbody>
 </table>
@@ -323,14 +353,19 @@ yarn run start
     </td>
     </tr>
     <tr>
+      <td>mileage</td>
+      <td>number</td>
+      <td>The mileage of the vehicle</td>
+    </tr>
+    <tr>
       <td>color</td>
       <td>string</td>
       <td>The color of the vehicle</td>
     </tr>
     <tr>
-      <td>fipe_price</td>
+      <td>fipePrice</td>
       <td>number</td>
-      <td>The FIPE price of the vehicle. It represents the market value of the vehicle based on official research.</td>
+      <td>The FIPE price of the vehicle. It represents the market value of the vehicle</td>
     </tr>
     <tr>
       <td>price</td>
@@ -338,39 +373,39 @@ yarn run start
       <td>The price of the vehicle</td>
     </tr>
     <tr>
-      <td>is_good_buy</td>
-      <td>boolean</td>
-      <td>Specifies whether the price of the vehicle is 5% below the FIPE price. It indicates if the vehicle is considered a good buy based on its price compared to the market value.</td>
-    </tr>
-    <tr>
-      <td>is_active</td>
-      <td>boolean</td>
-      <td>Specifies whether the vehicle is active and visible to other users. If set to true, the vehicle is available for others to view and interact with. If set to false, the vehicle is inactive and not visible to other users.</td>
-    </tr>
-    <tr>
       <td>description</td>
       <td>string</td>
       <td>The description of the vehicle (optional)</td>
     </tr>
     <tr>
-      <td>cover_image</td>
+      <td>coverImage</td>
       <td>string</td>
-      <td>The cover_image of the vehicle</td>
+      <td>The cover image of the vehicle</td>
+    </tr>
+    <tr>
+      <td>isActive</td>
+      <td>boolean</td>
+      <td>Specifies whether the vehicle is active and visible to other users</td>
+    </tr>
+    <tr>
+      <td>isGoodBuy</td>
+      <td>boolean</td>
+      <td>Specifies whether the price of the vehicle is 5% below the FIPE price</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>date</td>
+      <td>The registration date of the vehicle</td>
+    </tr>
+    <tr>
+      <td>updatedAt</td>
+      <td>date</td>
+      <td>The date of the vehicle's last update</td>
     </tr>
     <tr>
       <td>images</td>
       <td>Images</td>
       <td>The images of the vehicle (optional)</td>
-    </tr>
-    <tr>
-      <td>createdAt</td>
-      <td>string</td>
-      <td>The vehicle's registration date</td>
-    </tr>
-    <tr>
-      <td>updatedAt</td>
-      <td>string</td>
-      <td>The date of the vehicle's last update</td>
     </tr>
   </tbody>
 </table>
@@ -394,129 +429,90 @@ yarn run start
       <td>Unique identifier of the image</td>
     </tr>
     <tr>
-      <td>image_number</td>
-      <td>integer</td>
-      <td>The order number of the image</td>
-    </tr>
-    <tr>
-      <td>image_url</td>
+      <td>imageUrl</td>
       <td>string</td>
       <td>The URL of the image</td>
     </tr>
     <tr>
+      <td>imageNumber</td>
+      <td>number</td>
+      <td>The order number of the image</td>
+    </tr>
+    <tr>
       <td>createdAt</td>
+      <td>date</td>
+      <td>The registration date of the image</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="5-comments">5. Comments</h3>
+
+<p>The "Comment" object is defined as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>UUID</td>
+      <td>Unique identifier of the comment</td>
+    </tr>
+    <tr>
+      <td>content</td>
       <td>string</td>
-      <td>The image's registration date</td>
+      <td>The content of the comment</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>date</td>
+      <td>The registration date of the comment</td>
+    </tr>
+    <tr>
+      <td>updatedAt</td>
+      <td>date</td>
+      <td>The date of the comment's last update</td>
     </tr>
   </tbody>
 </table>
 
-<h2 id="6-api-endpoints">API Endpoints</h2>
+<h2>Authors</h2>
 
-<p><a href="#top">Back to top</a></p>
+<p>Douglas Fernandes Santos  </p>
+<img style="border-radius: 50%" width="50" src="https://avatars.githubusercontent.com/u/33332097?v=4"/>
+<a href="https://www.linkedin.com/in/douglas-santos-0525b4216/"><img src="https://img.shields.io/badge/-Douglas-%230A66C2?logo=linkedin"/></a>
+<a href="mailto:dougbmth@hotmail.com"><img src="https://img.shields.io/badge/-dougbmth%40hotmail.com-blue?logo=microsoftoutlook
+" alt="dougbmth@hotmail.com"/></a>
 
-<h3>Index</h3>
+<br/>
+<p>Eduardo Schwert de Freitas</p>
+<img style="border-radius: 50%" width="50" src="https://avatars.githubusercontent.com/u/106620111?s=400&u=d29e7cd5bdcadc0a09721f69115d267054018be7&v=4"/>
+<a href="https://www.linkedin.com/in/eduardoschwert/"><img src="https://img.shields.io/badge/-Eduardo-%230A66C2?logo=linkedin"/></a>
+<a href="mailto:eduardoschwert@yahoo.com.br"><img src="https://img.shields.io/badge/-eduardoschwert%40yahoo.com.br-%236001D2?logo=yahoo" alt="eduardoschwert@yahoo.com.br"/></a>
 
-<ul>
-  <li><a href="#1-usersEndPoint">Users</a></li>
-  <li><a href="#2-vehiclesEndPoint">Vehicles</a></li>
-</ul>
+<br/>
+<p>Juliana Serrano do Carmo Ferraz</p>
+<img style="border-radius: 50%" width="50" src="https://avatars.githubusercontent.com/u/110045459?s=400&u=f78f09d76322238fe1e6ba930246950c74e809c6&v=4"/>
+<a href="https://www.linkedin.com/in/juliana-serrano-do-carmo-ferraz-964839111/"><img src="https://img.shields.io/badge/-Juliana-%230A66C2?logo=linkedin"/></a>
+<a href="mailto:ferrazjsc@gmail.com"><img src="https://img.shields.io/badge/-ferrazjsc%40gmail.com-red?logo=google&logoColor=%23ffffff
+" alt="ferrazjsc@gmail.com"/></a>
 
-<h3 id="1-usersEndPoint">Endpoints for users</h3>
+<br/>
+<p>Natália Badilho de Carvalho</p>
+<img style="border-radius: 50%" width="50" src="https://avatars.githubusercontent.com/u/109743554?v=4"/>
+<a href="https://www.linkedin.com/in/eduardoschwert/"><img src="https://img.shields.io/badge/-Natalia-%230A66C2?logo=linkedin"/></a>
+<a href="mailto:nbadilho@gmail.com"><img src="https://img.shields.io/badge/-nbadilho%40gmail.com-red?logo=google&logoColor=%23ffffff
+" alt="nbadilho@gmail.com"/></a>
 
-<table>
-  <thead>
-    <tr>
-      <th>Method</th>
-      <th>Route</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>POST</td>
-      <td>/users</td>
-      <td>Create a user</td>
-    </tr>
-    <tr>
-      <td>GET</td>
-      <td>/users/</td>
-      <td>Retrieve logged-in user data</td>
-    </tr>
-    <tr>
-      <td>PATCH</td>
-      <td>/users/</td>
-      <td>Update user data</td>
-    </tr>
-    <tr>
-      <td>PATCH</td>
-      <td>/users/address</td>
-      <td>Update the user's address</td>
-    </tr>
-    <tr>
-      <td>DELETE</td>
-      <td>/users/</td>
-      <td>Delete a user</td>
-    </tr>
-    <tr>
-      <td>GET</td>
-      <td>/users/user_vehicles</td>
-      <td>List vehicles of logged-in user</td>
-    </tr>
-    <tr>
-      <td>POST</td>
-      <td>/login</td>
-      <td>Login with a user</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3 id="2-vehiclesEndPoint">Endpoints for vehicles</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>Method</th>
-      <th>Route</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>POST</td>
-      <td>/vehicles</td>
-      <td>Create a vehicle</td>
-    </tr>
-    <tr>
-      <td>GET</td>
-      <td>/vehicles/user/{userId}</td>
-      <td>Retrieve a user's vehicles using their ID</td>
-    </tr>
-    <tr>
-      <td>GET</td>
-      <td>/vehicles/</td>
-      <td>Retrieve all vehicles</td>
-    </tr>
-    <tr>
-      <td>GET</td>
-      <td>/vehicles/max</td>
-      <td>Get the maximum price and mileage from the database</td>
-    </tr>
-    <tr>
-      <td>PUT</td>
-      <td>/vehicles/{vehicleId}</td>
-      <td>Update a vehicle</td>
-    </tr>
-    <tr>
-      <td>DELETE</td>
-      <td>/vehicles/{vehicleId}</td>
-      <td>Delete a vehicle</td>
-    </tr>
-  </tbody>
-</table>
-
-<h4>Author</h4>
-
-<p>
-  This project was developed by Eduardo, Juliana, Natalia, Douglas, Wesley.
-</p>
+<br/>
+<p>Wesley Ricarte</p>
+<img style="border-radius: 50%" width="50" src="https://avatars.githubusercontent.com/u/110259771?v=4"/>
+<a href="https://www.linkedin.com/in/wesleyricarte/"><img src="https://img.shields.io/badge/-Wesley-%230A66C2?logo=linkedin"/></a>
+<a href="mailto:wesley.ricarte97@gmail.com"><img src="https://img.shields.io/badge/-wesley.ricarte97%40gmail.com-red?logo=google&logoColor=%23ffffff
+" alt="wesley.ricarte97@gmail.com"/></a>

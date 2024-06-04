@@ -1,25 +1,13 @@
-import { string, z } from "zod";
-import { userSchemaWithoutAdress } from "./user.schema";
-import { vehicleSchemaResponse } from "./vehicles.schema";
+import { z } from "zod";
 
-const vehicleId = z.object({
-  id: z.string().uuid(),
-});
-
-const commentOwner = z.object({
-  name: z.string(),
-  id: z.string().uuid(),
-});
-
-export const commentSchemaRequest = z.object({
+const commentRequestSchema = z.object({
   content: z.string().min(3).max(2000),
 });
 
-export const commentSchemaResponse = commentSchemaRequest.extend({
-  id: z.string(),
+const commentResponseSchema = commentRequestSchema.extend({
+  id: z.string().uuid(),
   createdAt: z.date(),
-  owner: commentOwner,
-  vehicle: vehicleId,
+  updatedAt: z.date(),
 });
 
-export const commentSchemaList = z.array(commentSchemaResponse);
+export { commentRequestSchema, commentResponseSchema };

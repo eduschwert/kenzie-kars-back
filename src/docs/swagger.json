@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "kenzie-kars-api",
-    "description": "Kenzie Kars API: A backend solution for vehicle e-commerce.",
+    "description": "The Kenzie Kars API is the backend for the Kenzie Kars application. It has been developed using Node.js, Express, TypeORM, and PostgreSQL. This API provides a set of endpoints that allow you to perform various operations related to the Kenzie Kars application.",
     "version": "1.0.0"
   },
   "servers": [
@@ -20,7 +20,7 @@
       "post": {
         "tags": ["Users"],
         "summary": "Create user",
-        "description": "This route is responsible for creating a new user. The \"name\", \"email\", \"password\", \"cpf\", \"phone\", \"birthdate\", \"description\", and \"address\" fields are mandatory, and any additional fields sent will be ignored. It is not possible to create a user with an existing email. The password must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, one digit, and one special character. The \"address\" field should include the following properties: \"cep\", \"state\", \"city\", \"street_number\", and \"complement\".",
+        "description": "This route is responsible for creating a new user. The fields \"name\", \"email\", \"password\", \"cpf\", \"phone\", \"birthdate\", and \"address\" are required, while the \"description\" and \"isSeller\" fields are optional. Any additional fields sent will be ignored. Creating a user with an existing email is not possible. The password must contain a minimum of 6 characters, including at least one letter and one digit. The \"address\" field should include the following properties: \"cep\", \"state\", \"city\", \"street\", \"number\", while the \"complement\" field is optional.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -28,20 +28,20 @@
                 "$ref": "#/components/schemas/user_create"
               },
               "example": {
-                "name": "João",
-                "email": "joao@mail.com",
-                "password": "12345aA!",
-                "cpf": "1234567890",
-                "phone": "1234567890",
-                "birthdate": "1990-01-01",
-                "description": "Lorem ipsum",
-                "is_seller": true,
+                "name": "Eduardo Schwert",
+                "email": "eduardoschwert@yahoo.com.br",
+                "password": "12345a",
+                "cpf": "11111111111",
+                "phone": "51992904748",
+                "birthdate": "1996-08-26",
+                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
+                "isSeller": true,
                 "address": {
-                  "cep": "12345-678",
+                  "cep": "12345678",
                   "state": "NY",
                   "city": "New York",
-                  "street_name": "Fith avenue",
-                  "street_number": "123"
+                  "street": "Fith avenue",
+                  "number": "123"
                 }
               }
             }
@@ -53,30 +53,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/user_return"
+                  "$ref": "#/components/schemas/user_return_with_address"
                 },
                 "example": {
-                  "name": "João",
-                  "email": "joao@mail.com",
-                  "cpf": "1234567890",
-                  "phone": "1234567890",
-                  "birthdate": "1990-01-01",
-                  "description": "Lorem ipsum",
-                  "is_seller": true,
+                  "name": "Eduardo Schwert",
+                  "email": "eduardoschwert@yahoo.com.br",
+                  "cpf": "11111111111",
+                  "phone": "51992904748",
+                  "birthdate": "1996-08-26",
+                  "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
+                  "isSeller": true,
                   "address": {
-                    "cep": "12345-678",
+                    "cep": "12345678",
                     "state": "NY",
                     "city": "New York",
-                    "street_number": "123",
-                    "complement": "no complement",
-                    "street_name": "Fith avenue",
-                    "id": "1d2e753e-7fae-4154-834e-2a9025035572",
-                    "createdAt": "2023-06-29"
+                    "street": "Fith avenue",
+                    "number": "123",
+                    "complement": null,
+                    "id": "2c09d072-97a3-4083-a6e1-8d3ba4ddf379",
+                    "createdAt": "2023-09-10T20:35:35.404Z",
+                    "updatedAt": "2023-09-10T20:35:35.404Z"
                   },
-                  "tokenResetPassword": null,
-                  "id": "b36761a2-3ed7-462a-a793-2aacca1a84f2",
-                  "createdAt": "2023-06-29",
-                  "updatedAt": "2023-06-29"
+                  "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
+                  "createdAt": "2023-09-10T20:35:35.447Z",
+                  "updatedAt": "2023-09-10T20:35:35.447Z"
                 }
               }
             }
@@ -89,13 +89,12 @@
                   "bad_request_keys_required": {
                     "value": {
                       "message": {
+                        "password": ["Required"],
                         "name": ["Required"],
                         "email": ["Required"],
-                        "password": ["Required"],
                         "cpf": ["Required"],
                         "phone": ["Required"],
-                        "birthdate": ["Invalid input"],
-                        "description": ["Required"],
+                        "birthdate": ["Invalid date"],
                         "address": ["Required"]
                       }
                     }
@@ -111,7 +110,8 @@
                     "value": {
                       "message": {
                         "password": [
-                          "Password must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, one digit, and one special character."
+                          "Password must have at least 6 characters",
+                          "Password must contain at least one letter and one number"
                         ]
                       }
                     }
@@ -161,30 +161,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/user_return"
+                  "$ref": "#/components/schemas/user_return_with_address"
                 },
                 "example": {
-                  "name": "João",
-                  "email": "joao@mail.com",
-                  "cpf": "1234567890",
-                  "phone": "1234567890",
-                  "birthdate": "1990-01-01",
-                  "description": "Lorem ipsum",
-                  "is_seller": true,
+                  "name": "Eduardo Schwert",
+                  "email": "eduardoschwert@yahoo.com.br",
+                  "cpf": "11111111111",
+                  "phone": "51992904748",
+                  "birthdate": "1996-08-26",
+                  "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
+                  "isSeller": true,
                   "address": {
-                    "cep": "12345-678",
+                    "cep": "12345678",
                     "state": "NY",
                     "city": "New York",
-                    "street_number": "123",
-                    "complement": "no complement",
-                    "street_name": "Fith avenue",
-                    "id": "1d2e753e-7fae-4154-834e-2a9025035572",
-                    "createdAt": "2023-06-29"
+                    "street": "Fith avenue",
+                    "number": "123",
+                    "complement": null,
+                    "id": "2c09d072-97a3-4083-a6e1-8d3ba4ddf379",
+                    "createdAt": "2023-09-10T20:35:35.404Z",
+                    "updatedAt": "2023-09-10T20:35:35.447Z"
                   },
-                  "tokenResetPassword": null,
-                  "id": "b36761a2-3ed7-462a-a793-2aacca1a84f2",
-                  "createdAt": "2023-06-29",
-                  "updatedAt": "2023-06-29"
+                  "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
+                  "createdAt": "2023-09-10T20:35:35.447Z",
+                  "updatedAt": "2023-09-10T20:35:35.447Z"
                 }
               }
             }
@@ -225,10 +225,10 @@
           }
         }
       },
-      "patch": {
+      "put": {
         "tags": ["Users"],
         "summary": "Update user data",
-        "description": "This route is responsible for updating a user's data based on their token. The fields that can be updated include \"name\", \"email\", \"password\", \"cpf\", \"phone\", \"birthdate\", and \"description\". Any additional fields sent will be ignored.",
+        "description": "This route is responsible for updating a user's data based on their token. The fields \"name\", \"email\", \"password\", \"cpf\", \"phone\", and \"birthdate\" are required, while the \"description\" field is optional. Any additional fields sent will be ignored. Updating a user with an existing email is not possible. The password must contain a minimum of 6 characters, including at least one letter and one digit.",
         "security": [
           {
             "bearerAuth": []
@@ -241,7 +241,13 @@
                 "$ref": "#/components/schemas/user_update"
               },
               "example": {
-                "name": "João atualizado"
+                "name": "Eduardo Atualizado",
+                "email": "eduardoschwert@yahoo.com.br",
+                "password": "12345a",
+                "cpf": "11111111111",
+                "phone": "51992904748",
+                "birthdate": "1996-08-26",
+                "description": "Lorem ipsum"
               }
             }
           }
@@ -255,27 +261,16 @@
                   "$ref": "#/components/schemas/user_return"
                 },
                 "example": {
-                  "name": "João atualizado",
-                  "email": "joao@mail.com",
-                  "cpf": "1234567890",
-                  "phone": "1234567890",
-                  "birthdate": "1990-01-01",
+                  "name": "Eduardo Atualizado",
+                  "email": "eduardoschwert@yahoo.com.br",
+                  "cpf": "11111111111",
+                  "phone": "51992904748",
+                  "birthdate": "1996-08-26",
                   "description": "Lorem ipsum",
-                  "is_seller": true,
-                  "address": {
-                    "cep": "12345-678",
-                    "state": "NY",
-                    "city": "New York",
-                    "street_number": "123",
-                    "complement": "no complement",
-                    "street_name": "Fith avenue",
-                    "id": "b185e922-9cab-4a64-80e2-84988dd15130",
-                    "createdAt": "2023-06-29"
-                  },
-                  "tokenResetPassword": null,
-                  "id": "7db1d4cf-a874-4c5d-aaf4-49817e566a61",
-                  "createdAt": "2023-06-29",
-                  "updatedAt": "2023-06-29"
+                  "isSeller": true,
+                  "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
+                  "createdAt": "2023-09-10T20:35:35.447Z",
+                  "updatedAt": "2023-09-10T20:43:26.979Z"
                 }
               }
             }
@@ -323,6 +318,18 @@
             "content": {
               "application/json": {
                 "examples": {
+                  "bad_request_keys_required": {
+                    "value": {
+                      "message": {
+                        "password": ["Required"],
+                        "name": ["Required"],
+                        "email": ["Required"],
+                        "cpf": ["Required"],
+                        "phone": ["Required"],
+                        "birthdate": ["Invalid date"]
+                      }
+                    }
+                  },
                   "bad_request_invalid_email": {
                     "value": {
                       "message": {
@@ -334,7 +341,8 @@
                     "value": {
                       "message": {
                         "password": [
-                          "Password must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, one digit, and one special character."
+                          "Password must have at least 6 characters",
+                          "Password must contain at least one letter and one number"
                         ]
                       }
                     }
@@ -406,10 +414,10 @@
       }
     },
     "/users/address": {
-      "patch": {
+      "put": {
         "tags": ["Users"],
         "summary": "Update user address data",
-        "description": "This route is responsible for updating a user's address data based on their token. The fields that can be updated include \"cep\", \"state\", \"city\", \"street_number\", and \"complement\". Any additional fields sent will be ignored.",
+        "description": "This route is responsible for updating a user's address data based on their token. The fields \"cep\", \"state\", \"city\", \"street\", and \"number\" are required, while the \"complement\" field is optional. Any additional fields sent will be ignored.",
         "security": [
           {
             "bearerAuth": []
@@ -419,10 +427,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/address_update"
+                "$ref": "#/components/schemas/user_update_address"
               },
               "example": {
-                "city": "New York Atualizado"
+                "cep": "12345678",
+                "state": "NY",
+                "city": "New York Atualizado",
+                "street": "Fith avenue",
+                "number": "123"
               }
             }
           }
@@ -433,30 +445,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/user_return"
+                  "$ref": "#/components/schemas/user_return_address"
                 },
                 "example": {
-                  "name": "João atualizado",
-                  "email": "joao@mail.com",
-                  "cpf": "1234567890",
-                  "phone": "1234567890",
-                  "birthdate": "1990-01-01",
-                  "description": "Lorem ipsum",
-                  "is_seller": true,
-                  "address": {
-                    "cep": "12345-678",
-                    "state": "NY",
-                    "city": "New York Atualizado",
-                    "street_number": "123",
-                    "complement": "no complement",
-                    "street_name": "Fith avenue",
-                    "id": "defe806e-35d4-430c-ab05-f466ce232fdb",
-                    "createdAt": "2023-06-29"
-                  },
-                  "tokenResetPassword": null,
-                  "id": "8cc4b3e3-4666-44ae-a1c7-36743b0a09af",
-                  "createdAt": "2023-06-29",
-                  "updatedAt": "2023-06-29"
+                  "cep": "12345678",
+                  "state": "NY",
+                  "city": "New York Atualizado",
+                  "street": "Fith avenue",
+                  "number": "123",
+                  "complement": null,
+                  "id": "2c09d072-97a3-4083-a6e1-8d3ba4ddf379",
+                  "createdAt": "2023-09-10T20:35:35.404Z",
+                  "updatedAt": "2023-09-11T00:43:52.464Z"
                 }
               }
             }
@@ -490,10 +490,14 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "bad_request_invalid_cep": {
+                  "bad_request_keys_required": {
                     "value": {
                       "message": {
-                        "cep": ["String must contain at most 9 character(s)"]
+                        "cep": ["Required"],
+                        "state": ["Required"],
+                        "city": ["Required"],
+                        "street": ["Required"],
+                        "number": ["Required"]
                       }
                     }
                   }
@@ -514,16 +518,197 @@
         }
       }
     },
-    "/users/user_vehicles": {
-      "get": {
-        "tags": ["Vehicles User Seller"],
-        "summary": "Retrieve user vehicles",
-        "description": "This route is responsible for retrieving a user's vehicles based on their token.",
-        "security": [
+    "/users/resetPassword": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Send Email Recover Password",
+        "description": "This route is responsible for sending an email containing a link with a token to recover a user's password. The \"email\" field is mandatory.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                }
+              },
+              "example": {
+                "email": "eduardoschwert@yahoo.com.br"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Link sent to email"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - The specified user email does not exist.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_not_found": {
+                    "value": {
+                      "message": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Some required fields were not sent or are in an invalid format. Please ensure all mandatory fields are provided correctly.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bad_request_keys_required": {
+                    "value": {
+                      "message": {
+                        "email": ["Required"]
+                      }
+                    }
+                  },
+                  "bad_request_invalid_email": {
+                    "value": {
+                      "message": {
+                        "email": ["Invalid email"]
+                      }
+                    }
+                  },
+                  "bad_request_invalid_email_not_exist": {
+                    "value": {
+                      "message": "Error sending email, please check your email and try again"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal Server Error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/resetPassword/{token}": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Recover Password",
+        "description": "This route is responsible for recovering a user's password. The \"password\" field is required. It also verifies if the token is valid and has not expired.",
+        "parameters": [
           {
-            "bearerAuth": []
+            "name": "token",
+            "in": "path",
+            "description": "Token of the user",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                }
+              },
+              "example": {
+                "password": "novasenha1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Password change with success"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - The provided token does not correspond to any user.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_not_found": {
+                    "value": {
+                      "message": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Some required fields were not sent or are in an invalid format. Please ensure all mandatory fields are provided correctly.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bad_request_invalid_password": {
+                    "value": {
+                      "message": {
+                        "password": [
+                          "Password must have at least 6 characters",
+                          "Password must contain at least one letter and one number"
+                        ]
+                      }
+                    }
+                  },
+                  "invalid_or_expired_token": {
+                    "value": {
+                      "message": "Invalid or expired token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal Server Error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehicles": {
+      "get": {
+        "tags": ["Vehicles"],
+        "summary": "Retrieve vehicles",
+        "description": "This route is responsible for retrieving all vehicles.",
         "parameters": [
           {
             "name": "page",
@@ -545,7 +730,90 @@
               "type": "integer",
               "default": 12,
               "minimum": 1,
-              "maximum": 50
+              "maximum": 30
+            }
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "description": "Filter by vehicle brand",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "description": "Filter by vehicle model",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "description": "Filter by vehicle color",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Filter by vehicle year",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "fuel",
+            "in": "query",
+            "description": "Filter by vehicle fuel",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3
+            }
+          },
+          {
+            "name": "minMileage",
+            "in": "query",
+            "description": "Filter by vehicle minMileage",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "maxMileage",
+            "in": "query",
+            "description": "Filter by vehicle maxMileage",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "description": "Filter by vehicle minPrice",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "description": "Filter by vehicle maxPrice",
+            "required": false,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -555,184 +823,73 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/vehicle_return"
+                  "$ref": "#/components/schemas/vehicle_return_pagination_with_user"
                 },
                 "example": {
-                  "count": 0,
+                  "count": 2,
+                  "totalPages": 1,
                   "previousPage": null,
                   "nextPage": null,
                   "data": [
                     {
-                      "id": "07dfdce7-1824-47b8-ad1a-741a5673785c",
                       "brand": "chevrolet",
                       "model": "bolt ev premier 203cv (elétrico)",
                       "year": "2022",
                       "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
+                      "mileage": 400,
+                      "color": "white",
+                      "price": 300000,
                       "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "f712274c-dc60-449b-9d2b-2097e0ae90b5",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:46:58.874Z"
-                        },
-                        {
-                          "id": "88429dc2-5593-4094-b930-dd0fddc43144",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:46:58.941Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:46:58.845Z",
-                      "updatedAt": "2023-06-29T23:46:58.845Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
+                      "coverImage": "imagem cover",
+                      "id": "2f7785ec-76c3-483e-9876-eb7de227527f",
+                      "fipePrice": 282045,
+                      "isGoodBuy": false,
+                      "isActive": true,
+                      "createdAt": "2023-09-11T18:46:53.232Z",
+                      "updatedAt": "2023-09-11T18:46:53.232Z",
+                      "user": {
+                        "name": "Eduardo Atualizado",
+                        "email": "eduardoschwert@yahoo.com.br",
+                        "cpf": "11111111111",
+                        "phone": "51992904748",
+                        "birthdate": "1996-08-26",
                         "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
+                        "isSeller": true,
+                        "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
+                        "createdAt": "2023-09-10T20:35:35.447Z",
+                        "updatedAt": "2023-09-10T20:43:26.979Z"
                       }
                     },
                     {
-                      "id": "a3e84582-eee0-4b93-a837-fa3156fc5161",
                       "brand": "chevrolet",
                       "model": "bolt ev premier 203cv (elétrico)",
                       "year": "2022",
                       "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
+                      "mileage": 400,
+                      "color": "white",
+                      "price": 300000,
                       "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "fb858822-17f6-412e-b73d-56a7eb3dacf4",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:47:00.521Z"
-                        },
-                        {
-                          "id": "b0754d7a-6b3f-4bba-ba5a-9d9447a941fd",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:47:00.522Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:47:00.510Z",
-                      "updatedAt": "2023-06-29T23:47:00.510Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
+                      "coverImage": "imagem cover",
+                      "id": "11ec0832-92ca-4b9a-81df-d7f19b7997fa",
+                      "fipePrice": 282045,
+                      "isGoodBuy": false,
+                      "isActive": true,
+                      "createdAt": "2023-09-11T19:00:37.328Z",
+                      "updatedAt": "2023-09-11T19:00:37.328Z",
+                      "user": {
+                        "name": "Eduardo Atualizado",
+                        "email": "eduardoschwert@yahoo.com.br",
+                        "cpf": "11111111111",
+                        "phone": "51992904748",
+                        "birthdate": "1996-08-26",
                         "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
-                      }
-                    },
-                    {
-                      "id": "09e8354f-eedf-4ae5-9daf-f975c2633dcc",
-                      "brand": "chevrolet",
-                      "model": "bolt ev premier 203cv (elétrico)",
-                      "year": "2022",
-                      "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
-                      "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "4cea2b95-e42c-4fa8-a584-24d8b750879b",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:47:01.641Z"
-                        },
-                        {
-                          "id": "0470b05e-6f50-4511-a3da-67f22c7686a6",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:47:01.641Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:47:01.632Z",
-                      "updatedAt": "2023-06-29T23:47:01.632Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
-                        "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
+                        "isSeller": true,
+                        "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
+                        "createdAt": "2023-09-10T20:35:35.447Z",
+                        "updatedAt": "2023-09-10T20:43:26.979Z"
                       }
                     }
                   ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - No authorization token provided, the provided token has expired, or the token is invalid.",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "missing_bearer_token": {
-                    "value": {
-                      "message": "Missing bearer token"
-                    }
-                  },
-                  "jwt_expired": {
-                    "value": {
-                      "message": "jwt expired"
-                    }
-                  },
-                  "invalid_token": {
-                    "value": {
-                      "message": "JWT Invalid"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - You don't have permissions to perform this action",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "user_is_not_seller": {
-                    "value": {
-                      "message": "You don't have permissions to perform this action"
-                    }
-                  }
                 }
               }
             }
@@ -750,7 +907,7 @@
         }
       }
     },
-    "/vehicles/user/{userId}": {
+    "/vehicles/seller/{userId}": {
       "get": {
         "tags": ["Vehicles"],
         "summary": "Retrieve user vehicles",
@@ -786,7 +943,7 @@
               "type": "integer",
               "default": 12,
               "minimum": 1,
-              "maximum": 50
+              "maximum": 30
             }
           }
         ],
@@ -796,146 +953,87 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/vehicle_return_pagination"
+                  "$ref": "#/components/schemas/vehicle_return_pagination_with_one_user"
                 },
                 "example": {
-                  "count": 0,
+                  "count": 2,
+                  "totalPages": 1,
                   "previousPage": null,
                   "nextPage": null,
-                  "data": [
-                    {
-                      "id": "07dfdce7-1824-47b8-ad1a-741a5673785c",
-                      "brand": "chevrolet",
-                      "model": "bolt ev premier 203cv (elétrico)",
-                      "year": "2022",
-                      "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
-                      "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "f712274c-dc60-449b-9d2b-2097e0ae90b5",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:46:58.874Z"
-                        },
-                        {
-                          "id": "88429dc2-5593-4094-b930-dd0fddc43144",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:46:58.941Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:46:58.845Z",
-                      "updatedAt": "2023-06-29T23:46:58.845Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
-                        "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
-                      }
+                  "data": {
+                    "user": {
+                      "name": "Eduardo Atualizado",
+                      "email": "eduardoschwert@yahoo.com.br",
+                      "cpf": "11111111111",
+                      "phone": "51992904748",
+                      "birthdate": "1996-08-26",
+                      "description": "Lorem ipsum",
+                      "isSeller": true,
+                      "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
+                      "createdAt": "2023-09-10T20:35:35.447Z",
+                      "updatedAt": "2023-09-10T20:43:26.979Z"
                     },
-                    {
-                      "id": "a3e84582-eee0-4b93-a837-fa3156fc5161",
-                      "brand": "chevrolet",
-                      "model": "bolt ev premier 203cv (elétrico)",
-                      "year": "2022",
-                      "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
-                      "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "fb858822-17f6-412e-b73d-56a7eb3dacf4",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:47:00.521Z"
-                        },
-                        {
-                          "id": "b0754d7a-6b3f-4bba-ba5a-9d9447a941fd",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:47:00.522Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:47:00.510Z",
-                      "updatedAt": "2023-06-29T23:47:00.510Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
-                        "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
+                    "vehicles": [
+                      {
+                        "brand": "chevrolet",
+                        "model": "bolt ev premier 203cv (elétrico)",
+                        "year": "2022",
+                        "fuel": 3,
+                        "mileage": 400,
+                        "color": "white",
+                        "price": 300000,
+                        "description": "carro",
+                        "coverImage": "imagem cover",
+                        "id": "2f7785ec-76c3-483e-9876-eb7de227527f",
+                        "fipePrice": 282045,
+                        "isGoodBuy": false,
+                        "isActive": true,
+                        "createdAt": "2023-09-11T18:46:53.232Z",
+                        "updatedAt": "2023-09-11T18:46:53.232Z"
+                      },
+                      {
+                        "brand": "chevrolet",
+                        "model": "bolt ev premier 203cv (elétrico)",
+                        "year": "2022",
+                        "fuel": 3,
+                        "mileage": 400,
+                        "color": "white",
+                        "price": 300000,
+                        "description": "carro",
+                        "coverImage": "imagem cover",
+                        "id": "11ec0832-92ca-4b9a-81df-d7f19b7997fa",
+                        "fipePrice": 282045,
+                        "isGoodBuy": false,
+                        "isActive": true,
+                        "createdAt": "2023-09-11T19:00:37.328Z",
+                        "updatedAt": "2023-09-11T19:00:37.328Z"
                       }
-                    },
-                    {
-                      "id": "09e8354f-eedf-4ae5-9daf-f975c2633dcc",
-                      "brand": "chevrolet",
-                      "model": "bolt ev premier 203cv (elétrico)",
-                      "year": "2022",
-                      "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
-                      "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "4cea2b95-e42c-4fa8-a584-24d8b750879b",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:47:01.641Z"
-                        },
-                        {
-                          "id": "0470b05e-6f50-4511-a3da-67f22c7686a6",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:47:01.641Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:47:01.632Z",
-                      "updatedAt": "2023-06-29T23:47:01.632Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
-                        "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
-                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - The specified seller ID does not exist.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "seller_not_found": {
+                    "value": {
+                      "message": "Seller not found"
                     }
-                  ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid UUID",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid UUID"
                 }
               }
             }
@@ -953,11 +1051,133 @@
         }
       }
     },
-    "/vehicles": {
+    "/vehicles/{vehicleId}": {
+      "get": {
+        "tags": ["Vehicles"],
+        "summary": "Retrieve vehicle",
+        "description": "This route is responsible for retrieving an active vehicle.",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "description": "ID of the vehicle",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/vehicle_return_with_user_and_images_and_comments"
+                },
+                "example": {
+                  "brand": "chevrolet",
+                  "model": "bolt ev premier 203cv (elétrico)",
+                  "year": "2022",
+                  "fuel": 3,
+                  "mileage": 400,
+                  "color": "white",
+                  "price": 300000,
+                  "description": "carro",
+                  "coverImage": "imagem cover",
+                  "id": "2f7785ec-76c3-483e-9876-eb7de227527f",
+                  "fipePrice": 282045,
+                  "isGoodBuy": false,
+                  "isActive": true,
+                  "createdAt": "2023-09-11T18:46:53.232Z",
+                  "updatedAt": "2023-09-11T18:46:53.232Z",
+                  "user": {
+                    "name": "Eduardo Atualizado",
+                    "email": "eduardoschwert@yahoo.com.br",
+                    "cpf": "11111111111",
+                    "phone": "51992904748",
+                    "birthdate": "1996-08-26",
+                    "description": "Lorem ipsum",
+                    "isSeller": true,
+                    "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
+                    "createdAt": "2023-09-10T20:35:35.447Z",
+                    "updatedAt": "2023-09-10T20:43:26.979Z"
+                  },
+                  "images": [
+                    {
+                      "id": "115fd90f-8398-4cf8-bb18-29b201c1548f",
+                      "imageNumber": 1,
+                      "imageUrl": "imagem1",
+                      "createdAt": "2023-09-11T18:46:53.264Z"
+                    },
+                    {
+                      "id": "a8a148d4-905f-4009-8cfb-2ad057a9a3d4",
+                      "imageNumber": 2,
+                      "imageUrl": "imagem2",
+                      "createdAt": "2023-09-11T18:46:53.347Z"
+                    },
+                    {
+                      "id": "3cf00f72-e610-42e4-a406-6bc008af1e75",
+                      "imageNumber": 3,
+                      "imageUrl": "imagem3",
+                      "createdAt": "2023-09-11T18:46:53.351Z"
+                    }
+                  ],
+                  "comments": [
+                    {
+                      "content": "Excelente carro.",
+                      "id": "cdfe487f-e3b4-4c2f-ab23-a48932192fb1",
+                      "createdAt": "2023-09-11T20:59:37.253Z",
+                      "updatedAt": "2023-09-11T20:59:37.253Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - The specified vehicle ID does not exist.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "vehicle_not_found": {
+                    "value": {
+                      "message": "Vehicle not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid UUID",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid UUID"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal Server Error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sellers": {
       "post": {
-        "tags": ["Vehicles User Seller"],
+        "tags": ["Sellers"],
         "summary": "Create vehicle",
-        "description": "This route is responsible for creating a new vehicle. The \"brand\", \"model\", \"year\", \"fuel\", \"mileage\", \"color\", \"description\", \"price\", and \"cover_image\" fields are mandatory. Additionally, an optional array of images can be provided, with a maximum of 6 images. Any additional fields sent will be ignored.",
+        "description": "This route is responsible for creating a new vehicle. The \"brand\", \"model\", \"year\", \"fuel\", \"mileage\", \"color\", \"price\", and \"coverImage\" fields are required, while the \"description\" field is optional. Additionally, an optional array of images can be provided, with a maximum of 6 images. Any additional fields sent will be ignored.",
         "security": [
           {
             "bearerAuth": []
@@ -978,7 +1198,7 @@
                 "color": "branco",
                 "description": "carro",
                 "price": 250000,
-                "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
+                "coverImage": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
                 "images": ["image1", "image12"]
               }
             }
@@ -990,7 +1210,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/vehicle_return"
+                  "$ref": "#/components/schemas/vehicle_return_with_images"
                 },
                 "example": {
                   "id": "622a29cf-c09e-4e2c-b240-dc94628adef1",
@@ -1000,41 +1220,28 @@
                   "fuel": 3,
                   "mileage": 400000,
                   "color": "branco",
-                  "fipe_price": 282045,
+                  "fipePrice": 282045,
                   "price": 550000,
-                  "is_good_buy": false,
-                  "is_active": true,
+                  "isGoodBuy": false,
+                  "isActive": true,
                   "description": "carro",
-                  "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
+                  "coverImage": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
                   "images": [
                     {
                       "id": "84992ae8-c107-4a27-afff-3dc5a28ff80a",
-                      "image_number": 1,
-                      "image_url": "image1",
+                      "imageNumber": 1,
+                      "imageUrl": "image1",
                       "createdAt": "2023-06-29T21:39:09.960Z"
                     },
                     {
                       "id": "a3b8672d-ef9e-45de-b6c6-53c4544edca5",
-                      "image_number": 2,
-                      "image_url": "image12",
+                      "imageNumber": 2,
+                      "imageUrl": "image12",
                       "createdAt": "2023-06-29T21:39:10.037Z"
                     }
                   ],
                   "createdAt": "2023-06-29T21:39:09.926Z",
-                  "updatedAt": "2023-06-29T21:39:09.926Z",
-                  "seller": {
-                    "name": "João",
-                    "email": "joao1@mail.com",
-                    "cpf": "1234567890",
-                    "phone": "1234567890",
-                    "birthdate": "1990-01-01",
-                    "description": "Lorem ipsum",
-                    "is_seller": true,
-                    "tokenResetPassword": null,
-                    "id": "8cc4b3e3-4666-44ae-a1c7-36743b0a09af",
-                    "createdAt": "2023-06-29",
-                    "updatedAt": "2023-06-29"
-                  }
+                  "updatedAt": "2023-06-29T21:39:09.926Z"
                 }
               }
             }
@@ -1070,7 +1277,7 @@
                 "examples": {
                   "user_is_not_seller": {
                     "value": {
-                      "message": "You don't have permissions to perform this action"
+                      "message": "User is not a seller"
                     }
                   }
                 }
@@ -1092,8 +1299,7 @@
                         "mileage": ["Required"],
                         "color": ["Required"],
                         "price": ["Required"],
-                        "description": ["Required"],
-                        "cover_image": ["Required"]
+                        "coverImage": ["Required"]
                       }
                     }
                   },
@@ -1119,9 +1325,14 @@
         }
       },
       "get": {
-        "tags": ["Vehicles"],
-        "summary": "Retrieve vehicles",
-        "description": "This route is responsible for retrieving all vehicles.",
+        "tags": ["Sellers"],
+        "summary": "Retrieve user vehicles",
+        "description": "This route is responsible for retrieving a user's vehicles based on their token.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "page",
@@ -1143,7 +1354,7 @@
               "type": "integer",
               "default": 12,
               "minimum": 1,
-              "maximum": 50
+              "maximum": 30
             }
           }
         ],
@@ -1156,143 +1367,84 @@
                   "$ref": "#/components/schemas/vehicle_return_pagination"
                 },
                 "example": {
-                  "count": 0,
+                  "count": 2,
+                  "totalPages": 1,
                   "previousPage": null,
                   "nextPage": null,
                   "data": [
                     {
-                      "id": "07dfdce7-1824-47b8-ad1a-741a5673785c",
                       "brand": "chevrolet",
                       "model": "bolt ev premier 203cv (elétrico)",
                       "year": "2022",
                       "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
+                      "mileage": 400,
+                      "color": "white",
+                      "price": 300000,
                       "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "f712274c-dc60-449b-9d2b-2097e0ae90b5",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:46:58.874Z"
-                        },
-                        {
-                          "id": "88429dc2-5593-4094-b930-dd0fddc43144",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:46:58.941Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:46:58.845Z",
-                      "updatedAt": "2023-06-29T23:46:58.845Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
-                        "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
-                      }
+                      "coverImage": "imagem cover",
+                      "id": "2f7785ec-76c3-483e-9876-eb7de227527f",
+                      "fipePrice": 282045,
+                      "isGoodBuy": false,
+                      "isActive": true,
+                      "createdAt": "2023-09-11T18:46:53.232Z",
+                      "updatedAt": "2023-09-11T18:46:53.232Z"
                     },
                     {
-                      "id": "a3e84582-eee0-4b93-a837-fa3156fc5161",
                       "brand": "chevrolet",
                       "model": "bolt ev premier 203cv (elétrico)",
                       "year": "2022",
                       "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
+                      "mileage": 400,
+                      "color": "white",
+                      "price": 300000,
                       "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "fb858822-17f6-412e-b73d-56a7eb3dacf4",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:47:00.521Z"
-                        },
-                        {
-                          "id": "b0754d7a-6b3f-4bba-ba5a-9d9447a941fd",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:47:00.522Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:47:00.510Z",
-                      "updatedAt": "2023-06-29T23:47:00.510Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
-                        "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
-                      }
-                    },
-                    {
-                      "id": "09e8354f-eedf-4ae5-9daf-f975c2633dcc",
-                      "brand": "chevrolet",
-                      "model": "bolt ev premier 203cv (elétrico)",
-                      "year": "2022",
-                      "fuel": 3,
-                      "mileage": 400000,
-                      "color": "branco",
-                      "fipe_price": 282045,
-                      "price": 250000,
-                      "is_good_buy": true,
-                      "is_active": true,
-                      "description": "carro",
-                      "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                      "images": [
-                        {
-                          "id": "4cea2b95-e42c-4fa8-a584-24d8b750879b",
-                          "image_number": 1,
-                          "image_url": "image1",
-                          "createdAt": "2023-06-29T23:47:01.641Z"
-                        },
-                        {
-                          "id": "0470b05e-6f50-4511-a3da-67f22c7686a6",
-                          "image_number": 2,
-                          "image_url": "image12",
-                          "createdAt": "2023-06-29T23:47:01.641Z"
-                        }
-                      ],
-                      "createdAt": "2023-06-29T23:47:01.632Z",
-                      "updatedAt": "2023-06-29T23:47:01.632Z",
-                      "seller": {
-                        "name": "João",
-                        "email": "joao@mail.com",
-                        "cpf": "1234567890",
-                        "phone": "1234567890",
-                        "birthdate": "1990-01-12T00:00:00.000Z",
-                        "description": "Lorem ipsum",
-                        "is_seller": true,
-                        "tokenResetPassword": null,
-                        "id": "044394c4-c947-4bd4-bd58-f6e3216bd376",
-                        "createdAt": "2023-06-29",
-                        "updatedAt": "2023-06-29"
-                      }
+                      "coverImage": "imagem cover",
+                      "id": "11ec0832-92ca-4b9a-81df-d7f19b7997fa",
+                      "fipePrice": 282045,
+                      "isGoodBuy": false,
+                      "isActive": true,
+                      "createdAt": "2023-09-11T19:00:37.328Z",
+                      "updatedAt": "2023-09-11T19:00:37.328Z"
                     }
                   ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - No authorization token provided, the provided token has expired, or the token is invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missing_bearer_token": {
+                    "value": {
+                      "message": "Missing bearer token"
+                    }
+                  },
+                  "jwt_expired": {
+                    "value": {
+                      "message": "jwt expired"
+                    }
+                  },
+                  "invalid_token": {
+                    "value": {
+                      "message": "JWT Invalid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - You don't have permissions to perform this action",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_is_not_seller": {
+                    "value": {
+                      "message": "User is not a seller"
+                    }
+                  }
                 }
               }
             }
@@ -1310,11 +1462,11 @@
         }
       }
     },
-    "/vehicles/{vehicleId}": {
+    "/sellers/{vehicleId}": {
       "put": {
-        "tags": ["Vehicles User Seller"],
+        "tags": ["Sellers"],
         "summary": "Update vehicle data",
-        "description": "This route is responsible for updating a vehicle. The \"brand\", \"model\", \"year\", \"fuel\", \"mileage\", \"color\", \"description\", \"price\", \"cover_image\", and \"is_active\" fields are mandatory. Additionally, an optional array of images can be provided, with a maximum of 6 images. Any additional fields sent will be ignored.",
+        "description": "This route is responsible for updating a vehicle. The \"brand\", \"model\", \"year\", \"fuel\", \"mileage\", \"color\", \"price\", and \"coverImage\" fields are required, while the \"description\" field is optional. Additionally, an optional array of images can be provided, with a maximum of 6 images. Any additional fields sent will be ignored.",
         "security": [
           {
             "bearerAuth": []
@@ -1347,7 +1499,7 @@
                 "color": "branco",
                 "description": "editado",
                 "price": 250000,
-                "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
+                "coverImage": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
                 "images": ["image1", "image12"]
               }
             }
@@ -1359,35 +1511,38 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/vehicle_return"
+                  "$ref": "#/components/schemas/vehicle_return_with_images"
                 },
                 "example": {
-                  "id": "b36761a2-3ed7-462a-a793-2aacca1a84f2",
                   "brand": "chevrolet",
                   "model": "bolt ev premier 203cv (elétrico)",
                   "year": "2022",
                   "fuel": 3,
                   "mileage": 400000,
                   "color": "branco",
-                  "description": "editado",
                   "price": 250000,
-                  "cover_image": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
-                  "images": ["image1", "image12"],
-                  "createdAt": "2023-06-29",
-                  "updatedAt": "2023-06-30",
-                  "seller": {
-                    "name": "John Doe",
-                    "email": "johndoe@example.com",
-                    "cpf": "1234567890",
-                    "phone": "1234567890",
-                    "birthdate": "1990-01-01",
-                    "description": "Lorem ipsum",
-                    "is_seller": true,
-                    "tokenResetPassword": null,
-                    "id": "7db1d4cf-a874-4c5d-aaf4-49817e566a61",
-                    "createdAt": "2023-06-29",
-                    "updatedAt": "2023-06-29"
-                  }
+                  "description": "editado",
+                  "coverImage": "https://quatrorodas.abril.com.br/wp-content/uploads/2020/12/chevrolet-2021-onix-premier-8389-e1607978189472.jpg?quality=70&strip=info",
+                  "id": "5e6f1b06-4597-4922-9813-493f9f6d0a56",
+                  "fipePrice": 282045,
+                  "isGoodBuy": true,
+                  "isActive": true,
+                  "createdAt": "2023-09-21T18:50:28.939Z",
+                  "updatedAt": "2023-09-21T19:22:50.275Z",
+                  "images": [
+                    {
+                      "id": "8c2823aa-d731-451a-920e-47def5243ae2",
+                      "imageNumber": 1,
+                      "imageUrl": "image1",
+                      "createdAt": "2023-09-21T19:22:50.308Z"
+                    },
+                    {
+                      "id": "70bada3c-a3a3-462a-9446-940583dfaa86",
+                      "imageNumber": 2,
+                      "imageUrl": "image12",
+                      "createdAt": "2023-09-21T19:22:50.368Z"
+                    }
+                  ]
                 }
               }
             }
@@ -1437,12 +1592,12 @@
                 "examples": {
                   "user_is_not_seller": {
                     "value": {
-                      "message": "You don't have permissions to perform this action"
+                      "message": "User is not a seller"
                     }
                   },
                   "user_is_not_vehicle_owner": {
                     "value": {
-                      "message": "You don't have permissions to perform this action"
+                      "message": "You are not the owner of this vehicle"
                     }
                   }
                 }
@@ -1465,13 +1620,18 @@
                         "color": ["Required"],
                         "price": ["Required"],
                         "description": ["Required"],
-                        "cover_image": ["Required"]
+                        "coverImage": ["Required"]
                       }
                     }
                   },
                   "bad_request_invalid_car": {
                     "value": {
-                      "message": "The specified car model is not available in the internal car database."
+                      "message": "The specified car model is not available in the internal car database"
+                    }
+                  },
+                  "bad_request_invalid_uuid": {
+                    "value": {
+                      "message": "Invalid UUID"
                     }
                   }
                 }
@@ -1491,7 +1651,7 @@
         }
       },
       "delete": {
-        "tags": ["Vehicles User Seller"],
+        "tags": ["Sellers"],
         "summary": "Delete vehicle data",
         "description": "This route is responsible for deleting a vehicle based on its ID.",
         "security": [
@@ -1539,6 +1699,20 @@
               }
             }
           },
+          "404": {
+            "description": "Not Found - The specified vehicle ID does not exist.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "vehicle_not_found": {
+                    "value": {
+                      "message": "Vehicle not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden - You don't have permissions to perform this action",
             "content": {
@@ -1546,12 +1720,114 @@
                 "examples": {
                   "user_is_not_seller": {
                     "value": {
-                      "message": "You don't have permissions to perform this action"
+                      "message": "User is not a seller"
                     }
                   },
                   "user_is_not_vehicle_owner": {
                     "value": {
-                      "message": "You don't have permissions to perform this action"
+                      "message": "You are not the owner of this vehicle"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Some required fields were not sent or are in an invalid format. Please ensure all mandatory fields are provided correctly.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bad_request_invalid_uuid": {
+                    "value": {
+                      "message": "Invalid UUID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal Server Error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/{vehicleId}": {
+      "post": {
+        "tags": ["Comments"],
+        "summary": "Create a comment",
+        "description": "This route is responsible for creating a comment. The \"content\" field is required. Any additional fields sent will be ignored.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vehicleId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "ID of the vehicle"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/comment_create"
+              },
+              "example": {
+                "content": "Ótimo Veículo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/comment_return"
+                },
+                "example": {
+                  "content": "Ótimo Veículo",
+                  "id": "cdfe487f-e3b4-4c2f-ab23-a48932192fb1",
+                  "createdAt": "2023-09-11T20:59:37.253Z",
+                  "updatedAt": "2023-09-11T20:59:37.253Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - No authorization token provided, the provided token has expired, or the token is invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missing_bearer_token": {
+                    "value": {
+                      "message": "Missing bearer token"
+                    }
+                  },
+                  "jwt_expired": {
+                    "value": {
+                      "message": "JWT expired"
+                    }
+                  },
+                  "invalid_token": {
+                    "value": {
+                      "message": "JWT Invalid"
                     }
                   }
                 }
@@ -1572,6 +1848,41 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden - You don't have permissions to perform this action",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_is_vehicle_owner": {
+                    "value": {
+                      "message": "You cannot comment on your own vehicle"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Some required fields were not sent or are in an invalid format. Please ensure all mandatory fields are provided correctly.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bad_request_keys_required": {
+                    "value": {
+                      "message": {
+                        "content": ["Required"]
+                      }
+                    }
+                  },
+                  "bad_request_invalid_uuid": {
+                    "value": {
+                      "message": "Invalid UUID"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
             "description": "Server error",
             "content": {
@@ -1585,22 +1896,229 @@
         }
       }
     },
-    "/vehicles/max": {
-      "get": {
-        "tags": ["Vehicles"],
-        "summary": "Retrieve vehicles",
-        "description": "This route is responsible for get the maximum price and mileage.",
+    "/comments/{commentId}": {
+      "put": {
+        "tags": ["Comments"],
+        "summary": "Update a comment",
+        "description": "This route is responsible for updating a comment. The \"content\" field is required. Any additional fields sent will be ignored.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "commentId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "ID of the comment"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/comment_create"
+              },
+              "example": {
+                "content": "Ótimo Veículo"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
+          "201": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/vehicle_return_max"
+                  "$ref": "#/components/schemas/comment_return"
                 },
                 "example": {
-                  "price": 550000,
-                  "mileage": 400000
+                  "content": "Ótimo Veículo",
+                  "id": "cdfe487f-e3b4-4c2f-ab23-a48932192fb1",
+                  "createdAt": "2023-09-11T20:59:37.253Z",
+                  "updatedAt": "2023-09-11T20:59:37.253Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - No authorization token provided, the provided token has expired, or the token is invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missing_bearer_token": {
+                    "value": {
+                      "message": "Missing bearer token"
+                    }
+                  },
+                  "jwt_expired": {
+                    "value": {
+                      "message": "JWT expired"
+                    }
+                  },
+                  "invalid_token": {
+                    "value": {
+                      "message": "JWT Invalid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - The specified comment ID does not exist.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "comment_not_found": {
+                    "value": {
+                      "message": "Comment not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - You don't have permissions to perform this action",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_is_not_comment_owner": {
+                    "value": {
+                      "message": "You are not the owner of this comment"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Some required fields were not sent or are in an invalid format. Please ensure all mandatory fields are provided correctly.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bad_request_keys_required": {
+                    "value": {
+                      "message": {
+                        "content": ["Required"]
+                      }
+                    }
+                  },
+                  "bad_request_invalid_uuid": {
+                    "value": {
+                      "message": "Invalid UUID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal Server Error."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Comments"],
+        "summary": "Delete a comment",
+        "description": "This route is responsible for deleting a comment based on its ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "commentId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "ID of the comment"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content - Comment successfully deleted"
+          },
+          "401": {
+            "description": "Unauthorized - No authorization token provided, the provided token has expired, or the token is invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missing_bearer_token": {
+                    "value": {
+                      "message": "Missing bearer token"
+                    }
+                  },
+                  "jwt_expired": {
+                    "value": {
+                      "message": "JWT expired"
+                    }
+                  },
+                  "invalid_token": {
+                    "value": {
+                      "message": "JWT Invalid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Some required fields were not sent or are in an invalid format. Please ensure all mandatory fields are provided correctly.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bad_request_invalid_uuid": {
+                    "value": {
+                      "message": "Invalid UUID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - The specified comment ID does not exist.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "comment_not_found": {
+                    "value": {
+                      "message": "Comment not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - You don't have permissions to perform this action",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_is_not_comment_owner": {
+                    "value": {
+                      "message": "You don`t have permissions to perform this action"
+                    }
+                  }
                 }
               }
             }
@@ -1642,7 +2160,7 @@
             "content": {
               "application/json": {
                 "example": {
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ldG9pZnBlMkBnbWFpbC5jb20iLCJhZG1pbiI6dHJ1ZSwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY4MjA5MjY4MywiZXhwIjoxNjgyMDk0NDgzLCJzdWIiOiIyIn0.y4xXMb7pFSZ77_Q3jv9IPS_njk-i3XcoYPZwumfjGrU"
+                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ldG9pZnBlMkBnbWFpbC5jb20iLCJhZG1pbiI6dHJ1ZSwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY4MjA5MjY4MywiZXhwIjoxNjgyMDk0NDgzLCJzdWIiOiIyIn0.y4xXMb7pFSZ77_Q3jv9IPS_njk-i3XcoYPZwumfjGrU"
                 }
               }
             }
@@ -1694,8 +2212,6 @@
           "cpf",
           "phone",
           "birthdate",
-          "description",
-          "is_seller",
           "address"
         ],
         "type": "object",
@@ -1706,19 +2222,19 @@
           },
           "email": {
             "type": "string",
-            "maxLength": 50
+            "maxLength": 100
           },
           "password": {
             "type": "string",
-            "maxLength": 120
+            "maxLength": 100
           },
           "cpf": {
             "type": "string",
-            "maxLength": 14
+            "maxLength": 11
           },
           "phone": {
             "type": "string",
-            "maxLength": 16
+            "maxLength": 11
           },
           "birthdate": {
             "type": "string",
@@ -1727,16 +2243,17 @@
           "description": {
             "type": "string"
           },
-          "is_seller": {
+          "isSeller": {
             "type": "boolean",
             "default": false
           },
           "address": {
+            "required": ["cep", "state", "city", "street", "number"],
             "type": "object",
             "properties": {
               "cep": {
                 "type": "string",
-                "maxLength": 9
+                "maxLength": 8
               },
               "state": {
                 "type": "string",
@@ -1746,25 +2263,24 @@
                 "type": "string",
                 "maxLength": 50
               },
-              "street_number": {
+              "street": {
                 "type": "string",
                 "maxLength": 50
+              },
+              "number": {
+                "type": "string",
+                "maxLength": 10
               },
               "complement": {
                 "type": "string",
-                "maxLength": 50,
-                "default": "no complement"
-              },
-              "street_name": {
-                "type": "string",
                 "maxLength": 50
               }
-            },
-            "required": ["cep", "state", "city", "street_number", "street_name"]
+            }
           }
         }
       },
       "user_update": {
+        "required": ["name", "email", "password", "cpf", "phone", "birthdate"],
         "type": "object",
         "properties": {
           "name": {
@@ -1773,19 +2289,19 @@
           },
           "email": {
             "type": "string",
-            "maxLength": 50
+            "maxLength": 100
           },
           "password": {
             "type": "string",
-            "maxLength": 120
+            "maxLength": 100
           },
           "cpf": {
             "type": "string",
-            "maxLength": 14
+            "maxLength": 11
           },
           "phone": {
             "type": "string",
-            "maxLength": 16
+            "maxLength": 11
           },
           "birthdate": {
             "type": "string",
@@ -1796,12 +2312,13 @@
           }
         }
       },
-      "user_address_update": {
+      "user_update_address": {
+        "required": ["cep", "state", "city", "street", "number"],
         "type": "object",
         "properties": {
           "cep": {
             "type": "string",
-            "maxLength": 9
+            "maxLength": 8
           },
           "state": {
             "type": "string",
@@ -1811,41 +2328,41 @@
             "type": "string",
             "maxLength": 50
           },
-          "street_number": {
+          "street": {
             "type": "string",
             "maxLength": 50
           },
-          "complement": {
+          "number": {
             "type": "string",
-            "maxLength": 50,
-            "default": "no complement"
+            "maxLength": 10
           },
-          "street_name": {
+          "complement": {
             "type": "string",
             "maxLength": 50
           }
         }
       },
-      "user_return": {
+      "user_return_with_address": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "uuid"
+            "type": "string"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 100
           },
           "email": {
             "type": "string",
-            "maxLength": 50
+            "maxLength": 100
           },
           "cpf": {
             "type": "string",
-            "maxLength": 14
+            "maxLength": 11
           },
           "phone": {
             "type": "string",
-            "maxLength": 16
+            "maxLength": 11
           },
           "birthdate": {
             "type": "string",
@@ -1854,7 +2371,7 @@
           "description": {
             "type": "string"
           },
-          "is_seller": {
+          "isSeller": {
             "type": "boolean"
           },
           "createdAt": {
@@ -1869,30 +2386,123 @@
             "type": "object",
             "properties": {
               "id": {
-                "type": "uuid"
+                "type": "string"
               },
               "cep": {
-                "type": "string"
+                "type": "string",
+                "maxLength": 8
               },
               "state": {
-                "type": "string"
+                "type": "string",
+                "maxLength": 2
               },
               "city": {
-                "type": "string"
+                "type": "string",
+                "maxLength": 50
               },
-              "street_number": {
-                "type": "string"
+              "street": {
+                "type": "string",
+                "maxLength": 50
+              },
+              "number": {
+                "type": "string",
+                "maxLength": 10
               },
               "complement": {
-                "type": "string"
-              },
-              "street_name": {
-                "type": "string"
+                "type": "string",
+                "maxLength": 50
               },
               "createdAt": {
-                "type": "boolean"
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
               }
             }
+          }
+        }
+      },
+      "user_return": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "cpf": {
+            "type": "string",
+            "maxLength": 11
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 11
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isSeller": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "user_return_address": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "cep": {
+            "type": "string",
+            "maxLength": 8
+          },
+          "state": {
+            "type": "string",
+            "maxLength": 2
+          },
+          "city": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "street": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "number": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "complement": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -1904,9 +2514,8 @@
           "fuel",
           "mileage",
           "color",
-          "description",
           "price",
-          "cover_image"
+          "coverImage"
         ],
         "type": "object",
         "properties": {
@@ -1938,7 +2547,7 @@
           "price": {
             "type": "number"
           },
-          "cover_image": {
+          "coverImage": {
             "type": "string"
           },
           "images": {
@@ -1957,10 +2566,8 @@
           "fuel",
           "mileage",
           "color",
-          "description",
           "price",
-          "cover_image",
-          "is_active"
+          "coverImage"
         ],
         "type": "object",
         "properties": {
@@ -1992,128 +2599,17 @@
           "price": {
             "type": "number"
           },
-          "cover_image": {
+          "coverImage": {
             "type": "string"
           },
-          "is_active": {
-            "type": "boolean"
+          "isActive": {
+            "type": "boolean",
+            "default": "true"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
-            }
-          }
-        }
-      },
-      "vehicle_return": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "uuid"
-          },
-          "brand": {
-            "type": "string",
-            "maxLength": 50
-          },
-          "model": {
-            "type": "string",
-            "maxLength": 50
-          },
-          "year": {
-            "type": "string",
-            "maxLength": 4
-          },
-          "fuel": {
-            "type": "number"
-          },
-          "mileage": {
-            "type": "number"
-          },
-          "color": {
-            "type": "string",
-            "maxLength": 30
-          },
-          "description": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "cover_image": {
-            "type": "string"
-          },
-          "is_active": {
-            "type": "boolean"
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "uuid"
-                },
-                "image_number": {
-                  "type": "integer"
-                },
-                "image_url": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string",
-                  "format": "date-time"
-                }
-              }
-            }
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "seller": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string"
-              },
-              "cpf": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
-              "description": {
-                "type": "string"
-              },
-              "is_seller": {
-                "type": "boolean"
-              },
-              "tokenResetPassword": {
-                "type": "null"
-              },
-              "id": {
-                "type": "uuid"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date"
-              }
             }
           }
         }
@@ -2124,12 +2620,15 @@
           "count": {
             "type": "integer"
           },
+          "totalPages": {
+            "type": "integer"
+          },
           "previousPage": {
-            "type": ["string", "null"],
+            "type": "string",
             "format": "uri"
           },
           "nextPage": {
-            "type": ["string", "null"],
+            "type": "string",
             "format": "uri"
           },
           "data": {
@@ -2138,7 +2637,7 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "uuid"
+                  "type": "string"
                 },
                 "brand": {
                   "type": "string",
@@ -2168,32 +2667,83 @@
                 "price": {
                   "type": "number"
                 },
-                "cover_image": {
+                "coverImage": {
                   "type": "string"
                 },
-                "is_active": {
+                "isActive": {
                   "type": "boolean"
                 },
-                "images": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "uuid"
-                      },
-                      "image_number": {
-                        "type": "integer"
-                      },
-                      "image_url": {
-                        "type": "string"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    }
-                  }
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      },
+      "vehicle_return_pagination_with_user": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "previousPage": {
+            "type": "string",
+            "format": "uri"
+          },
+          "nextPage": {
+            "type": "string",
+            "format": "uri"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "string",
+                  "maxLength": 50
+                },
+                "model": {
+                  "type": "string",
+                  "maxLength": 50
+                },
+                "year": {
+                  "type": "string",
+                  "maxLength": 4
+                },
+                "fuel": {
+                  "type": "number"
+                },
+                "mileage": {
+                  "type": "number"
+                },
+                "color": {
+                  "type": "string",
+                  "maxLength": 30
+                },
+                "description": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "coverImage": {
+                  "type": "string"
+                },
+                "isActive": {
+                  "type": "boolean"
                 },
                 "createdAt": {
                   "type": "string",
@@ -2203,20 +2753,27 @@
                   "type": "string",
                   "format": "date-time"
                 },
-                "seller": {
+                "user": {
                   "type": "object",
                   "properties": {
-                    "name": {
+                    "id": {
                       "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 100
                     },
                     "email": {
-                      "type": "string"
+                      "type": "string",
+                      "maxLength": 100
                     },
                     "cpf": {
-                      "type": "string"
+                      "type": "string",
+                      "maxLength": 11
                     },
                     "phone": {
-                      "type": "string"
+                      "type": "string",
+                      "maxLength": 11
                     },
                     "birthdate": {
                       "type": "string",
@@ -2225,22 +2782,16 @@
                     "description": {
                       "type": "string"
                     },
-                    "is_seller": {
+                    "isSeller": {
                       "type": "boolean"
-                    },
-                    "tokenResetPassword": {
-                      "type": "null"
-                    },
-                    "id": {
-                      "type": "uuid"
                     },
                     "createdAt": {
                       "type": "string",
-                      "format": "date"
+                      "format": "date-time"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "format": "date"
+                      "format": "date-time"
                     }
                   }
                 }
@@ -2249,14 +2800,352 @@
           }
         }
       },
-      "vehicle_return_max": {
+      "vehicle_return_pagination_with_one_user": {
         "type": "object",
         "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "previousPage": {
+            "type": "string",
+            "format": "uri"
+          },
+          "nextPage": {
+            "type": "string",
+            "format": "uri"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "vehicles": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "brand": {
+                      "type": "string",
+                      "maxLength": 50
+                    },
+                    "model": {
+                      "type": "string",
+                      "maxLength": 50
+                    },
+                    "year": {
+                      "type": "string",
+                      "maxLength": 4
+                    },
+                    "fuel": {
+                      "type": "number"
+                    },
+                    "mileage": {
+                      "type": "number"
+                    },
+                    "color": {
+                      "type": "string",
+                      "maxLength": 30
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "coverImage": {
+                      "type": "string"
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 100
+                    },
+                    "email": {
+                      "type": "string",
+                      "maxLength": 100
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "maxLength": 11
+                    },
+                    "phone": {
+                      "type": "string",
+                      "maxLength": 11
+                    },
+                    "birthdate": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "isSeller": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "vehicle_return_with_images": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "brand": {
+                "type": "string",
+                "maxLength": 50
+              },
+              "model": {
+                "type": "string",
+                "maxLength": 50
+              },
+              "year": {
+                "type": "string",
+                "maxLength": 4
+              },
+              "fuel": {
+                "type": "number"
+              },
+              "mileage": {
+                "type": "number"
+              },
+              "color": {
+                "type": "string",
+                "maxLength": 30
+              },
+              "description": {
+                "type": "string"
+              },
+              "price": {
+                "type": "number"
+              },
+              "coverImage": {
+                "type": "string"
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "imageNumber": {
+                      "type": "integer"
+                    },
+                    "imageUrl": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "vehicle_return_with_user_and_images_and_comments": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "year": {
+            "type": "string",
+            "maxLength": 4
+          },
+          "fuel": {
+            "type": "number"
+          },
           "mileage": {
             "type": "number"
           },
+          "color": {
+            "type": "string",
+            "maxLength": 30
+          },
+          "description": {
+            "type": "string"
+          },
           "price": {
             "type": "number"
+          },
+          "coverImage": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "imageNumber": {
+                  "type": "integer"
+                },
+                "imageUrl": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "email": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "cpf": {
+                "type": "string",
+                "maxLength": 11
+              },
+              "phone": {
+                "type": "string",
+                "maxLength": 11
+              },
+              "birthdate": {
+                "type": "string",
+                "format": "date"
+              },
+              "description": {
+                "type": "string"
+              },
+              "isSeller": {
+                "type": "boolean"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      },
+      "comment_create": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "comment_return": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

@@ -1,44 +1,34 @@
 import { Router } from "express";
 
-import { loginController } from "../controllers/login.controller";
-import ensureDataIsValidMiddleware from "../middlewares/global/ensureDataIsValid.middleware";
-import ensureAuthMiddleware from "../middlewares/user/ensureAuth.middleware";
-import { commentSchemaRequest } from "../schemas/comment.schema";
-import ensureVehicleExistsMiddleware from "../middlewares/vehicle/ensureVehicleExists.middleware";
-import {
-  createCommentController,
-  deleteCommentController,
-  listCommentsController,
-  putCommentController,
-} from "../controllers/comment.controller";
-import { ensureCommentExistsMiddleware } from "../middlewares/comment/ensureCommentExists";
+import middlewares from "../middlewares";
+import { commentsControllers } from "../controllers";
+import { commentRequestSchema } from "../schemas";
 
-const commentRoutes: Router = Router();
+const commentsRoutes: Router = Router();
 
-commentRoutes.get(
+commentsRoutes.use(middlewares.ensureAuthMiddleware);
+
+commentsRoutes.post(
   "/:vehicleId",
-  ensureVehicleExistsMiddleware,
-  listCommentsController
-);
-commentRoutes.use(ensureAuthMiddleware);
-commentRoutes.post(
-  "/:vehicleId",
-  ensureDataIsValidMiddleware(commentSchemaRequest),
-  ensureVehicleExistsMiddleware,
-  createCommentController
+  middlewares.ensureDataIsValidMiddleware(commentRequestSchema),
+  middlewares.ensureVehicleActiveExistsMiddleware,
+  middlewares.ensureNotVehicleOwnerMiddleware,
+  commentsControllers.create
 );
 
-commentRoutes.put(
+commentsRoutes.put(
   "/:commentId",
-  ensureDataIsValidMiddleware(commentSchemaRequest),
-  ensureCommentExistsMiddleware,
-  putCommentController
+  middlewares.ensureDataIsValidMiddleware(commentRequestSchema),
+  middlewares.ensureCommentExistsMiddleware,
+  middlewares.ensureCommentOwnerMiddleware,
+  commentsControllers.update
 );
 
-commentRoutes.delete(
+commentsRoutes.delete(
   "/:commentId",
-  ensureCommentExistsMiddleware,
-  deleteCommentController
+  middlewares.ensureCommentExistsMiddleware,
+  middlewares.ensureCommentOwnerMiddleware,
+  commentsControllers.destroy
 );
 
-export default commentRoutes;
+export default commentsRoutes;

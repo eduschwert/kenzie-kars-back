@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
-import { loginTokenService } from "../services/login/login.service";
-import { ILoginUser } from "../interfaces/login.interfaces";
 
-export const loginController = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  const loginData: ILoginUser = req.body;
+import { loginService } from "../services";
+import { LoginRequest } from "../interfaces";
 
-  const token = await loginTokenService(loginData);
+const login = async (req: Request, res: Response): Promise<Response> => {
+  const loginData: LoginRequest = req.body;
+
+  const token = await loginService(loginData);
 
   return res.json({
-    token: token,
+    accessToken: token,
   });
 };
+
+export default login;

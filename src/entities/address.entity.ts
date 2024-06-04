@@ -3,11 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
 } from "typeorm";
+
 import { User } from ".";
 
 @Entity("addresses")
@@ -15,35 +15,33 @@ class Address {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 9 })
+  @Column({ length: 8 })
   cep: string;
 
-  @Column({ type: "varchar", length: 2 })
+  @Column({ length: 2 })
   state: string;
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ length: 50 })
   city: string;
 
-  @Column({ type: "varchar", length: 50 })
-  street_number: string;
+  @Column({ length: 50 })
+  street: string;
 
-  @Column({ type: "varchar", length: 50 })
-  street_name: string;
+  @Column({ length: 10 })
+  number: string;
 
-  @Column({ type: "varchar", length: 50, default: "no complement" })
-  complement: string;
+  @Column({ type: "varchar", length: 50, nullable: true })
+  complement?: string | null | undefined;
 
-  @CreateDateColumn({ type: "date" })
-  createdAt: string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: "date" })
-  updatedAt: string;
-
-  @DeleteDateColumn({ type: "date" })
-  deletedAt: string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @OneToOne(() => User, (user) => user.address, { onDelete: "CASCADE" })
   @JoinColumn()
   user: User;
 }
+
 export { Address };

@@ -1,59 +1,60 @@
 import { z } from "zod";
-import { addressSchemaRequest, addressSchemaResponse } from "./address.schema";
-
-const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,100}$/;
+import { addressRequestSchema, addressResponseSchema } from ".";
 
 const userEmailSchema = z.object({
-  email: z.string().email().max(50, "Invalid email"),
+  email: z.string().max(100).email(),
 });
 
 const userPasswordSchema = z.object({
-  password: z.string().refine((value) => passwordRegex.test(value), {
-    message:
-      "Password must contain at least 6 characters, including at least one letter and one number",
-  }),
+  password: z
+    .string()
+    .min(6, "Password must have at least 6 characters")
+    .max(100, "Password cannot exceed 100 characters")
+    .regex(
+      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&* ]*$/,
+      "Password must contain at least one letter and one number"
+    ),
 });
 
-const userSchemaRequest = userPasswordSchema.extend({
+const userRequestSchema = userPasswordSchema.extend({
   name: z.string().max(100),
-  email: z.string().email().max(50),
-  cpf: z.string().max(14),
-  phone: z.string().max(16),
-  birthdate: z.coerce.date(),
-  description: z.string(),
-  is_seller: z.boolean().default(false),
-  address: addressSchemaRequest,
+  email: z.string().max(100).email(),
+  cpf: z.string().max(11),
+  phone: z.string().max(11),
+  birthdate: z.coerce
+    .date()
+    .transform((value) => value.toISOString().split("T")[0]),
+  description: z.string().nullish(),
+  isSeller: z.boolean().default(false),
+  address: addressRequestSchema,
 });
 
-const userSchemaWithoutAdress = userSchemaRequest.omit({
-  is_seller: true,
+const userUpdateSchema = userRequestSchema.omit({
+  isSeller: true,
   address: true,
 });
 
-const userSchemaUpdate = userSchemaWithoutAdress.partial();
-
-const userSchemaResponseWithoutPassword = userSchemaRequest
+const userResponseSchemaWithoutPassword = userRequestSchema
   .extend({
     id: z.string().uuid(),
     createdAt: z.date(),
     updatedAt: z.date(),
-    address: addressSchemaResponse,
+    address: addressResponseSchema,
   })
   .omit({
     password: true,
   });
 
-const userSchemaResponseWithoutPasswordAndAddress =
-  userSchemaResponseWithoutPassword.omit({
+const userResponseSchemaWithoutPasswordAndAddress =
+  userResponseSchemaWithoutPassword.omit({
     address: true,
   });
 
 export {
   userEmailSchema,
   userPasswordSchema,
-  userSchemaRequest,
-  userSchemaUpdate,
-  userSchemaWithoutAdress,
-  userSchemaResponseWithoutPassword,
-  userSchemaResponseWithoutPasswordAndAddress,
+  userRequestSchema,
+  userUpdateSchema,
+  userResponseSchemaWithoutPassword,
+  userResponseSchemaWithoutPasswordAndAddress,
 };

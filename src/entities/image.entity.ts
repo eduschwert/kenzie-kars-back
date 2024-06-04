@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   ManyToOne,
 } from "typeorm";
+
 import { Vehicle } from ".";
 
 @Entity("images")
@@ -13,10 +14,10 @@ class Image {
   id: string;
 
   @Column({ type: "text" })
-  image_url: string;
+  imageUrl: string;
 
-  @Column({ type: "integer" })
-  image_number: number;
+  @Column()
+  imageNumber: number;
 
   @CreateDateColumn()
   createdAt: Date;
