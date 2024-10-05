@@ -6,15 +6,11 @@ import {
   ImageResponse,
   PaginationResult,
   VehicleRequestWithFipe,
-  VehicleResponse,
   VehicleResponseWithImages,
   VehicleUpdateWithFipe,
 } from "../interfaces";
 import { pagination } from "../utils";
-import {
-  vehicleResponseSchema,
-  vehicleResponseSchemaWithImages,
-} from "../schemas";
+import { vehicleResponseSchemaWithImages } from "../schemas";
 
 const create = async (
   vehicleData: VehicleRequestWithFipe,
@@ -71,7 +67,7 @@ const findAll = async ({
   startIndex: number;
   baseUrl: string;
   previousPage: string | null;
-}): Promise<PaginationResult<VehicleResponse[]>> => {
+}): Promise<PaginationResult<VehicleResponseWithImages[]>> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
@@ -79,6 +75,7 @@ const findAll = async ({
     where: {
       user: { id: userId },
     },
+    relations: { images: true },
     skip: startIndex,
     take: perPage,
   });
@@ -95,7 +92,7 @@ const findAll = async ({
     totalPages: totalPages,
     previousPage: previousPage,
     nextPage: nextPage,
-    data: vehicleResponseSchema.array().parse(vehicles),
+    data: vehicleResponseSchemaWithImages.array().parse(vehicles),
   };
 
   return result;

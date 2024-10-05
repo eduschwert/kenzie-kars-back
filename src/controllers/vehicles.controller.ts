@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import { vehiclesServices } from "../services";
 import {
   PaginationResult,
@@ -22,10 +23,17 @@ const findAll = async (req: Request, res: Response): Promise<Response> => {
   const { perPage, page, startIndex, baseUrl, previousPage } =
     pagination.getPaginationParamsController(req);
 
+  const isValidBoolean = (value: string | undefined): boolean | undefined => {
+    if (value === "true") return true;
+    return undefined;
+  };
+
   const brand = req.query.brand as string | undefined;
   const model = req.query.model as string | undefined;
+  const isGoodBuy = isValidBoolean(req.query.isGoodBuy as string | undefined);
   const color = req.query.color as string | undefined;
-  const year = req.query.year as string | undefined;
+  const minYear = req.query.minYear as string | undefined;
+  const maxYear = req.query.maxYear as string | undefined;
 
   let fuel = parseQueryParamAsNumber(req.query.fuel as string);
   fuel = fuel ? (fuel < 1 || fuel > 3 ? undefined : fuel) : undefined;
@@ -44,8 +52,10 @@ const findAll = async (req: Request, res: Response): Promise<Response> => {
       previousPage,
       brand,
       model,
+      isGoodBuy,
       color,
-      year,
+      minYear,
+      maxYear,
       fuel,
       minMileage,
       maxMileage,
@@ -86,13 +96,22 @@ const findAllByUserId = async (
 };
 
 const findOneByVehicleId = async (
-  _: Request,
+  req: Request,
   res: Response
 ): Promise<Response> => {
-  const vehicleId: string = res.locals.vehicle.id;
+  const vehicleId: string = req.params.vehicleId;
+
+  const schema = z.string().uuid();
+
+  const validateId = schema.safeParse(vehicleId);
+  if (!validateId.success) {
+    throw new AppError("Invalid UUID", 400);
+  }
+
+  let token = req.headers.authorization;
 
   const vehicle: VehicleResponseWithUserAndImagesAndComments =
-    await vehiclesServices.findOneByVehicleId(vehicleId);
+    await vehiclesServices.findOneByVehicleId(vehicleId, token);
 
   return res.json(vehicle);
 };

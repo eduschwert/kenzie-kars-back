@@ -7,6 +7,7 @@ import {
   AddressResponse,
   UserResponseWithoutPassword,
   UserResponseWithoutPasswordAndAddress,
+  UserUpdatePassword,
 } from "../interfaces";
 import { usersServices } from "../services";
 import { User } from "../entities";
@@ -38,6 +39,15 @@ const update = async (req: Request, res: Response) => {
     await usersServices.update(userUpdateData, user);
 
   return res.status(200).json(updatedUser);
+};
+
+const updatePassword = async (req: Request, res: Response) => {
+  const userPasswordUpdateData: UserUpdatePassword = req.body;
+  const user: User = res.locals.user;
+
+  await usersServices.updatePassword(userPasswordUpdateData, user);
+
+  return res.json({ message: "Password change with success" });
 };
 
 const updateAddress = async (req: Request, res: Response) => {
@@ -82,6 +92,7 @@ export default {
   create,
   findOne,
   update,
+  updatePassword,
   updateAddress,
   destroy,
   sendEmailResetPassword,

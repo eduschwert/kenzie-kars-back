@@ -33,10 +33,10 @@ class Vehicle {
   @Column({ length: 30 })
   color: string;
 
-  @Column({ type: "decimal", precision: 10, scale: 2 })
+  @Column({ type: "integer" })
   fipePrice: number | string;
 
-  @Column({ type: "decimal", precision: 10, scale: 2 })
+  @Column({ type: "integer" })
   price: number | string;
 
   @Column({ type: "text", nullable: true })

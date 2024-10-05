@@ -8,6 +8,7 @@ import {
   userPasswordSchema,
   userUpdateSchema,
   addressRequestSchema,
+  userPasswordUpdateSchema,
 } from "../schemas";
 
 const usersRoutes: Router = Router();
@@ -35,17 +36,23 @@ usersRoutes.use(middlewares.ensureAuthMiddleware);
 
 usersRoutes.get("", usersControllers.findOne);
 
-usersRoutes.put(
+usersRoutes.patch(
   "",
   middlewares.ensureDataIsValidMiddleware(userUpdateSchema),
   middlewares.ensureEmailUniqueMiddleware,
   usersControllers.update
 );
 
-usersRoutes.put(
+usersRoutes.patch(
   "/address",
   middlewares.ensureDataIsValidMiddleware(addressRequestSchema),
   usersControllers.updateAddress
+);
+
+usersRoutes.patch(
+  "/password",
+  middlewares.ensureDataIsValidMiddleware(userPasswordUpdateSchema),
+  usersControllers.updatePassword
 );
 
 usersRoutes.delete("", usersControllers.destroy);

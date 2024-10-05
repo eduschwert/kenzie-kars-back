@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import {
   PaginationResult,
   VehicleRequestWithFipe,
-  VehicleResponse,
   VehicleResponseWithImages,
   VehicleUpdateWithFipe,
 } from "../interfaces";
@@ -29,7 +28,7 @@ const findAll = async (req: Request, res: Response): Promise<Response> => {
 
   const userId: string = res.locals.userId;
 
-  const vehicles: PaginationResult<VehicleResponse[]> =
+  const vehicles: PaginationResult<VehicleResponseWithImages[]> =
     await sellersService.findAll({
       perPage,
       page,

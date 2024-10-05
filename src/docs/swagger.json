@@ -9,10 +9,6 @@
     {
       "url": "http://localhost:3000/",
       "description": "Development environment"
-    },
-    {
-      "url": "https://kenzie-kars-nnt2.onrender.com/",
-      "description": "Production environment"
     }
   ],
   "paths": {
@@ -28,20 +24,20 @@
                 "$ref": "#/components/schemas/user_create"
               },
               "example": {
-                "name": "Eduardo Schwert",
-                "email": "eduardoschwert@yahoo.com.br",
+                "name": "João da Silva",
+                "email": "joao.silva@example.com",
                 "password": "12345a",
-                "cpf": "11111111111",
-                "phone": "51992904748",
-                "birthdate": "1996-08-26",
-                "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
+                "cpf": "12345678909",
+                "phone": "51987654321",
+                "birthdate": "1990-05-15",
+                "description": "Vendedor de carros com 10 anos de experiência.",
                 "isSeller": true,
                 "address": {
-                  "cep": "12345678",
-                  "state": "NY",
-                  "city": "New York",
-                  "street": "Fith avenue",
-                  "number": "123"
+                  "cep": "90050200",
+                  "state": "RS",
+                  "city": "Porto Alegre",
+                  "street": "Rua dos Andradas",
+                  "number": "1234"
                 }
               }
             }
@@ -56,27 +52,27 @@
                   "$ref": "#/components/schemas/user_return_with_address"
                 },
                 "example": {
-                  "name": "Eduardo Schwert",
-                  "email": "eduardoschwert@yahoo.com.br",
-                  "cpf": "11111111111",
-                  "phone": "51992904748",
-                  "birthdate": "1996-08-26",
-                  "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ",
+                  "name": "João da Silva",
+                  "email": "joao.silva@example.com",
+                  "cpf": "12345678909",
+                  "phone": "51987654321",
+                  "birthdate": "1990-05-15",
+                  "description": "Vendedor de carros com 10 anos de experiência.",
                   "isSeller": true,
                   "address": {
-                    "cep": "12345678",
-                    "state": "NY",
-                    "city": "New York",
-                    "street": "Fith avenue",
-                    "number": "123",
+                    "cep": "90050200",
+                    "state": "RS",
+                    "city": "Porto Alegre",
+                    "street": "Rua dos Andradas",
+                    "number": "1234",
                     "complement": null,
-                    "id": "2c09d072-97a3-4083-a6e1-8d3ba4ddf379",
-                    "createdAt": "2023-09-10T20:35:35.404Z",
-                    "updatedAt": "2023-09-10T20:35:35.404Z"
+                    "id": "d532551c-3aca-450a-8197-6e9d10e83aa8",
+                    "createdAt": "2024-08-29T14:36:10.349Z",
+                    "updatedAt": "2024-08-29T14:36:10.349Z"
                   },
-                  "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
-                  "createdAt": "2023-09-10T20:35:35.447Z",
-                  "updatedAt": "2023-09-10T20:35:35.447Z"
+                  "id": "b497b8d3-6c98-430e-b671-64ea7f2b2484",
+                  "createdAt": "2024-08-29T14:36:10.374Z",
+                  "updatedAt": "2024-08-29T14:36:10.374Z"
                 }
               }
             }
@@ -225,10 +221,10 @@
           }
         }
       },
-      "put": {
+      "patch": {
         "tags": ["Users"],
         "summary": "Update user data",
-        "description": "This route is responsible for updating a user's data based on their token. The fields \"name\", \"email\", \"password\", \"cpf\", \"phone\", and \"birthdate\" are required, while the \"description\" field is optional. Any additional fields sent will be ignored. Updating a user with an existing email is not possible. The password must contain a minimum of 6 characters, including at least one letter and one digit.",
+        "description": "This route is responsible for updating a user's data based on their token. The fields \"name\", \"email\", \"cpf\", \"phone\", and \"birthdate\" are required, while the \"description\" field is optional. Any additional fields sent will be ignored. Updating a user with an existing email is not possible.",
         "security": [
           {
             "bearerAuth": []
@@ -241,13 +237,12 @@
                 "$ref": "#/components/schemas/user_update"
               },
               "example": {
-                "name": "Eduardo Atualizado",
-                "email": "eduardoschwert@yahoo.com.br",
-                "password": "12345a",
-                "cpf": "11111111111",
-                "phone": "51992904748",
-                "birthdate": "1996-08-26",
-                "description": "Lorem ipsum"
+                "name": "João da Silva Atualizado",
+                "email": "joao.silva@example.com",
+                "cpf": "12345678909",
+                "phone": "51987654321",
+                "birthdate": "1990-05-15",
+                "description": "Vendedor de carros com 10 anos de experiência."
               }
             }
           }
@@ -261,16 +256,16 @@
                   "$ref": "#/components/schemas/user_return"
                 },
                 "example": {
-                  "name": "Eduardo Atualizado",
-                  "email": "eduardoschwert@yahoo.com.br",
-                  "cpf": "11111111111",
-                  "phone": "51992904748",
-                  "birthdate": "1996-08-26",
-                  "description": "Lorem ipsum",
+                  "name": "João da Silva Atualizado",
+                  "email": "joao.silva@example.com",
+                  "cpf": "12345678909",
+                  "phone": "51987654321",
+                  "birthdate": "1990-05-15",
+                  "description": "Vendedor de carros com 10 anos de experiência.",
                   "isSeller": true,
-                  "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
-                  "createdAt": "2023-09-10T20:35:35.447Z",
-                  "updatedAt": "2023-09-10T20:43:26.979Z"
+                  "id": "b497b8d3-6c98-430e-b671-64ea7f2b2484",
+                  "createdAt": "2024-08-29T14:36:10.374Z",
+                  "updatedAt": "2024-08-29T14:37:52.189Z"
                 }
               }
             }
@@ -321,7 +316,6 @@
                   "bad_request_keys_required": {
                     "value": {
                       "message": {
-                        "password": ["Required"],
                         "name": ["Required"],
                         "email": ["Required"],
                         "cpf": ["Required"],
@@ -334,16 +328,6 @@
                     "value": {
                       "message": {
                         "email": ["Invalid email"]
-                      }
-                    }
-                  },
-                  "bad_request_invalid_password": {
-                    "value": {
-                      "message": {
-                        "password": [
-                          "Password must have at least 6 characters",
-                          "Password must contain at least one letter and one number"
-                        ]
                       }
                     }
                   }
@@ -414,7 +398,7 @@
       }
     },
     "/users/address": {
-      "put": {
+      "patch": {
         "tags": ["Users"],
         "summary": "Update user address data",
         "description": "This route is responsible for updating a user's address data based on their token. The fields \"cep\", \"state\", \"city\", \"street\", and \"number\" are required, while the \"complement\" field is optional. Any additional fields sent will be ignored.",
@@ -430,11 +414,11 @@
                 "$ref": "#/components/schemas/user_update_address"
               },
               "example": {
-                "cep": "12345678",
-                "state": "NY",
-                "city": "New York Atualizado",
-                "street": "Fith avenue",
-                "number": "123"
+                "cep": "90050300",
+                "state": "RS",
+                "city": "Porto Alegre",
+                "street": "Rua 4",
+                "number": "2"
               }
             }
           }
@@ -448,15 +432,15 @@
                   "$ref": "#/components/schemas/user_return_address"
                 },
                 "example": {
-                  "cep": "12345678",
-                  "state": "NY",
-                  "city": "New York Atualizado",
-                  "street": "Fith avenue",
-                  "number": "123",
+                  "cep": "90050300",
+                  "state": "RS",
+                  "city": "Porto Alegre",
+                  "street": "Rua 4",
+                  "number": "2",
                   "complement": null,
-                  "id": "2c09d072-97a3-4083-a6e1-8d3ba4ddf379",
-                  "createdAt": "2023-09-10T20:35:35.404Z",
-                  "updatedAt": "2023-09-11T00:43:52.464Z"
+                  "id": "d532551c-3aca-450a-8197-6e9d10e83aa8",
+                  "createdAt": "2024-08-29T14:36:10.349Z",
+                  "updatedAt": "2024-08-29T14:38:48.455Z"
                 }
               }
             }
@@ -518,11 +502,113 @@
         }
       }
     },
+    "/users/password": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user password",
+        "description": "This route allows a user to update their password. The fields \"password\" and \"newPassword\" are mandatory. Any additional fields sent will be ignored. The password must contain a minimum of 6 characters, including at least one letter and one digit.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                }
+              },
+              "example": {
+                "password": "12345a",
+                "newPassword": "12345b"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Password change with success"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - No authorization token was provided, the token has expired, is invalid, or the password is incorrect.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missing_bearer_token": {
+                    "value": {
+                      "message": "Missing bearer token"
+                    }
+                  },
+                  "jwt_expired": {
+                    "value": {
+                      "message": "jwt expired"
+                    }
+                  },
+                  "invalid_token": {
+                    "value": {
+                      "message": "JWT Invalid"
+                    }
+                  },
+                  "invalid_password": {
+                    "value": {
+                      "message": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Some required fields were not sent or are in an invalid format. Please ensure all mandatory fields are provided correctly.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bad_request_keys_required": {
+                    "value": {
+                      "message": {
+                        "password": ["Required"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Internal Server Error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/resetPassword": {
       "post": {
         "tags": ["Users"],
         "summary": "Send Email Recover Password",
-        "description": "This route is responsible for sending an email containing a link with a token to recover a user's password. The \"email\" field is mandatory.",
+        "description": "This route sends an email with a link containing a 10-minute expiration token for password recovery. The \"email\" field is required.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -752,6 +838,15 @@
             }
           },
           {
+            "name": "isGoodBuy",
+            "in": "query",
+            "description": "Filters vehicles priced 5% below the Fipe value",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "color",
             "in": "query",
             "description": "Filter by vehicle color",
@@ -761,12 +856,21 @@
             }
           },
           {
-            "name": "year",
+            "name": "minYear",
             "in": "query",
-            "description": "Filter by vehicle year",
+            "description": "Filter by vehicle minYear",
             "required": false,
             "schema": {
-              "type": "integer"
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxYear",
+            "in": "query",
+            "description": "Filter by vehicle maxYear",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -849,12 +953,7 @@
                       "updatedAt": "2023-09-11T18:46:53.232Z",
                       "user": {
                         "name": "Eduardo Atualizado",
-                        "email": "eduardoschwert@yahoo.com.br",
-                        "cpf": "11111111111",
-                        "phone": "51992904748",
-                        "birthdate": "1996-08-26",
                         "description": "Lorem ipsum",
-                        "isSeller": true,
                         "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
                         "createdAt": "2023-09-10T20:35:35.447Z",
                         "updatedAt": "2023-09-10T20:43:26.979Z"
@@ -878,12 +977,7 @@
                       "updatedAt": "2023-09-11T19:00:37.328Z",
                       "user": {
                         "name": "Eduardo Atualizado",
-                        "email": "eduardoschwert@yahoo.com.br",
-                        "cpf": "11111111111",
-                        "phone": "51992904748",
-                        "birthdate": "1996-08-26",
                         "description": "Lorem ipsum",
-                        "isSeller": true,
                         "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
                         "createdAt": "2023-09-10T20:35:35.447Z",
                         "updatedAt": "2023-09-10T20:43:26.979Z"
@@ -963,12 +1057,7 @@
                   "data": {
                     "user": {
                       "name": "Eduardo Atualizado",
-                      "email": "eduardoschwert@yahoo.com.br",
-                      "cpf": "11111111111",
-                      "phone": "51992904748",
-                      "birthdate": "1996-08-26",
                       "description": "Lorem ipsum",
-                      "isSeller": true,
                       "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
                       "createdAt": "2023-09-10T20:35:35.447Z",
                       "updatedAt": "2023-09-10T20:43:26.979Z"
@@ -1055,7 +1144,12 @@
       "get": {
         "tags": ["Vehicles"],
         "summary": "Retrieve vehicle",
-        "description": "This route is responsible for retrieving an active vehicle.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "This route retrieves an active vehicle. If the user is authenticated with a valid token, the user's phone number is included in the response; otherwise, the phone number is omitted.",
         "parameters": [
           {
             "name": "vehicleId",
@@ -1081,55 +1175,75 @@
                   "model": "bolt ev premier 203cv (elétrico)",
                   "year": "2022",
                   "fuel": 3,
-                  "mileage": 400,
+                  "mileage": 4000,
                   "color": "white",
-                  "price": 300000,
+                  "price": 450000,
                   "description": "carro",
-                  "coverImage": "imagem cover",
-                  "id": "2f7785ec-76c3-483e-9876-eb7de227527f",
+                  "coverImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz81_oVRfjvkehB3OjCdMXyFxq3_2nAS3VEA&s",
+                  "id": "9e442de1-8d4a-4857-a443-e65b64c2c4cb",
                   "fipePrice": 282045,
                   "isGoodBuy": false,
                   "isActive": true,
-                  "createdAt": "2023-09-11T18:46:53.232Z",
-                  "updatedAt": "2023-09-11T18:46:53.232Z",
+                  "createdAt": "2024-08-30T14:27:46.446Z",
+                  "updatedAt": "2024-08-30T14:27:46.446Z",
                   "user": {
-                    "name": "Eduardo Atualizado",
-                    "email": "eduardoschwert@yahoo.com.br",
-                    "cpf": "11111111111",
-                    "phone": "51992904748",
-                    "birthdate": "1996-08-26",
-                    "description": "Lorem ipsum",
-                    "isSeller": true,
-                    "id": "a66fa037-250e-4c0a-847c-7c94ca3bf63f",
-                    "createdAt": "2023-09-10T20:35:35.447Z",
-                    "updatedAt": "2023-09-10T20:43:26.979Z"
+                    "name": "João da Silva",
+                    "description": "Vendedor de carros com 10 anos de experiência.",
+                    "id": "fb36ba2c-26a6-4be2-a7d5-fab5db65fbfc",
+                    "createdAt": "2024-08-30T14:27:30.479Z",
+                    "updatedAt": "2024-08-30T14:27:30.479Z"
                   },
                   "images": [
                     {
-                      "id": "115fd90f-8398-4cf8-bb18-29b201c1548f",
+                      "id": "0cb7fb46-249c-4498-a563-17f1f54920a3",
                       "imageNumber": 1,
-                      "imageUrl": "imagem1",
-                      "createdAt": "2023-09-11T18:46:53.264Z"
+                      "imageUrl": "https://cdn.motor1.com/images/mgl/Vmbmy/s1/chevrolet-bolt-ev-2020.jpg",
+                      "createdAt": "2024-08-30T14:27:46.463Z"
                     },
                     {
-                      "id": "a8a148d4-905f-4009-8cfb-2ad057a9a3d4",
+                      "id": "ef43bbac-9a1d-41cc-b804-379002bd2092",
                       "imageNumber": 2,
-                      "imageUrl": "imagem2",
-                      "createdAt": "2023-09-11T18:46:53.347Z"
+                      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGjLaz4E3T8NpyY37jo1ah4L-ymTyy7ENsMQ&s",
+                      "createdAt": "2024-08-30T14:27:46.608Z"
                     },
                     {
-                      "id": "3cf00f72-e610-42e4-a406-6bc008af1e75",
+                      "id": "c596128a-3df3-4757-964c-5ef49b1cf901",
                       "imageNumber": 3,
-                      "imageUrl": "imagem3",
-                      "createdAt": "2023-09-11T18:46:53.351Z"
+                      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGs9lNdAXuQYLyOgPw4MX5H5cX_Zznojuk0A&s",
+                      "createdAt": "2024-08-30T14:27:46.585Z"
+                    },
+                    {
+                      "id": "cac55012-27f4-4c9e-9dff-ac83a1a47dda",
+                      "imageNumber": 4,
+                      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA5q2ViNEFGB_dS12n3KOPtF9DER1_Pl7fSg&s",
+                      "createdAt": "2024-08-30T14:27:46.571Z"
+                    },
+                    {
+                      "id": "03570069-d4b9-494c-b93d-2d06ae0a2eb6",
+                      "imageNumber": 5,
+                      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSifX6eHJ1PWVHz-VqUDZT7nqd_G8LpU3LRVQ&s",
+                      "createdAt": "2024-08-30T14:27:46.612Z"
+                    },
+                    {
+                      "id": "f9f00da9-bf73-4776-9e1c-267b6da02092",
+                      "imageNumber": 6,
+                      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUnZUu7Er_S7hjt2gG89PTE5HTkjcpaGf64g&s",
+                      "createdAt": "2024-08-30T14:27:46.589Z"
                     }
                   ],
                   "comments": [
                     {
-                      "content": "Excelente carro.",
-                      "id": "cdfe487f-e3b4-4c2f-ab23-a48932192fb1",
-                      "createdAt": "2023-09-11T20:59:37.253Z",
-                      "updatedAt": "2023-09-11T20:59:37.253Z"
+                      "content": "otimo veiculo",
+                      "id": "3130dcc1-a621-4a86-99ef-a3f84f68be02",
+                      "createdAt": "2024-08-30T14:28:40.336Z",
+                      "updatedAt": "2024-08-30T14:28:40.336Z",
+                      "user": {
+                        "name": "João da Silva",
+                        "description": "Vendedor de carros com 10 anos de experiência.",
+                        "id": "0ce8a2ac-858e-40f9-89ef-0e800b5ca189",
+                        "createdAt": "2024-08-30T14:28:24.940Z",
+                        "updatedAt": "2024-08-30T14:28:24.940Z"
+                      }
                     }
                   ]
                 }
@@ -1177,7 +1291,7 @@
       "post": {
         "tags": ["Sellers"],
         "summary": "Create vehicle",
-        "description": "This route is responsible for creating a new vehicle. The \"brand\", \"model\", \"year\", \"fuel\", \"mileage\", \"color\", \"price\", and \"coverImage\" fields are required, while the \"description\" field is optional. Additionally, an optional array of images can be provided, with a maximum of 6 images. Any additional fields sent will be ignored.",
+        "description": "This route is responsible for creating a new vehicle. The \"brand\", \"model\", \"year\", \"fuel\", \"mileage\", \"color\", \"price\", and \"coverImage\" fields are required, while the \"description\" field is optional. Additionally, an optional array of images can be provided, with a maximum of 6 images. The \"color\" field must be one of the following values: \"Branco\", \"Preto\", \"Cinza\", \"Prata\", \"Vermelho\", \"Azul\", \"Verde\", \"Amarelo\", \"Laranja\", \"Roxo\", \"Marrom\". Any additional fields sent will be ignored.",
         "security": [
           {
             "bearerAuth": []
@@ -1463,7 +1577,7 @@
       }
     },
     "/sellers/{vehicleId}": {
-      "put": {
+      "patch": {
         "tags": ["Sellers"],
         "summary": "Update vehicle data",
         "description": "This route is responsible for updating a vehicle. The \"brand\", \"model\", \"year\", \"fuel\", \"mileage\", \"color\", \"price\", and \"coverImage\" fields are required, while the \"description\" field is optional. Additionally, an optional array of images can be provided, with a maximum of 6 images. Any additional fields sent will be ignored.",
@@ -1897,7 +2011,7 @@
       }
     },
     "/comments/{commentId}": {
-      "put": {
+      "patch": {
         "tags": ["Comments"],
         "summary": "Update a comment",
         "description": "This route is responsible for updating a comment. The \"content\" field is required. Any additional fields sent will be ignored.",
@@ -2245,7 +2359,7 @@
           },
           "isSeller": {
             "type": "boolean",
-            "default": false
+            "default": true
           },
           "address": {
             "required": ["cep", "state", "city", "street", "number"],
@@ -2280,7 +2394,7 @@
         }
       },
       "user_update": {
-        "required": ["name", "email", "password", "cpf", "phone", "birthdate"],
+        "required": ["name", "email", "cpf", "phone", "birthdate"],
         "type": "object",
         "properties": {
           "name": {
@@ -2288,10 +2402,6 @@
             "maxLength": 100
           },
           "email": {
-            "type": "string",
-            "maxLength": 100
-          },
-          "password": {
             "type": "string",
             "maxLength": 100
           },
@@ -2763,27 +2873,9 @@
                       "type": "string",
                       "maxLength": 100
                     },
-                    "email": {
-                      "type": "string",
-                      "maxLength": 100
-                    },
-                    "cpf": {
-                      "type": "string",
-                      "maxLength": 11
-                    },
-                    "phone": {
-                      "type": "string",
-                      "maxLength": 11
-                    },
-                    "birthdate": {
-                      "type": "string",
-                      "format": "date"
-                    },
+
                     "description": {
                       "type": "string"
-                    },
-                    "isSeller": {
-                      "type": "boolean"
                     },
                     "createdAt": {
                       "type": "string",
@@ -2882,27 +2974,8 @@
                       "type": "string",
                       "maxLength": 100
                     },
-                    "email": {
-                      "type": "string",
-                      "maxLength": 100
-                    },
-                    "cpf": {
-                      "type": "string",
-                      "maxLength": 11
-                    },
-                    "phone": {
-                      "type": "string",
-                      "maxLength": 11
-                    },
-                    "birthdate": {
-                      "type": "string",
-                      "format": "date"
-                    },
                     "description": {
                       "type": "string"
-                    },
-                    "isSeller": {
-                      "type": "boolean"
                     },
                     "createdAt": {
                       "type": "string",
@@ -3066,27 +3139,9 @@
                 "type": "string",
                 "maxLength": 100
               },
-              "email": {
-                "type": "string",
-                "maxLength": 100
-              },
-              "cpf": {
-                "type": "string",
-                "maxLength": 11
-              },
-              "phone": {
-                "type": "string",
-                "maxLength": 11
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
+
               "description": {
                 "type": "string"
-              },
-              "isSeller": {
-                "type": "boolean"
               },
               "createdAt": {
                 "type": "string",
@@ -3095,6 +3150,10 @@
               "updatedAt": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "phone": {
+                "type": "string",
+                "maxLength": 11
               }
             }
           },
@@ -3116,6 +3175,30 @@
                 "updatedAt": {
                   "type": "string",
                   "format": "date-time"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 100
+                    },
+
+                    "description": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
                 }
               }
             }

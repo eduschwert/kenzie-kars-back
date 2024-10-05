@@ -21,7 +21,7 @@ sellersRoutes.post(
 
 sellersRoutes.get("", sellersController.findAll);
 
-sellersRoutes.put(
+sellersRoutes.patch(
   "/:vehicleId",
   middlewares.ensureDataIsValidMiddleware(vehicleUpdateSchema),
   middlewares.ensureVehicleExistsMiddleware,

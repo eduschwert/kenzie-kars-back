@@ -5,6 +5,7 @@ import {
   MoreThanOrEqual,
   Repository,
 } from "typeorm";
+import jwt from "jsonwebtoken";
 
 import AppDataSource from "../data-source";
 import { User, Vehicle } from "../entities";
@@ -30,8 +31,10 @@ const findAll = async ({
   previousPage,
   brand,
   model,
+  isGoodBuy,
   color,
-  year,
+  minYear,
+  maxYear,
   fuel,
   minMileage,
   maxMileage,
@@ -45,8 +48,10 @@ const findAll = async ({
   previousPage: string | null;
   brand: string | undefined;
   model: string | undefined;
+  isGoodBuy: boolean | undefined;
   color: string | undefined;
-  year: string | undefined;
+  minYear: string | undefined;
+  maxYear: string | undefined;
   fuel: number | undefined;
   minMileage: number | undefined;
   maxMileage: number | undefined;
@@ -56,53 +61,37 @@ const findAll = async ({
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
 
-  let whereCondition: any = {
-    isActive: true,
-  };
+  const whereCondition: Record<string, any> = { isActive: true };
 
-  if (brand) {
-    whereCondition.brand = ILike(`%${brand}%`);
-  }
+  if (brand) whereCondition.brand = ILike(`%${brand}%`);
 
-  if (model) {
-    whereCondition.model = ILike(`%${model}%`);
-  }
+  if (model) whereCondition.model = ILike(`%${model}%`);
 
-  if (color) {
-    whereCondition.color = ILike(`%${color}%`);
-  }
+  if (isGoodBuy) whereCondition.isGoodBuy = isGoodBuy;
 
-  if (year) {
-    whereCondition.year = year;
-  }
+  if (color) whereCondition.color = ILike(`%${color}%`);
 
-  if (fuel) {
-    whereCondition.fuel = fuel;
-  }
+  if (minYear && maxYear) whereCondition.year = Between(minYear, maxYear);
+  else if (minYear) whereCondition.year = MoreThanOrEqual(minYear);
+  else if (maxYear) whereCondition.year = LessThanOrEqual(maxYear);
 
-  if (minMileage && maxMileage) {
+  if (fuel) whereCondition.fuel = fuel;
+
+  if (minMileage && maxMileage)
     whereCondition.mileage = Between(minMileage, maxMileage);
-  } else if (minMileage) {
-    whereCondition.mileage = MoreThanOrEqual(minMileage);
-  } else if (maxMileage) {
-    whereCondition.mileage = LessThanOrEqual(maxMileage);
-  }
+  else if (minMileage) whereCondition.mileage = MoreThanOrEqual(minMileage);
+  else if (maxMileage) whereCondition.mileage = LessThanOrEqual(maxMileage);
 
-  if (minPrice && maxPrice) {
-    whereCondition.price = Between(minPrice, maxPrice);
-  } else if (minPrice) {
-    whereCondition.price = MoreThanOrEqual(minPrice);
-  } else if (maxPrice) {
-    whereCondition.price = LessThanOrEqual(maxPrice);
-  }
+  if (minPrice && maxPrice) whereCondition.price = Between(minPrice, maxPrice);
+  else if (minPrice) whereCondition.price = MoreThanOrEqual(minPrice);
+  else if (maxPrice) whereCondition.price = LessThanOrEqual(maxPrice);
 
   const [vehicles, totalCount] = await vehicleRepository.findAndCount({
     where: whereCondition,
-    relations: {
-      user: true,
-    },
+    relations: { user: true },
     skip: startIndex,
     take: perPage,
+    order: { updatedAt: "DESC" },
   });
 
   const { totalPages, nextPage } = pagination.getPaginationParamsService(
@@ -112,15 +101,13 @@ const findAll = async ({
     baseUrl
   );
 
-  const result = {
+  return {
     count: totalCount,
-    totalPages: totalPages,
-    previousPage: previousPage,
-    nextPage: nextPage,
+    totalPages,
+    previousPage,
+    nextPage,
     data: vehicleResponseSchemaWithUser.array().parse(vehicles),
   };
-
-  return result;
 };
 
 const findAllByUserId = async ({
@@ -141,7 +128,7 @@ const findAllByUserId = async ({
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
   const findUser = await userRepository.findOne({
-    where: { id: userId },
+    where: { id: userId, isSeller: true },
   });
 
   if (!findUser) {
@@ -158,6 +145,7 @@ const findAllByUserId = async ({
     },
     skip: startIndex,
     take: perPage,
+    order: { updatedAt: "DESC" },
   });
 
   const { nextPage, totalPages } = pagination.getPaginationParamsService(
@@ -182,7 +170,8 @@ const findAllByUserId = async ({
 };
 
 const findOneByVehicleId = async (
-  vehicleId: string
+  vehicleId: string,
+  token: string | undefined
 ): Promise<VehicleResponseWithUserAndImagesAndComments> => {
   const vehicleRepository: Repository<Vehicle> =
     AppDataSource.getRepository(Vehicle);
@@ -195,11 +184,44 @@ const findOneByVehicleId = async (
     relations: {
       user: true,
       images: true,
-      comments: true,
+      comments: { user: true },
     },
+    order: { images: { imageNumber: "ASC" }, comments: { updatedAt: "DESC" } },
   });
 
-  return vehicleResponseSchemaWithUserAndImagesAndComments.parse(findVehicle);
+  if (!findVehicle) {
+    throw new AppError("Vehicle not found", 404);
+  }
+
+  const parsedVehicle =
+    vehicleResponseSchemaWithUserAndImagesAndComments.parse(findVehicle);
+
+  if (token) {
+    try {
+      token = token.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.SECRET_KEY!);
+
+      const userRepository: Repository<User> =
+        AppDataSource.getRepository(User);
+
+      const findUser = await userRepository.findOne({
+        where: {
+          id: decoded.sub as string,
+        },
+      });
+
+      if (findUser) {
+        return parsedVehicle;
+      }
+    } catch (error) {}
+  }
+
+  parsedVehicle.user.phone = undefined;
+  return parsedVehicle;
 };
 
-export default { findAll, findAllByUserId, findOneByVehicleId };
+export default {
+  findAll,
+  findAllByUserId,
+  findOneByVehicleId,
+};

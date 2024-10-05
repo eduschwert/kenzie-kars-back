@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { Repository } from "typeorm";
+import { z } from "zod";
 
 import AppDataSource from "../data-source";
 import AppError from "../errors/app.errors";
 import { Comment } from "../entities";
-import { z } from "zod";
 
 const ensureCommentExistsMiddleware = async (
   req: Request,

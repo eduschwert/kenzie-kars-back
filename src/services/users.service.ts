@@ -2,6 +2,8 @@ import { Repository } from "typeorm";
 import { randomUUID } from "crypto";
 import { addMinutes } from "date-fns";
 import { isAfter } from "date-fns";
+import { sendEmail } from "../utils";
+import { compare } from "bcryptjs";
 
 import AppDataSource from "../data-source";
 import { User, Address } from "../entities";
@@ -12,6 +14,7 @@ import {
   UserResponseWithoutPassword,
   UserResponseWithoutPasswordAndAddress,
   UserUpdate,
+  UserUpdatePassword,
 } from "../interfaces";
 import {
   addressResponseSchema,
@@ -19,7 +22,6 @@ import {
   userResponseSchemaWithoutPasswordAndAddress,
 } from "../schemas";
 import AppError from "../errors/app.errors";
-import { sendEmail } from "../utils";
 
 const create = async (
   userData: UserRequest
@@ -68,6 +70,26 @@ const update = async (
   await userRepository.save(updatedUser);
 
   return userResponseSchemaWithoutPasswordAndAddress.parse(updatedUser);
+};
+
+const updatePassword = async (
+  userData: UserUpdatePassword,
+  user: User
+): Promise<void> => {
+  const comparedPassword = await compare(userData.password, user.password);
+
+  if (!comparedPassword) {
+    throw new AppError("Invalid credentials", 401);
+  }
+
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+
+  const updatedUser = userRepository.create({
+    ...user,
+    password: userData.newPassword,
+  });
+
+  await userRepository.save(updatedUser);
 };
 
 const updateAddress = async (
@@ -119,6 +141,8 @@ const resetPassword = async (
     !user.tokenResetPasswordExpiresAt ||
     isAfter(new Date(), user.tokenResetPasswordExpiresAt)
   ) {
+    user.tokenResetPassword = null;
+    user.tokenResetPasswordExpiresAt = null;
     throw new AppError("Invalid or expired token", 400);
   }
 
@@ -161,5 +185,6 @@ export default {
   resetPassword,
   sendEmailResetPassword,
   update,
+  updatePassword,
   updateAddress,
 };

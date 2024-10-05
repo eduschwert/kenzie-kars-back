@@ -16,7 +16,7 @@ commentsRoutes.post(
   commentsControllers.create
 );
 
-commentsRoutes.put(
+commentsRoutes.patch(
   "/:commentId",
   middlewares.ensureDataIsValidMiddleware(commentRequestSchema),
   middlewares.ensureCommentExistsMiddleware,
