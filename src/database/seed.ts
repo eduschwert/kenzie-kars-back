@@ -834,11 +834,10 @@ const seed = async () => {
       imageUrl: "https://i.imgur.com/s2urGjc.jpeg",
       vehicle: createdVehicles[6],
     },
-
     {
-      imageNumber: 1,
+      imageNumber: 6,
       imageUrl: "https://i.imgur.com/yWOrXRC.jpeg",
-      vehicle: createdVehicles[8],
+      vehicle: createdVehicles[6],
     },
 
     {
@@ -941,17 +940,6 @@ const seed = async () => {
       imageNumber: 2,
       imageUrl: "https://i.imgur.com/E47otUq.jpeg",
       vehicle: createdVehicles[15],
-    },
-
-    {
-      imageNumber: 1,
-      imageUrl: "https://i.imgur.com/DbqxhtN.jpeg",
-      vehicle: createdVehicles[16],
-    },
-    {
-      imageNumber: 2,
-      imageUrl: "https://i.imgur.com/UQIPNB2.jpeg",
-      vehicle: createdVehicles[16],
     },
 
     {

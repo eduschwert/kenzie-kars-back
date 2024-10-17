@@ -78,6 +78,7 @@ const findAll = async ({
     relations: { images: true },
     skip: startIndex,
     take: perPage,
+    order: { updatedAt: "DESC" },
   });
 
   const { nextPage, totalPages } = pagination.getPaginationParamsService(
